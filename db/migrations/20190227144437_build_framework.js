@@ -3,7 +3,7 @@ exports.up = function (knex, Promise) {
     knex.schema.createTable('users', function (table) {
       table.increments('id');
       table.string('email');
-      table.date('password');
+      table.string('password');
     }),
     knex.schema.createTable('categories', function (table) {
       table.increments('id');
@@ -22,8 +22,8 @@ exports.up = function (knex, Promise) {
 
 exports.down = function (knex, Promise) {
   return Promise.all([
-    knex.schema.dropTable('users'),
-    knex.schema.dropTable('categories'),
-    knex.schema.dropTable('tasks')
+    knex.raw('DROP TABLE users CASCADE'),
+    knex.raw('DROP TABLE categories CASCADE'),
+    knex.raw('DROP TABLE tasks CASCADE'),
   ])
 };
