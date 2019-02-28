@@ -55,6 +55,7 @@ module.exports = (knex) => {
         .where('user_id', temp_user_id)
         .andWhere('name', req.params.category)
         .del()
+        .then()
     }));
 
     res.status(200).redirect('/');
