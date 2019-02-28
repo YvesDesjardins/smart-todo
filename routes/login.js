@@ -14,6 +14,7 @@ module.exports = (knex) => {
       .where('email', 'test@google.com')
       .then((results) => {
         // returns the user's email if it matches one in db
+        req.session.userID = results[0].email;
         res.json(results[0].email);
       })
       .catch((err) => {
