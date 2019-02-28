@@ -8,7 +8,7 @@ exports.seed = function (knex, Promise) {
           api: 'uncat',
           user_id: 1,
         }),
-        knex('complete').insert({
+        knex('categories').insert({
           id: 888,
           name: 'Completed',
           api: 'uncat',
