@@ -23,36 +23,43 @@ module.exports = (knex) => {
   });
 
   // create new category
-  router.post('/:categories', (req, res) => {
+  router.post('/:category', (req, res) => {
     getUserID(knex, req.session.userID, (temp_user_id => {
-      knex('categories').insert({
-        name: req.params.categories,
-        api: false,
-        user_id: temp_user_id
-      })
+      knex('categories')
+        .insert({
+          name: req.params.category,
+          api: req.param.api,
+          user_id: temp_user_id
+        })
+        .then();
 
       res.status(200).redirect('/');
     }));
   });
   // edit existing category name
-  router.post('/:categories/edit', (req, res) => {
+  router.post('/:category/edit', (req, res) => {
     getUserID(knex, req.session.userID, (temp_user_id => {
       knex('categories')
         .where('user_id', temp_user_id)
-        .andWhere('name', req.params.categories)
+        .andWhere('name', req.params.category)
         .update({
           name: req.body.name
         });
     }));
+
+    res.status(200).redirect('/');
   });
   // delete current category
-  router.post('/:categories/delete', (req, res) => {
+  router.post('/:category/delete', (req, res) => {
     getUserID(knex, req.session.userID, (temp_user_id => {
       knex('categories')
         .where('user_id', temp_user_id)
-        .andWhere('name', req.params.categories)
-        .del();
+        .andWhere('name', req.params.category)
+        .del()
+        .then();
     }));
+
+    res.status(200).redirect('/');
   });
 
   return router;
