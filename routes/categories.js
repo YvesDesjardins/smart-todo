@@ -8,7 +8,6 @@ module.exports = (knex) => {
 
   // returns all current categories for user
   router.get('/', (req, res) => {
-    // getUserID(knex, req.session.userID, (temp_user_id => {
     getUserID(knex, req.session.userID).then((temp_user_id) => {
         knex('categories')
           .select('*')
