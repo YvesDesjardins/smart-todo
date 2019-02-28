@@ -5,16 +5,19 @@ const router = express.Router();
 
 module.exports = (knex) => {
 
+  // searches for users to login, currently using hardcoded 
+  // users and no password check
   router.post('/', (req, res) => {
     knex
       .select('*')
       .from('users')
       .where('email', 'test@google.com')
-      // .where('email', req.body.email)
-      // .andWhere('password', req.body.password)
       .then((results) => {
-        console.log(`you are user ${results}`);
-        res.json(results);
+        // returns the user's email if it matches one in db
+        res.json(results[0].email);
+      })
+      .catch((err) => {
+        throw err;
       });
   });
 
