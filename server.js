@@ -56,7 +56,9 @@ app.use('/tasks', tasksRoutes(knex));
 
 // Home page
 app.get('/', (req, res) => {
-  res.render('index');
+  res.render('index', {
+    email: req.session.userID,
+  });
 });
 
 app.listen(PORT, () => {
