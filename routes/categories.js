@@ -13,7 +13,6 @@ module.exports = (knex) => {
         .select('*')
         .where('user_id', temp_user_id)
         .then((results) => {
-          console.log(results);
           res.json(results);
         })
         .catch((err) => {
