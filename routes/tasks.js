@@ -8,7 +8,7 @@ module.exports = (knex) => {
 
   // returns all current tasks for user
   router.get('/', (req, res) => {
-    getCategoryID(knex, req.session.userID, (temp_category_id => {
+    getCategoryID(knex, req.body.category_id, (temp_category_id => {
       knex('tasks')
         .select('*')
         .where('category_id', temp_category_id)
@@ -24,7 +24,7 @@ module.exports = (knex) => {
 
   // create new task
   router.post('/:task', (req, res) => {
-    getCategoryID(knex, req.session.userID, (temp_category_id => {
+    getCategoryID(knex, req.body.category_id, (temp_category_id => {
       knex('tasks')
         .insert({
           name: req.params.task,
@@ -38,12 +38,13 @@ module.exports = (knex) => {
   });
   // edit existing task name
   router.post('/:task/edit', (req, res) => {
-    getCategoryID(knex, req.session.userID, (temp_category_id => {
+    getCategoryID(knex, req.body.category_id, (temp_category_id => {
       knex('tasks')
         .where('category_id', temp_category_id)
         .andWhere('name', req.params.task)
         .update({
-          name: req.body.name
+          name: req.body.name,
+          completed: req.body.completed
         });
     }));
 
@@ -51,7 +52,7 @@ module.exports = (knex) => {
   });
   // delete current task
   router.post('/:task/delete', (req, res) => {
-    getCategoryID(knex, req.session.userID, (temp_category_id => {
+    getCategoryID(knex, req.body.category_id, (temp_category_id => {
       knex('tasks')
         .where('category_id', temp_category_id)
         .andWhere('name', req.params.task)
