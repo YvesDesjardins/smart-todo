@@ -1,4 +1,3 @@
-
 $(() => {
   $('#example-edit-task-modal').click(function () {
     console.log("click");
@@ -19,7 +18,7 @@ $(() => {
     console.log("click");
     $('#add-category-modal').modal('show');
   });
-  
+
   // Below is the starter code
   // $.ajax({
   //   method: "GET",
