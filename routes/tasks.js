@@ -7,9 +7,9 @@ const router = express.Router();
 module.exports = (knex) => {
 
   // create new category
-  router.post('/:categories', (req, res) => {
+  router.post('/', (req, res) => {
     const temp_user_id = getUserID(knex, req.session.userID);
-    console.log(temp_user_id);
+    console.log('******', temp_user_id);
     knex('categories').insert({
       name: 'test', //req.params.categories,
       api: false,
@@ -19,7 +19,7 @@ module.exports = (knex) => {
     res.status(200).redirect('/');
   });
   // edit existing category name
-  router.post('/:categories/edit', (req, res) => {
+  router.post('/edit', (req, res) => {
     const temp_user_id = getUserID(knex, req.session.userID);
 
     knex('categories')
@@ -30,7 +30,7 @@ module.exports = (knex) => {
       });
   });
   // delete current category
-  router.post('/:categories/delete', (req, res) => {
+  router.post('/delete', (req, res) => {
     const temp_user_id = getUserID(knex, req.session.userID);
 
     knex('categories')

@@ -8,19 +8,18 @@ module.exports = (knex) => {
 
   // returns all current categories for user
   router.get('/', (req, res) => {
-    const temp_user_id = getUserID(knex, req.session.userID);
-
-    knex('categories')
-      .select('*')
-      .where('user_id', temp_user_id)
-      .then((results) => {
-
-      })
-      .catch((err) => {
-        throw err;
-      });
-
-    res.send();
+    getUserID(knex, req.session.userID, (temp_user_id => {
+      knex('categories')
+        .select('*')
+        .where('user_id', temp_user_id)
+        .then((results) => {
+          console.log(results);
+          res.json(results);
+        })
+        .catch((err) => {
+          throw err;
+        });
+    }));
   });
 
   // create new category
