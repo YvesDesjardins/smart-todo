@@ -7,10 +7,10 @@ module.exports = (knex) => {
 
   // create new category
   router.post('/:categories', (req, res) => {
-    const temp_user_id = getUserID(knex, req);
+    const temp_user_id = getUserID(knex, req.session.userID);
 
     knex('categories').insert({
-      name: req.body.name,
+      name: req.params.categories,
       api: false,
       user_id: temp_user_id
     })
@@ -19,32 +19,32 @@ module.exports = (knex) => {
   });
   // edit existing category name
   router.post('/:categories/edit', (req, res) => {
-    const temp_user_id = getUserID(knex, req);
+    const temp_user_id = getUserID(knex, req.session.userID);
 
     knex('categories')
       .where('user_id', temp_user_id)
-      .andWhere('id', req.body.catID)
+      .andWhere('name', req.params.categories)
       .update({
         name: req.body.name
       });
   });
   // delete current category
   router.post('/:categories/delete', (req, res) => {
-    const temp_user_id = getUserID(knex, req);
+    const temp_user_id = getUserID(knex, req.session.userID);
 
     knex('categories')
       .where('user_id', temp_user_id)
-      .andWhere('id', req.body.catID)
+      .andWhere('name', req.params.categories)
       .del();
   });
 
   return router;
 }
 
-function getUserID(knex, req) {
+function getUserID(knex, uid) {
   knex('users')
     .select('*')
-    .where('email', req.session.userID)
+    .where('email', uid)
     .then((results) => {
       return results[0].id;
     });
