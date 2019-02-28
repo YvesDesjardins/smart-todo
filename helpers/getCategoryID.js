@@ -4,7 +4,7 @@ module.exports = (knex, name, callback) => {
     .select('*')
     .where('name', name)
     .then((results) => {
-      return results[0].id;
+      callback(results[0].id);
     })
     .catch((err) => {
       throw err;
