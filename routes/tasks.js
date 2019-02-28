@@ -49,7 +49,8 @@ module.exports = (knex) => {
           .andWhere('name', req.params.task)
           .update({
             name: req.body.name,
-            completed: req.body.completed
+            completed: req.body.completed,
+            category_id: req.body.category_id,
           });
         res.status(200).redirect('/');
       })
