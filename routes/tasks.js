@@ -57,7 +57,6 @@ module.exports = (knex) => {
         .where('category_id', temp_category_id)
         .andWhere('name', req.params.task)
         .del()
-        .then();
     }));
 
     res.status(200).redirect('/');
