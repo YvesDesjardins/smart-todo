@@ -106,10 +106,13 @@
     <!-- End of scrolling wrapper -->
   </div>
 
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="example-edit-modal">
-        Launch demo modal
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="example-edit-task-modal">
+        Demo for editing task
     </button>
-    <!--  -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="example-edit-category-modal">
+        Demo for editing category
+    </button>
+    <!-- Modal for Editing Items -->
     <div class="modal fade" id="edit-item-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
@@ -136,11 +139,79 @@
           </div>
         </div>
       </div>
-    <!--  -->
-    <section id="edit-item">
-      <% include ./partials/_edit-item %>
-    </section>
-      <% include ./partials/_edit-category %>
-      <% include ./partials/_new-task %>
+    <!-- End of editing items modal -->
+
+    <!-- Modal for Editing categories -->
+    <div class="modal fade" id="edit-category-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Edit Category</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form action="" method="">
+                  <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="category name (placeholder)">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- End of editing items modal -->
+
+    <!-- Modal for add task -->
+    <div class="modal fade" id="add-task-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Add Task</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form action="" method="">
+                  <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Task name">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- End of add task modal -->
+
+    <!-- Modal for add category -->
+    <div class="modal fade" id="add-category-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Add Category</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form action="" method="">
+                  <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Category name">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- End of add task modal -->
+
   </body>
 </html>
