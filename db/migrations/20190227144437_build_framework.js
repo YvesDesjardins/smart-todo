@@ -4,18 +4,21 @@ exports.up = function (knex, Promise) {
       table.increments('id');
       table.string('email');
       table.string('password');
+      table.onDelete('cascade')
     }),
     knex.schema.createTable('categories', function (table) {
       table.increments('id');
       table.string('name');
       table.string('api');
-      table.integer('user_id').references('id').inTable('users').onDelete('cascade');
+      table.integer('user_id').references('id').inTable('users');
+      table.onDelete('cascade');
     }),
     knex.schema.createTable('tasks', function (table) {
       table.increments('id');
       table.string('name');
       table.boolean('completed');
-      table.integer('category_id').references('id').inTable('categories').onDelete('cascade');
+      table.integer('category_id').references('id').inTable('categories');
+      table.onDelete('cascade');
     })
   ])
 };
