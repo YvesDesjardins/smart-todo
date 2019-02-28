@@ -15,7 +15,7 @@ module.exports = (knex) => {
       .then((results) => {
         // returns the user's email if it matches one in db
         req.session.userID = results[0].email;
-        res.json(results[0].email);
+        res.redirect('/');
       })
       .catch((err) => {
         throw err;
