@@ -15,9 +15,20 @@ body {
 
   .card.bg-light {
     width: 30%;
+    margin-right: 3em;
+  }
+
+  .card-body {
+    display: flex;
+    padding: 1em;
+    justify-content: space-between;
   }
 
   .side-scroll {
     flex: 0 0 auto;
   }
+}
+
+.form-check {
+  float: right;
 }
