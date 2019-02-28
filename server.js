@@ -51,9 +51,9 @@ app.use(express.static('public'));
 
 // Mount all resource routes
 app.use('/api/users', usersRoutes(knex));
-app.use('/login', loginRoutes(knex));
+app.use('/login', loginRoutes(knex)); // currently hardcoded
 app.use('/logout', logoutRoutes());
-// app.use('/:categories', categoriesRoutes(knex));
+app.use('/:categories', categoriesRoutes(knex));
 // app.use('/:tasks', tasksRoutes(knex));
 
 // Home page
