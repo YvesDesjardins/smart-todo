@@ -49,8 +49,11 @@ module.exports = (knex) => {
           .where('user_id', temp_user_id[0].id)
           .andWhere('name', req.params.category)
           .update({
-            name: req.body.name
-          });
+            name: req.body.name,
+            api: req.body.api,
+            user_id: req.body.user_id,
+          })
+          .then();
         res.status(200).redirect('/');
       })
       .catch((err) => {
