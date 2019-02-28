@@ -1,17 +1,10 @@
 @import './node_modules/bootstrap/scss/bootstrap.scss';
 
-body {
-  background-color: #EEE;
-
-  h1 {
-    color: #244751;
-  }
-}
-
 .scrolling-wrapper-flexbox {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
+  margin-top: 1em;
 
   .card.bg-light {
     width: 30%;
@@ -31,4 +24,10 @@ body {
 
 .form-check {
   float: right;
+}
+
+nav {
+  .header-button-group {
+    width: 10%;
+  }
 }
