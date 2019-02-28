@@ -5,15 +5,21 @@ const router = express.Router();
 
 module.exports = (knex) => {
 
-  // searches for users to login, currently using hardcoded 
-  // users and no password check
+  // create new category
   router.post('/:categories', (req, res) => {
     const temp_user_id = getUserID(knex, req);
 
-    // knex('categories').insert()
-    res.send();
+    knex('categories').insert({
+      name: req.body.name,
+      api: false,
+      user_id: temp_user_id
+    })
+
+    res.status(200).redirect('/');
   });
+  // edit existing category name
   router.post('/:categories/edit', (req, res) => {});
+  // delete current category
   router.post('/:categories/delete', (req, res) => {});
 
   return router;
