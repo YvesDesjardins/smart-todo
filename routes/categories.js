@@ -6,6 +6,23 @@ const router = express.Router();
 
 module.exports = (knex) => {
 
+  // returns all current categories for user
+  router.get('/', (req, res) => {
+    const temp_user_id = getUserID(knex, req.session.userID);
+
+    knex('categories')
+      .select('*')
+      .where('user_id', temp_user_id)
+      .then((results) => {
+
+      })
+      .catch((err) => {
+        throw err;
+      });
+
+    res.send();
+  });
+
   // create new category
   router.post('/:categories', (req, res) => {
     const temp_user_id = getUserID(knex, req.session.userID);
