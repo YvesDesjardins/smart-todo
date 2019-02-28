@@ -1,7 +1,33 @@
-body {
-  background-color: #EEE;
+@import './node_modules/bootstrap/scss/bootstrap.scss';
 
-  h1 {
-    color: #244751;
+.scrolling-wrapper-flexbox {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  margin-top: 1em;
+
+  .card.bg-light {
+    width: 30%;
+    margin-right: 5vw;
+  }
+
+  .card-body {
+    display: flex;
+    padding: 1vw;
+    justify-content: space-between;
+  }
+
+  .side-scroll {
+    flex: 0 0 auto;
+  }
+}
+
+.form-check {
+  float: right;
+}
+
+nav {
+  .header-button-group {
+    width: 10%;
   }
 }
