@@ -106,12 +106,14 @@
     <!-- End of scrolling wrapper -->
   </div>
 
+  <!-- Buttons to demo editing tasks & categories -->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="example-edit-task-modal">
         Demo for editing task
     </button>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="example-edit-category-modal">
         Demo for editing category
     </button>
+
     <!-- Modal for Editing Items -->
     <div class="modal fade" id="edit-item-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -125,14 +127,14 @@
             <div class="modal-body">
               <form action="" method="">
                   <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="item name (placeholder)">
-                  <select class="form-control form-control-lg">
+                  <select class="form-control">
                       <option>Category 1 (placeholder)</option>
                       <option>Category 2 (placeholder)</option>
                       <option>Category 3 (placeholder)</option>
                     </select>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger left" data-dismiss="modal">Delete Task</button>
                 <button type="button" class="btn btn-primary">Save changes</button>
               </form>
             </div>
@@ -156,7 +158,7 @@
                   <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="category name (placeholder)">
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-danger left" data-dismiss="modal">Delete Category</button>
                 <button type="button" class="btn btn-primary">Save changes</button>
               </form>
             </div>

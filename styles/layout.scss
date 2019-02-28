@@ -15,6 +15,25 @@
     display: flex;
     padding: 1vw;
     justify-content: space-between;
+    background: rgba(0, 0, 0, 0);
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  div.card-body:hover {
+    background: rgba(0, 0, 0, 0.1);
+    -webkit-transition: background-color 500ms linear;
+    -ms-transition: background-color 500ms linear;
+    transition: background-color 500ms linear;
+
+    p.hidden {
+    display: block;
+    -webkit-transition: display 500ms linear;
+    -ms-transition: display 500ms linear;
+    transition: display 500ms linear;
+    }
   }
 
   .side-scroll {
