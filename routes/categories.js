@@ -28,7 +28,7 @@ module.exports = (knex) => {
       knex('categories')
         .insert({
           name: req.params.category,
-          api: req.param.api,
+          api: req.body.api,
           user_id: temp_user_id
         })
         .then();
