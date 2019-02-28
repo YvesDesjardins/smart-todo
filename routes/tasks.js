@@ -1,16 +1,17 @@
 'use strict';
 
 const express = require('express');
+const getUserID = require('../helpers/getUserID.js');
 const router = express.Router();
 
 module.exports = (knex) => {
 
   // create new category
-  router.post('/:tasks', (req, res) => {
-    const temp_user_id = getUserID(knex, req);
-
-    knex('tasks').insert({
-      name: req.body.name,
+  router.post('/:categories', (req, res) => {
+    const temp_user_id = getUserID(knex, req.session.userID);
+    console.log(temp_user_id);
+    knex('categories').insert({
+      name: 'test', //req.params.categories,
       api: false,
       user_id: temp_user_id
     })
@@ -18,34 +19,25 @@ module.exports = (knex) => {
     res.status(200).redirect('/');
   });
   // edit existing category name
-  router.post('/:tasks/edit', (req, res) => {
-    const temp_user_id = getUserID(knex, req);
+  router.post('/:categories/edit', (req, res) => {
+    const temp_user_id = getUserID(knex, req.session.userID);
 
-    knex('tasks')
+    knex('categories')
       .where('user_id', temp_user_id)
-      .andWhere('id', req.body.catID)
+      .andWhere('name', req.params.categories)
       .update({
         name: req.body.name
       });
   });
   // delete current category
-  router.post('/:tasks/delete', (req, res) => {
-    const temp_user_id = getUserID(knex, req);
+  router.post('/:categories/delete', (req, res) => {
+    const temp_user_id = getUserID(knex, req.session.userID);
 
-    knex('tasks')
+    knex('categories')
       .where('user_id', temp_user_id)
-      .andWhere('id', req.body.catID)
+      .andWhere('name', req.params.categories)
       .del();
   });
 
   return router;
-}
-
-function getUserID(knex, req) {
-  knex('users')
-    .select('*')
-    .where('email', req.session.userID)
-    .then((results) => {
-      return results[0].id;
-    });
 }

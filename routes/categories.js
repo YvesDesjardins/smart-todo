@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const getUserID = require('../helpers/getUserID.js');
 const router = express.Router();
 
 module.exports = (knex) => {
@@ -39,13 +40,4 @@ module.exports = (knex) => {
   });
 
   return router;
-}
-
-function getUserID(knex, uid) {
-  knex('users')
-    .select('*')
-    .where('email', uid)
-    .then((results) => {
-      return results[0].id;
-    });
 }
