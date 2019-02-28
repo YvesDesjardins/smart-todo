@@ -12,7 +12,7 @@ module.exports = (knex) => {
     getUserID(knex, req.session.userID).then((temp_user_id) => {
         knex('categories')
           .select('*')
-          .where('user_id', temp_user_id)
+          .where('user_id', temp_user_id[0].id)
           .then((results) => {
             res.json(results);
           })
@@ -32,7 +32,7 @@ module.exports = (knex) => {
           .insert({
             name: req.params.category,
             api: req.body.api,
-            user_id: temp_user_id
+            user_id: temp_user_id[0].id
           })
           .then();
 
@@ -46,7 +46,7 @@ module.exports = (knex) => {
   router.post('/:category/edit', (req, res) => {
     getUserID(knex, req.session.userID).then((temp_user_id) => {
         knex('categories')
-          .where('user_id', temp_user_id)
+          .where('user_id', temp_user_id[0].id)
           .andWhere('name', req.params.category)
           .update({
             name: req.body.name
@@ -56,13 +56,12 @@ module.exports = (knex) => {
       .catch((err) => {
         throw err;
       });
-
   });
   // delete current category
   router.post('/:category/delete', (req, res) => {
     getUserID(knex, req.session.userID).then((temp_user_id) => {
         knex('categories')
-          .where('user_id', temp_user_id)
+          .where('user_id', temp_user_id[0].id)
           .andWhere('name', req.params.category)
           .del()
           .then();
@@ -71,7 +70,6 @@ module.exports = (knex) => {
       .catch((err) => {
         throw err;
       });
-
   });
 
   return router;
