@@ -1,4 +1,4 @@
-module.exports = (knex, uid, callback) => {
+module.exports = (knex, name, callback) => {
   // returns category id from db
   knex('categories')
     .select('*')
