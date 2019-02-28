@@ -15,9 +15,10 @@ module.exports = (knex) => {
       .then((results) => {
         // on sucessful login write to cookie and redirect
         req.session.userID = results[0].email;
-        res.redirect('/', {
-          userID: results[0].email
-        });
+        res.redirect('/');
+        // res.redirect('/', {
+        //   userID: req.session.userID
+        // });
       })
       .catch((err) => {
         throw err;
