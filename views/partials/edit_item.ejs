@@ -1,0 +1,25 @@
+<div class="form-popup" id="edit-task-form">
+  <header class="task-name">
+      <h1>EditItem from Category</h1>
+  </header>
+  <form action="/" class="form-container">
+
+    <input type="text" placeholder="TaskName" name="submit" required>
+<div>
+<div>
+<div>
+
+    <label for="submit"><b>Category</b></label>
+    <div>
+    <input list="browsers" name="browser">
+        <datalist id="categories">
+          <option value="Cat1">
+          <option value="Cat2">
+          <option value="Cat3">
+         </datalist>
+    <input type="submit">
+<div>
+    <button type="delete" class="btn-delete">Delete</button>
+    <button type="submit" class="btn-save" onclick="closeForm()">Save</button>
+  </form>
+</div>
