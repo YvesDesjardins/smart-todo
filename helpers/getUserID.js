@@ -1,4 +1,4 @@
-module.exports = (knex, uid, callback) => {
+module.exports = (knex, userEmail) => {
   // returns user id from db
-  return knex('users').select('*').where('email', uid);
+  return knex('users').select('*').where('email', userEmail);
 }

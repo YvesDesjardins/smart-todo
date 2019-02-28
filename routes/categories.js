@@ -8,8 +8,8 @@ module.exports = (knex) => {
 
   // returns all current categories for user
   router.get('/', (req, res) => {
-    // getUserID(knex, req.session.userID, (temp_user_id => {
-    getUserID(knex, req.session.userID).then((temp_user_id) => {
+    getUserID(knex, req.session.userID)
+      .then((temp_user_id) => {
         knex('categories')
           .select('*')
           .where('user_id', temp_user_id[0].id)
@@ -17,11 +17,11 @@ module.exports = (knex) => {
             res.json(results);
           })
           .catch((err) => {
-            throw err;
+            res.status(401).send('user not logged in');
           });
       })
       .catch((err) => {
-        throw err;
+        res.status(401).send('user not logged in');
       });
   });
 
@@ -39,7 +39,7 @@ module.exports = (knex) => {
         res.status(200).redirect('/');
       })
       .catch((err) => {
-        throw err;
+        res.status(401).send('user not logged in');
       });
   });
   // edit existing category name
@@ -57,7 +57,7 @@ module.exports = (knex) => {
         res.status(200).redirect('/');
       })
       .catch((err) => {
-        throw err;
+        res.status(401).send('user not logged in/category does not exist');
       });
   });
   // delete current category
@@ -71,7 +71,7 @@ module.exports = (knex) => {
         res.status(200).redirect('/');
       })
       .catch((err) => {
-        throw err;
+        res.status(401).send('user not logged in/category does not exist');
       });
   });
 

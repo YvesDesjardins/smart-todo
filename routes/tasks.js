@@ -8,7 +8,8 @@ module.exports = (knex) => {
 
   // returns all current tasks for user
   router.get('/', (req, res) => {
-    getCategoryID(knex, req.body.category_id).then(temp_category_id => {
+    getCategoryID(knex, req.body.category_id)
+      .then(temp_category_id => {
         knex('tasks')
           .select('*')
           .where('category_id', temp_category_id[0].id)
@@ -16,11 +17,11 @@ module.exports = (knex) => {
             res.json(results);
           })
           .catch((err) => {
-            throw err;
+            res.status(401).send('category does not exist');
           });
       })
       .catch((err) => {
-        throw err;
+        res.status(401).send('category does not exist');
       });
   });
 
@@ -38,7 +39,7 @@ module.exports = (knex) => {
         res.status(200).redirect('/');
       })
       .catch((err) => {
-        throw err;
+        res.status(401).send('category does not exist');
       });
   });
   // edit existing task name
@@ -55,7 +56,7 @@ module.exports = (knex) => {
         res.status(200).redirect('/');
       })
       .catch((err) => {
-        throw err;
+        res.status(401).send('category does not exist/ task does not exist');
       });
   });
   // delete current task
@@ -69,7 +70,7 @@ module.exports = (knex) => {
         res.status(200).redirect('/');
       })
       .catch((err) => {
-        throw err;
+        res.status(401).send('category does not exist/ task does not exist');
       });
   });
 
