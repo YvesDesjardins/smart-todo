@@ -13,7 +13,7 @@ module.exports = (knex) => {
       .from('users')
       .where('email', 'test@google.com')
       .then((results) => {
-        // returns the user's email if it matches one in db
+        // on sucessful login write to cookie and redirect
         req.session.userID = results[0].email;
         res.redirect('/');
       })
