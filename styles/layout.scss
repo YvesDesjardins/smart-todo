@@ -13,6 +13,10 @@ body {
   flex-wrap: nowrap;
   overflow-x: auto;
 
+  .card.bg-light {
+    width: 30%;
+  }
+
   .side-scroll {
     flex: 0 0 auto;
   }
