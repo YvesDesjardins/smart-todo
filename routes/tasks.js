@@ -35,9 +35,9 @@ module.exports = (knex) => {
   router.post('/:category_id/tasks/:task_id/edit', (req, res) => {
     knex('tasks')
       .where('category_id', req.params.category_id)
-      .andWhere('name', req.params.task_id)
+      .andWhere('id', req.params.task_id)
       .update({
-        name: req.body.name,
+        name: 'ediiittt',
         completed: req.body.completed,
         category_id: req.body.category_id,
       })
@@ -49,7 +49,7 @@ module.exports = (knex) => {
   router.post('/:category_id/tasks/:task_id/delete', (req, res) => {
     knex('tasks')
       .where('category_id', req.params.category_id)
-      .andWhere('name', req.params.task_id)
+      .andWhere('id', req.params.task_id)
       .del()
       .then()
 
