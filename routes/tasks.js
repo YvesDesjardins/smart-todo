@@ -7,7 +7,7 @@ const router = express.Router();
 module.exports = (knex) => {
 
   // returns all current tasks for user
-  router.get('/:category/tasks/tasks', (req, res) => {
+  router.get('/:category/tasks', (req, res) => {
     getCategoryID(knex, req.params.category)
       .then(temp_category_id => {
         knex('tasks')
