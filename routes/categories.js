@@ -18,7 +18,7 @@ module.exports = (knex) => {
             res.json(results);
           })
           .catch((err) => {
-            res.status(401).send('user not logged in');
+            res.status(401).send('user has no categories');
           });
       })
       .catch((err) => {
@@ -37,7 +37,7 @@ module.exports = (knex) => {
             res.json(results);
           })
           .catch((err) => {
-            res.status(401).send('category does not exist');
+            res.status(401).send('category has no tasks');
           });
       })
       .catch((err) => {
