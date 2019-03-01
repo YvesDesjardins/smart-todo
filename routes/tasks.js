@@ -2,6 +2,7 @@
 
 const express = require('express');
 const getUserID = require('../helpers/getUserID.js');
+const getTasksForUser = require('../helpers/getTasksForUser.js');
 const router = express.Router();
 
 module.exports = (knex) => {
@@ -48,19 +49,19 @@ module.exports = (knex) => {
     getUserID(knex, req.session.userID)
       .then((temp_user_id) => {
         knex
+          .whereIn('id', getTasksForUser(knex, req.params.category_id, temp_user_id[0].id, req.params.task_id))
           .from('tasks')
-          // .join('categories', 'category_id', 'categories.id')
-          .where('category_id', req.params.category_id)
-          // .andWhere('categories.user_id', temp_user_id[0].id)
-          .andWhere('id', req.params.task_id)
           .update({
             name: 'req.body.name',
             completed: req.body.completed,
             category_id: req.body.category_id,
           })
-          .then();
-
-        res.status(200).redirect('/');
+          .then(() => {
+            res.status(200).send();
+          })
+          .catch((err) => {
+            res.status(401).send('user unauthorized');
+          });
       })
       .catch((err) => {
         res.status(401).send('user not logged in');
@@ -71,16 +72,17 @@ module.exports = (knex) => {
     getUserID(knex, req.session.userID)
       .then((temp_user_id) => {
         knex('tasks')
-          // .join('categories', 'category_id', 'categories.id')
-          .where('category_id', req.params.category_id)
-          // .andWhere('categories.user_id', temp_user_id[0].id)
-          .andWhere('id', req.params.task_id)
+          .whereIn('id', getTasksForUser(knex, req.params.category_id, temp_user_id[0].id, req.params.task_id))
           .del()
-          .then()
-
-        res.status(200).redirect('/');
+          .then((results) => {
+            res.status(200).send();
+          })
+          .catch((err) => {
+            res.status(401).send('user unauthorized');
+          });
       })
       .catch((err) => {
+        console.log(err);
         res.status(401).send('user not logged in');
       });
   });
