@@ -8,6 +8,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const sass = require('node-sass-middleware');
 const app = express();
+const request = require('request');
 
 // cookie-session
 const cookieSession = require('cookie-session');
@@ -59,6 +60,26 @@ app.get('/', (req, res) => {
   res.render('index', {
     email: req.session.userID,
   });
+});
+
+
+
+app.get('/api/yelp', (req, res) => {
+
+  const apiKey = 'Bearer ' + 'Nq6iLL8agQjx_UJ0s0IF5FwIKSs1FZ8r_XcOz6ChLvXOQUTSH7ZYpLnAGFl03tpPrAFJh0Naguga1lg3xAttXxbbsg7PPT_JI12LK-_NkaWpe1npsWBHel6qQIJ4XHYx';
+
+  const getOptions = {
+    uri: 'https://api.yelp.com/v3/businesses/search?location="Vancouver"',
+    method: 'GET',
+    headers: {
+      'Authorization': apiKey
+    }
+  };
+
+  //****USE REQUEST NOT HTTPS */
+  request(getOptions, (err, response, body) => {
+    res.json(body);
+  })
 });
 
 app.listen(PORT, () => {
