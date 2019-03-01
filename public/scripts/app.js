@@ -6,15 +6,11 @@ $(() => {
   const buildListTask = (taskObject, listID) => {
     const taskName = taskObject.name;
     const taskID = taskObject.id;
-    let $cardBody = $('<div>').addClass('card-body').attr                 ('id',
-                  `${taskID}-${taskName}-${listID}-task`)
-                  .click(editTaskModal)
-                  .append($('<p>').text(taskName))
-    let $checkBox = $('<div>').addClass('form-check')
-                  .append($('<input>').addClass('form-check-input').attr({
-                    type: "checkbox",
-                    value: "",
-                  }));
+    let $cardBody = $('<div>').addClass('card-body')
+                  .append($('<p>').text(taskName).addClass('task-name').attr('id',`${taskID}-${taskName}-${listID}-task`)
+                  .click(editTaskModal));
+    let $checkBox = $('<div>').addClass('complete-task')
+                  .attr('id',`complete-${taskID}-${listID}`).click(completeTask).append($('<p>').addClass('checkmark').text('✔️'));
     let $task = $($cardBody).append($($checkBox));
     $(`#list-${listID}`).append($($task));
   }
@@ -93,21 +89,21 @@ function yelpApi(toDoInput) {
   // console.log('work');
   // yelpApi();
 
-
-  // MODALS---------------------------
-  // Listen for clicks on task names
-  $('div.card-body').click(editTaskModal);
-
-  // Listen for clicks on header of todo list categories
-  $('div.card-header').click(editCatModal);
-
-  $('#add-task').click(function () {
-    $('#add-task-modal').modal('show');
-  });
-
-  $('#add-category').click(function () {
-    $('#add-category-modal').modal('show');
-  });
+  // To complete a task:
+  function completeTask() {
+    let taskID = (this.id).split('-')[1];
+    let categoryID = (this.id).split('-')[2];
+    $.ajax({
+      method: "POST",
+      url: `/categories/${categoryID}/tasks/${taskID}/edit`,
+      contentType: 'application/json',
+        data: JSON.stringify({
+            completed: true
+        }),
+      dataType: 'json'
+    }).done((data) => {
+    });
+  }
 
   // To trigger list category name edit modal:
   function editCatModal() {
@@ -137,5 +133,21 @@ function yelpApi(toDoInput) {
     $('#edit-item-modal input').attr('placeholder', `Enter new name for ${taskName}`);
     $('#edit-item-modal').modal('show');
   }
+
+  // MODALS---------------------------
+  // Listen for clicks on task names
+  $('div.card-body').click(editTaskModal);
+
+  // Listen for clicks on header of todo list categories
+  $('div.card-header').click(editCatModal);
+
+  $('#add-task').click(function () {
+    $('#add-task-modal').modal('show');
+  });
+
+  $('#add-category').click(function () {
+    $('#add-category-modal').modal('show');
+  });
+
   // END MODALS-----------------------
 });
