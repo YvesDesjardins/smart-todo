@@ -5,17 +5,52 @@
   flex-wrap: nowrap;
   overflow-x: auto;
   margin-top: 1em;
+  height: 75vh;
 
   .card.bg-light {
     width: 30%;
-    margin-right: 5vw;
+    margin: 0 1vw;
+  }
+
+  .card-header:hover {
+    text-decoration: underline;
   }
 
   .card-body {
     display: flex;
-    padding: 1vw;
     justify-content: space-between;
+    align-content: center;
+    align-items: center;
+    flex: 0;
+    flex-shrink: 1;
     background: rgba(0, 0, 0, 0);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+
+    p {
+      margin: 0;
+    }
+
+    .complete-task {
+      height: 30px;
+      width: 30px;
+      background-color: white;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      .checkmark {
+        font-size: 2em;
+        opacity: 0;
+      }
+    }
+
+    .complete-task:hover {
+      .checkmark {
+        opacity: 1;
+        position: relative;
+        top: -7px;
+        -webkit-transition: opacity 500ms ease-in;
+        -ms-transition: opacity 500ms ease-in;
+        transition: opacity 500ms ease-in;
+      }
+    }
   }
 
   div.card-body:hover {
@@ -23,15 +58,16 @@
     -webkit-transition: background-color 500ms linear;
     -ms-transition: background-color 500ms linear;
     transition: background-color 500ms linear;
-  }
 
+  }
+  
+  p.task-name:hover {
+    text-decoration: underline;
+  }
+  
   .side-scroll {
     flex: 0 0 auto;
   }
-}
-
-.form-check {
-  float: right;
 }
 
 nav {

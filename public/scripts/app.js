@@ -1,11 +1,10 @@
-// import { post } from "request";
-
 $(() => {
   // HELPERS--------------------------
   // Build todo task elements
   const buildListTask = (taskObject, listID) => {
     const taskName = taskObject.name;
     const taskID = taskObject.id;
+<<<<<<< HEAD
     let $cardBody = $('<div>').addClass('card-body').attr('id',
         `${taskID}-${taskName}-${listID}-task`)
       .click(editTaskModal)
@@ -15,15 +14,20 @@ $(() => {
         type: "checkbox",
         value: "",
       }));
+=======
+    let $cardBody = $('<div>').addClass('card-body')
+                  .append($('<p>').text(taskName).addClass('task-name').attr('id',`${taskID}-${taskName}-${listID}-task`)
+                  .click(editTaskModal));
+    let $checkBox = $('<div>').addClass('complete-task')
+                  .attr('id',`complete-${taskID}-${listID}`).click(completeTask).append($('<p>').addClass('checkmark').text('✔️'));
+>>>>>>> 811ac3f7b3388b158b757316d4d481995cf7192b
     let $task = $($cardBody).append($($checkBox));
     $(`#list-${listID}`).append($($task));
   }
   // AJAX call to get the todo tasks for a category
   const writeListItems = (categoryID) => {
-    $.ajax({
-      method: "GET",
-      url: `/categories/${categoryID}/tasks`
-    }).done((data) => {
+    $.get(`/categories/${categoryID}/tasks`)
+    .done((data) => {
       for (let task of data) {
         buildListTask(task, categoryID);
       }
@@ -64,10 +68,29 @@ $(() => {
     });
     $('#add-task-modal').modal('hide');
 
+<<<<<<< HEAD
     // post to-do's from yelp api
     const serialized = $(this).serialize();
 
   });
+=======
+  //api call to yelp
+  function yelpApi(toDoInput) {
+  var inputData = {
+    text : toDoInput
+  }
+  $.ajax({
+      method: 'GET',
+      url: '/api/yelp',
+      data: inputData
+    }).then((res) => {
+      console.log('res', res);
+    })
+    .catch((err) => {
+      console.log('error', err);
+    })
+  };
+>>>>>>> 811ac3f7b3388b158b757316d4d481995cf7192b
 
   //api call to yelp
   function yelpApi(toDoInput, callback) {
@@ -91,16 +114,14 @@ $(() => {
   };
 
   // AJAX call to populate the dashboard with the user's lists and items:
-  $.ajax({
-    method: "GET",
-    url: "/categories"
-  }).done((data) => {
+  $.get('/categories').done((data) => {
     for (let list of data) {
       buildList(list);
       writeListItems(list.id);
     }
   });
 
+<<<<<<< HEAD
   // MODALS---------------------------
   // Listen for clicks on task names
   $('div.card-body').click(editTaskModal);
@@ -115,6 +136,30 @@ $(() => {
   $('#add-category').click(function () {
     $('#add-category-modal').modal('show');
   });
+=======
+  // YELP API:
+  function yelpApi() {
+    $.ajax({
+      method: 'GET',
+      url: '/api/yelp'
+    }).then((res) => {
+      console.log('res', res);
+    })
+    .catch((err) =>{
+      console.log('error', err);
+    })
+  };
+
+  // To complete a task:
+  function completeTask() {
+    let taskID = (this.id).split('-')[1];
+    let categoryID = (this.id).split('-')[2];
+    $.post(`/categories/${categoryID}/tasks/${taskID}/edit`, {
+      completed: true,
+      category_id: 2,
+    }, 'json');
+  }
+>>>>>>> 811ac3f7b3388b158b757316d4d481995cf7192b
 
   // To trigger list category name edit modal:
   function editCatModal() {
@@ -144,5 +189,21 @@ $(() => {
     $('#edit-item-modal input').attr('placeholder', `Enter new name for ${taskName}`);
     $('#edit-item-modal').modal('show');
   }
+
+  // MODALS---------------------------
+  // Listen for clicks on task names
+  $('div.card-body').click(editTaskModal);
+
+  // Listen for clicks on header of todo list categories
+  $('div.card-header').click(editCatModal);
+
+  $('#add-task').click(function () {
+    $('#add-task-modal').modal('show');
+  });
+
+  $('#add-category').click(function () {
+    $('#add-category-modal').modal('show');
+  });
+
   // END MODALS-----------------------
 });
