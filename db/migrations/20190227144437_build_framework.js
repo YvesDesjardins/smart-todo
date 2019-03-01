@@ -9,13 +9,19 @@ exports.up = function (knex, Promise) {
       table.increments('id');
       table.string('name');
       table.string('api');
-      table.integer('user_id').references('id').inTable('users');
+      table.integer('user_id')
+        .references('id')
+        .inTable('users')
+        .onDelete('cascade');
     }),
     knex.schema.createTable('tasks', function (table) {
       table.increments('id');
       table.string('name');
       table.boolean('completed');
-      table.integer('category_id').references('id').inTable('categories');
+      table.integer('category_id')
+        .references('id')
+        .inTable('categories')
+        .onDelete('cascade');
     })
   ])
 };

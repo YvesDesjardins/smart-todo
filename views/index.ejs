@@ -8,28 +8,231 @@
     <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
 
-    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
+
   </head>
   <body>
     <% include ./partials/_header %>
+  <div class="scrolling-wrapper-flexbox">
+    <!-- Beginning of lists -->
+    <div class="card bg-light mb-3 side-scroll" style="max-width: 18rem;">
+      <div class="card-header category-id">Category Name</div>
+      <div class="card-body">
+        <p>To-do item 1</p>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        </div>
+      </div>
+      <div class="card-body">
+        <p>To-do item 1</p>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        </div>
+      </div>
+      <div class="card-body">
+        <p>To-do item 1</p>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        </div>
+      </div>
+    </div>
+    <div class="card bg-light mb-3 side-scroll" style="max-width: 18rem;">
+      <div class="card-header category-id">Category Name</div>
+      <div class="card-body">
+        <p>To-do item 1</p>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        </div>
+      </div>
+      <div class="card-body">
+        <p>To-do item 1</p>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        </div>
+      </div>
+      <div class="card-body">
+        <p>To-do item 1</p>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        </div>
+      </div>
+    </div>
+    <div class="card bg-light mb-3 side-scroll" style="max-width: 18rem;">
+      <div class="card-header category-id">Category Name</div>
+      <div class="card-body">
+        <p>To-do item 1</p>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        </div>
+      </div>
+      <div class="card-body">
+        <p>To-do item 1</p>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        </div>
+      </div>
+      <div class="card-body">
+        <p>To-do item 1</p>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        </div>
+      </div>
+    </div>
+    <div class="card bg-light mb-3 side-scroll" style="max-width: 18rem;">
+      <div class="card-header category-id">Category Name</div>
+      <div class="card-body">
+        <p>To-do item 1</p>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        </div>
+      </div>
+      <div class="card-body">
+        <p>To-do item 1</p>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        </div>
+      </div>
+      <div class="card-body">
+        <p>To-do item 1</p>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        </div>
+      </div>
+    </div>
+    <!-- End of scrolling wrapper -->
+  </div>
 
+  <!-- Buttons to demo editing tasks & categories -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="example-edit-task-modal">
+        Demo for editing task
+    </button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="example-edit-category-modal">
+        Demo for editing category
+    </button>
+
+    <!-- Modal for Editing Items -->
+    <div class="modal fade" id="edit-item-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">EditItem from Category</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form action="" method="">
+                  <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="item name (placeholder)">
+                  <select class="form-control">
+                      <option>Category 1 (placeholder)</option>
+                      <option>Category 2 (placeholder)</option>
+                      <option>Category 3 (placeholder)</option>
+                    </select>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger left" data-dismiss="modal">Delete Task</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- End of editing items modal -->
+
+    <!-- Modal for Editing categories -->
+    <div class="modal fade" id="edit-category-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Edit Category</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form action="" method="">
+                  <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="category name (placeholder)">
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-danger left" data-dismiss="modal">Delete Category</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- End of editing items modal -->
+
+    <!-- Modal for add task -->
+    <div class="modal fade" id="add-task-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Add Task</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form action="" method="">
+                  <input type="text" id="create-task-input" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Task name">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" id="save-task" class="btn btn-primary">Save changes</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- End of add task modal -->
+
+    <!-- Modal for add category -->
+    <div class="modal fade" id="add-category-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Add Category</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form action="" method="">
+                  <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Category name">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- End of add task modal -->
+
+<<<<<<< HEAD
   <main class="main-board">
-    <section class="category">
-      <article class="category-name">
+    <article class="category">
       <header>
         <h3 class="category-name">
         CategoryName
         </h3>
       </header>
-      <div class="item-list">
-      <ul>
+      <ul class="item-list">
       <li>items <input type="checkbox"></li>
       <li>items2 <input type="checkbox"></li>
       </ul>
-      </div>
-      </article>
-    </section>
+    </article>
   </main>
+=======
+>>>>>>> 9acb51b3c88fcd5bf7913ff045815e8029d6bbf6
   </body>
 </html>

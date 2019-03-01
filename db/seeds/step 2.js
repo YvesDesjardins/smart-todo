@@ -3,22 +3,36 @@ exports.seed = function (knex, Promise) {
     .then(function () {
       return Promise.all([
         knex('categories').insert({
-          id: 1,
+          id: 999,
           name: 'Uncategorized',
           api: 'uncat',
-          user_id: 1
+          user_id: 1,
         }),
         knex('categories').insert({
-          id: 2,
-          name: 'Movies',
+          id: 888,
+          name: 'Completed',
+          api: 'uncat',
+          user_id: 1,
+        }),
+        knex('categories').insert({
+          name: 'Watch',
           api: 'imdb',
-          user_id: 2
+          user_id: 2,
         }),
         knex('categories').insert({
-          id: 3,
-          name: 'Food',
+          name: 'Eat',
           api: 'yelp',
-          user_id: 3
+          user_id: 3,
+        }),
+        knex('categories').insert({
+          name: 'Buy',
+          api: 'amazon',
+          user_id: 3,
+        }),
+        knex('categories').insert({
+          name: 'Read',
+          api: 'amazon',
+          user_id: 2,
         }),
       ]);
     });
