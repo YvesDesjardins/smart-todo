@@ -9487,7 +9487,7 @@ a.text-dark:hover, a.text-dark:focus {
 
 .scrolling-wrapper-flexbox .card.bg-light {
   width: 30%;
-  margin-right: 2vw;
+  margin: 0 1vw;
 }
 
 .scrolling-wrapper-flexbox .card-body {
