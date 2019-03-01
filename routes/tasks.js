@@ -33,7 +33,7 @@ module.exports = (knex) => {
         knex('tasks')
           .insert({
             name: req.params.task,
-            completed: req.body.completed,
+            completed: false,
             category_id: temp_category_id[0].id
           })
           .then();
@@ -54,7 +54,7 @@ module.exports = (knex) => {
           .update({
             name: req.body.name,
             completed: req.body.completed,
-            category_id: req.params.category,
+            category_id: req.body.category_id,
           });
         res.status(200).redirect('/');
       })
