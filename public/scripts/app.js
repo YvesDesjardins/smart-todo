@@ -1,8 +1,21 @@
 $(() => {
 
-  // Build todo tasks for a category
-  const buildListTask = (taskObject) => {
-    
+  // Build todo task elements
+  const buildListTask = (taskObject, listID) => {
+    const taskName = taskObject.name;
+    console.log("task object", taskObject)
+    console.log("task name", taskName);
+    const taskID = taskObject.id;
+    let $cardBody = $('<div>').addClass('card-body')
+                    .append($('<p>').text(taskName))
+    let $checkBox = $('<div>').addClass('form-check')
+                    .append($('<input>').addClass('form-check-input').attr({
+                      type: "checkbox",
+                      value: "",
+                      id: taskID
+                    }));
+    let $task = $($cardBody).append($($checkBox));
+    $(`#${listID}`).append($($task));
   }
 
   // AJAX call to get the todo tasks for a category
@@ -13,6 +26,10 @@ $(() => {
     }).done((data) => {
       pretty = JSON.stringify(data);
       console.log(pretty);
+      for (let task of data) {
+        console.log("task", task);
+        buildListTask(task, categoryID);
+      }
     })
   }
 
@@ -31,10 +48,7 @@ $(() => {
     method: "GET",
     url: "/categories"
   }).done((data) => {
-    pretty = JSON.stringify(data);
-    console.log(pretty);
     for (let list of data) {
-      console.log("list", list);
       buildList(list);
       getListItems(list.id);
     }
