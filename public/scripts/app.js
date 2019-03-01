@@ -6,7 +6,7 @@ $(() => {
   const getListItems = (categoryID) => {
     $.ajax({
       method: "GET",
-      url: `/${categoryID}/tasks`
+      url: `/categories/${categoryID}/tasks`
     }).done((data) => {
       pretty = JSON.stringify(data);
       console.log(pretty);
@@ -33,6 +33,7 @@ $(() => {
     for (let list of data) {
       console.log("list", list);
       buildList(list);
+      getListItems(list.id);
     }
   });
 
