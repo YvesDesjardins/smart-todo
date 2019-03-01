@@ -62,50 +62,58 @@ app.get('/', (req, res) => {
   });
 });
 
-
-
+//yelp API request
 app.get('/api/yelp', (req, res) => {
-//   console.log("Test");
-// console.log('req', req);
-// console.log('params', req.query.text);
-var todoSearchTerm = req.query.text;
+
+  const todoSearchTerm = req.query.text;
   const apiKey = 'Bearer ' + 'Nq6iLL8agQjx_UJ0s0IF5FwIKSs1FZ8r_XcOz6ChLvXOQUTSH7ZYpLnAGFl03tpPrAFJh0Naguga1lg3xAttXxbbsg7PPT_JI12LK-_NkaWpe1npsWBHel6qQIJ4XHYx';
 
+  //added item limit but not working atm
   const getOptions = {
-    uri: 'https://api.yelp.com/v3/businesses/search?location="Vancouver"&term="' + todoSearchTerm + '"',
+    uri: 'https://api.yelp.com/v3/businesses/search?location="Vancouver"&limit=10&term="' + todoSearchTerm + '"',
     method: 'GET',
     headers: {
       'Authorization': apiKey
     }
   };
 
-  //****USE REQUEST NOT HTTPS */
+  //****USE REQUEST NOT HTTPS ****/
   request(getOptions, (err, response, body) => {
-
+    const parsedRes = JSON.parse(body);
+    const apiCategory = parsedRes.businesses[0].categories[0].alias;
+    const getCat = getCategory(apiCategory) || 'Uncatagorized';
+    console.log(getCat);
     res.json(body);
   })
 });
 
+const keywords = {
+  read: ['read', 'book', 'study', 'learn', 'translate', 'view', 'album', 'booklet',
+    'magazine', 'novel', 'write', 'copy'
+  ],
 
-app.get('/api/yelp', (req, res) => {
+  watch: ['movie', 'cinema', 'film', 'show', 'video', 'watch',
+    'see', 'series', 'netflix'
+  ],
 
-  const apiKey = 'Bearer ' + 'Nq6iLL8agQjx_UJ0s0IF5FwIKSs1FZ8r_XcOz6ChLvXOQUTSH7ZYpLnAGFl03tpPrAFJh0Naguga1lg3xAttXxbbsg7PPT_JI12LK-_NkaWpe1npsWBHel6qQIJ4XHYx';
+  eat: ['restaurants', 'bar', 'pub', 'cafe', 'coffee shop', 'bistro', 'hungry',
+    'eat', 'dinner', 'lunch', 'breakfast', 'brunch', 'snack', 'groceries'
+  ],
 
-  const getOptions = {
-    uri: 'https://api.yelp.com/v3/businesses/search?location="Vancouver"',
-    method: 'GET',
+  buy: ['buy', 'shopping', 'products', 'grocery', 'purchase', 'value', 'browse',
+    'spend', 'brand', 'merchandise'
+  ]
 
-    headers: {
-      'Authorization': apiKey
+};
+
+//chooses category with word from taskEntry
+function getCategory(word) {
+  for (let category in keywords) {
+    if (keywords[category].includes(word)) {
+      return category
     }
-  };
-
-  //****USE REQUEST NOT HTTPS */
-  request(getOptions, (err, response, body) => {
-
-    res.json(body);
-  })
-});
+  }
+}
 
 app.listen(PORT, () => {
   console.log('Example app listening on port ' + PORT);

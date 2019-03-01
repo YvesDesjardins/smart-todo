@@ -6,15 +6,15 @@ $(() => {
   const buildListTask = (taskObject, listID) => {
     const taskName = taskObject.name;
     const taskID = taskObject.id;
-    let $cardBody = $('<div>').addClass('card-body').attr                 ('id',
-                  `${taskID}-${taskName}-${listID}-task`)
-                  .click(editTaskModal)
-                  .append($('<p>').text(taskName))
+    let $cardBody = $('<div>').addClass('card-body').attr('id',
+        `${taskID}-${taskName}-${listID}-task`)
+      .click(editTaskModal)
+      .append($('<p>').text(taskName))
     let $checkBox = $('<div>').addClass('form-check')
-                  .append($('<input>').addClass('form-check-input').attr({
-                    type: "checkbox",
-                    value: "",
-                  }));
+      .append($('<input>').addClass('form-check-input').attr({
+        type: "checkbox",
+        value: "",
+      }));
     let $task = $($cardBody).append($($checkBox));
     $(`#list-${listID}`).append($($task));
   }
@@ -44,28 +44,51 @@ $(() => {
   $("#save-task").on('click', function (event) {
     event.preventDefault();
     const toDoInput = $('#create-task-input').val();
-    yelpApi(toDoInput);
+    yelpApi(toDoInput, (result) => {
+      $.ajax({
+        method: 'POST',
+        url: '/api/yelp',
+        data: serialized
+      }).done((task) => {
+        console.log('&&&', task);
+        knex('categories')
+          .insert({
+            name: req.body.name,
+            api: req.body.api,
+            category_id: temp_category_id[0].id
+          })
+        console.log("****todoinput", toDoInput);
+        return task;
+      })
+
+    });
     $('#add-task-modal').modal('hide');
-  })
+
+    // post to-do's from yelp api
+    const serialized = $(this).serialize();
+
+  });
 
   //api call to yelp
-function yelpApi(toDoInput) {
-
-  var inputData = {
-    text : toDoInput
-  }
-  $.ajax({
-      method: 'GET',
-      url: '/api/yelp',
-      data: inputData
-    }).then((res) => {
-      console.log('res', res);
-    })
-    .catch((err) => {
-      console.log('error', err);
-    })
+  function yelpApi(toDoInput, callback) {
+    console.log("+++++++ yelpAPI insie");
+    var inputData = {
+      text: toDoInput
+    }
+    $.ajax({
+        method: 'GET',
+        url: '/api/yelp',
+        data: inputData
+      }).then((res) => {
+        //categorize to dos
+        const parsedRes = JSON.parse(res);
+        console.log('res', parsedRes.businesses);
+        callback(parsedRes.businesses);
+      })
+      .catch((err) => {
+        console.log('error', err);
+      })
   };
-
 
   // AJAX call to populate the dashboard with the user's lists and items:
   $.ajax({
@@ -77,22 +100,6 @@ function yelpApi(toDoInput) {
       writeListItems(list.id);
     }
   });
-
-  // YELP API:
-  function yelpApi() {
-    $.ajax({
-      method: 'GET',
-      url: '/api/yelp'
-    }).then((res) => {
-      console.log('res', res);
-    })
-    .catch((err) =>{
-      console.log('error', err);
-    })
-  };
-  // console.log('work');
-  // yelpApi();
-
 
   // MODALS---------------------------
   // Listen for clicks on task names
