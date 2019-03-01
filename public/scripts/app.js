@@ -6,13 +6,15 @@ $(() => {
   const buildListTask = (taskObject, listID) => {
     const taskName = taskObject.name;
     const taskID = taskObject.id;
-    let $cardBody = $('<div>').addClass('card-body').attr                 ('id', `task-${taskID}`)
-                    .append($('<p>').text(taskName))
+    let $cardBody = $('<div>').addClass('card-body').attr                 ('id', 
+                  `${taskID}-${taskName}-${listID}-task`)
+                  .click(editTaskModal)
+                  .append($('<p>').text(taskName))
     let $checkBox = $('<div>').addClass('form-check')
-                    .append($('<input>').addClass('form-check-input').attr({
-                      type: "checkbox",
-                      value: "",
-                    }));
+                  .append($('<input>').addClass('form-check-input').attr({
+                    type: "checkbox",
+                    value: "",
+                  }));
     let $task = $($cardBody).append($($checkBox));
     $(`#list-${listID}`).append($($task));
   }
@@ -66,9 +68,8 @@ $(() => {
 
 
   // MODALS---------------------------
-  $('#example-edit-task-modal').click(function () {
-    $('#edit-item-modal').modal('show');
-  });
+  // Listen for clicks on task names
+  $('div.card-body').click(editTaskModal);
 
   // Listen for clicks on header of todo list categories
   $('div.card-header').click(editCatModal);
@@ -85,12 +86,29 @@ $(() => {
   function editCatModal() {
     let categoryID = (this.id).split('-')[0];
     let categoryName = (this.id).split('-')[1];
-    $('#edit-category-modal form').attr({
-      method: 'POST',
+    $('#edit-category-modal form.edit').attr({
       action: `categories/${categoryID}/edit`,
+    });
+    $('#edit-category-modal form.delete').attr({
+      action: `categories/${categoryID}/delete`,
     });
     $('#edit-category-modal input').attr('placeholder', `Enter new name for ${categoryName}`);
     $('#edit-category-modal').modal('show');
+  }
+
+  // To trigger task name edit modal:
+  function editTaskModal() {
+    let taskID = (this.id).split('-')[0];
+    let taskName = (this.id).split('-')[1];
+    let categoryID = (this.id).split('-')[2];
+    $('#edit-item-modal form.edit').attr({
+      action: `categories/${categoryID}/tasks/${taskID}/edit`,
+    });
+    $('#edit-item-modal form.delete').attr({
+      action: `categories/${categoryID}/tasks/${taskID}/delete`,
+    });
+    $('#edit-item-modal input').attr('placeholder', `Enter new name for ${taskName}`);
+    $('#edit-item-modal').modal('show');
   }
   // END MODALS-----------------------
 });
