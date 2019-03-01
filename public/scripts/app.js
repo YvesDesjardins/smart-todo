@@ -6,10 +6,9 @@ $(() => {
   const buildListTask = (taskObject, listID) => {
     const taskName = taskObject.name;
     const taskID = taskObject.id;
-    let $cardBody = $('<div>').addClass('card-body').attr                 ('id',
-                  `${taskID}-${taskName}-${listID}-task`)
-                  .click(editTaskModal)
-                  .append($('<p>').text(taskName))
+    let $cardBody = $('<div>').addClass('card-body')
+                  .append($('<p>').text(taskName).addClass('task-name').attr('id',`${taskID}-${taskName}-${listID}-task`)
+                  .click(editTaskModal));
     let $checkBox = $('<div>').addClass('complete-task')
                   .attr('id',`complete-${taskID}-${listID}`).click(completeTask).append($('<p>').addClass('checkmark').text('✔️'));
     let $task = $($cardBody).append($($checkBox));

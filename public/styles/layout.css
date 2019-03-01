@@ -9533,6 +9533,10 @@ a.text-dark:hover, a.text-dark:focus {
   transition: background-color 500ms linear;
 }
 
+.scrolling-wrapper-flexbox div.card-body:hover p.task-name {
+  text-decoration: underline;
+}
+
 .scrolling-wrapper-flexbox .side-scroll {
   flex: 0 0 auto;
 }
