@@ -35,9 +35,9 @@ module.exports = (knex) => {
             api: req.body.api,
             user_id: temp_user_id[0].id
           })
-          .then();
-
-        res.status(200).redirect('/');
+          .then((results) => {
+            res.status(200).redirect('/');
+          });
       })
       .catch((err) => {
         res.status(401).send('user not logged in');
@@ -55,9 +55,9 @@ module.exports = (knex) => {
             api: req.body.api,
             user_id: req.body.user_id,
           })
-          .then();
-
-        res.status(200).redirect('/');
+          .then((results) => {
+            res.status(200).redirect('/');
+          });
       })
       .catch((err) => {
         res.status(401).send('user not logged in');
@@ -71,9 +71,9 @@ module.exports = (knex) => {
           .where('user_id', temp_user_id[0].id)
           .andWhere('id', req.params.category_id)
           .del()
-          .then();
-
-        res.status(200).redirect('/');
+          .then((results) => {
+            res.status(200).redirect('/');
+          });
       })
       .catch((err) => {
         res.status(401).send('user not logged in');
