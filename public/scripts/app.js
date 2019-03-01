@@ -19,7 +19,7 @@ $(() => {
   }
 
   // AJAX call to get the todo tasks for a category
-  const getListItems = (categoryID) => {
+  const writeListItems = (categoryID) => {
     $.ajax({
       method: "GET",
       url: `/categories/${categoryID}/tasks`
@@ -50,7 +50,7 @@ $(() => {
   }).done((data) => {
     for (let list of data) {
       buildList(list);
-      getListItems(list.id);
+      writeListItems(list.id);
     }
   });
 
