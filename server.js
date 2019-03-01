@@ -50,22 +50,20 @@ app.use('/styles', sass({
 app.use(express.static('public'));
 
 // Mount all resource routes
-app.use('/login', loginRoutes(knex)); // currently hardcoded
+app.use('/login', loginRoutes(knex));
 app.use('/logout', logoutRoutes());
 app.use('/categories', categoriesRoutes(knex));
 app.use('/categories', tasksRoutes(knex));
 
-// Home page
+// Home page, renders index and passes back userID
 app.get('/', (req, res) => {
   res.render('index', {
     email: req.session.userID,
   });
 });
 
-
-
+// yelp api route
 app.get('/api/yelp', (req, res) => {
-
   const apiKey = 'Bearer ' + 'Nq6iLL8agQjx_UJ0s0IF5FwIKSs1FZ8r_XcOz6ChLvXOQUTSH7ZYpLnAGFl03tpPrAFJh0Naguga1lg3xAttXxbbsg7PPT_JI12LK-_NkaWpe1npsWBHel6qQIJ4XHYx';
 
   const getOptions = {
