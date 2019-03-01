@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const getUserID = require('../helpers/getUserID.js');
 const router = express.Router();
 
 module.exports = (knex) => {
