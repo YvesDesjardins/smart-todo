@@ -1,5 +1,3 @@
-// import { post } from "request";
-
 $(() => {
   // HELPERS--------------------------
   // Build todo task elements
@@ -45,8 +43,7 @@ $(() => {
   })
 
   //api call to yelp
-function yelpApi(toDoInput) {
-
+  function yelpApi(toDoInput) {
   var inputData = {
     text : toDoInput
   }
@@ -86,8 +83,6 @@ function yelpApi(toDoInput) {
       console.log('error', err);
     })
   };
-  // console.log('work');
-  // yelpApi();
 
   // To complete a task:
   function completeTask() {
