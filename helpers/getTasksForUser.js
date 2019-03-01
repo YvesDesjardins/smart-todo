@@ -1,4 +1,5 @@
 module.exports = (knex, cat_id, user_id, task_id) => {
+  // returns tasks that match current user, category and task id
   return knex
     .from('tasks')
     .select('tasks.id')
