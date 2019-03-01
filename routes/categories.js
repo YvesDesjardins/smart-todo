@@ -27,8 +27,8 @@ module.exports = (knex) => {
   });
 
   // returns all current tasks for user
-  router.get('/:categories/tasks', (req, res) => {
-    getCategoryID(knex, req.body.category_id)
+  router.get('/:category/tasks', (req, res) => {
+    getCategoryID(knex, req.params.category)
       .then(temp_category_id => {
         knex('tasks')
           .select('*')
@@ -37,6 +37,7 @@ module.exports = (knex) => {
             res.json(results);
           })
           .catch((err) => {
+            console.log(err);
             res.status(401).send('category has no tasks');
           });
       })
