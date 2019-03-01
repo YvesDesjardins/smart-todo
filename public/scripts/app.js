@@ -1,3 +1,5 @@
+// import { post } from "request";
+
 $(() => {
   // HELPERS--------------------------
   // Build todo task elements
@@ -30,7 +32,7 @@ $(() => {
     const listName = listObject.name;
     const listID = listObject.id;
     let $cardContainer = $('<div>').addClass('card bg-light mb-3 side-scroll').attr('id', `list-${listID}`);
-    let $cardHeader = $('<div>').addClass('card-header category-id').text(listName).attr('id', `header-list-${listID}`).click(editCatModal);
+    let $cardHeader = $('<div>').addClass('card-header category-id').text(listName).attr('id', `${listID}-${listName}-header`).click(editCatModal);
     let $listElement = $($cardContainer).prepend($($cardHeader));
     $('#lists-container').append($listElement);
   }
@@ -81,7 +83,13 @@ $(() => {
 
   // To trigger list category name edit modal:
   function editCatModal() {
-    console.log("this is", this)
+    let categoryID = (this.id).split('-')[0];
+    let categoryName = (this.id).split('-')[1];
+    $('#edit-category-modal form').attr({
+      method: 'POST',
+      action: `categories/${categoryID}/edit`,
+    });
+    $('#edit-category-modal input').attr('placeholder', `Enter new name for ${categoryName}`);
     $('#edit-category-modal').modal('show');
   }
   // END MODALS-----------------------
