@@ -6,14 +6,6 @@ exports.seed = function (knex, Promise) {
           email: 'test@google.com',
           password: '12345abcd'
         }),
-        knex('users').insert({
-          email: 'awildlama@amazon.ca',
-          password: '12345abcd'
-        }),
-        knex('users').insert({
-          email: '12345@12345.com',
-          password: '12345abcd'
-        }),
       ]);
     });
 };

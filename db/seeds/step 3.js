@@ -55,62 +55,62 @@ exports.seed = function (knex, Promise) {
         knex('tasks').insert({
           name: 'Work on nothing at all',
           completed: false,
-          category_id: 7,
+          category_id: 1,
         }),
         knex('tasks').insert({
           name: 'Be not dead',
           completed: true,
-          category_id: 8,
+          category_id: 2,
         }),
         knex('tasks').insert({
           name: 'Watch Game of Thrones',
           completed: false,
-          category_id: 9,
+          category_id: 3,
         }),
         knex('tasks').insert({
           name: 'Eat spaghetti',
           completed: false,
-          category_id: 10,
+          category_id: 4,
         }),
         knex('tasks').insert({
           name: 'Buy shirts',
           completed: false,
-          category_id: 11,
+          category_id: 5,
         }),
         knex('tasks').insert({
           name: 'Read Pride and Prejudice',
           completed: false,
-          category_id: 12,
+          category_id: 6,
         }),
         knex('tasks').insert({
           name: 'Zip zop',
           completed: false,
-          category_id: 13,
+          category_id: 1,
         }),
         knex('tasks').insert({
           name: 'Get into lighthouse labs',
           completed: true,
-          category_id: 14,
+          category_id: 2,
         }),
         knex('tasks').insert({
           name: 'Watch Moana',
           completed: false,
-          category_id: 15,
+          category_id: 3,
         }),
         knex('tasks').insert({
           name: 'Eat taco',
           completed: false,
-          category_id: 16,
+          category_id: 4,
         }),
         knex('tasks').insert({
           name: 'Buy groceries',
           completed: false,
-          category_id: 17,
+          category_id: 5,
         }),
         knex('tasks').insert({
           name: 'Read how to program c#',
           completed: false,
-          category_id: 18,
+          category_id: 6,
         }),
       ]);
     });
