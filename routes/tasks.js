@@ -13,8 +13,7 @@ module.exports = (knex) => {
       .then((temp_user_id) => {
         knex('tasks')
           .select('*')
-          .where('category_id', req.params.category_id)
-          .andWhere('user_id', temp_user_id[0].id)
+          .whereIn('id', getTasksForUser(knex, req.params.category_id, temp_user_id[0].id))
           .then((results) => {
             res.json(results);
           })
@@ -49,7 +48,8 @@ module.exports = (knex) => {
     getUserID(knex, req.session.userID)
       .then((temp_user_id) => {
         knex
-          .whereIn('id', getTasksForUser(knex, req.params.category_id, temp_user_id[0].id, req.params.task_id))
+          .whereIn('id', getTasksForUser(knex, req.params.category_id, temp_user_id[0].id))
+          .where('tasks.id', req.params.task_id)
           .from('tasks')
           .update({
             name: req.body.name,
@@ -72,7 +72,8 @@ module.exports = (knex) => {
     getUserID(knex, req.session.userID)
       .then((temp_user_id) => {
         knex('tasks')
-          .whereIn('id', getTasksForUser(knex, req.params.category_id, temp_user_id[0].id, req.params.task_id))
+          .whereIn('id', getTasksForUser(knex, req.params.category_id, temp_user_id[0].id))
+          .where('tasks.id', req.params.task_id)
           .del()
           .then((results) => {
             res.status(200).send();
