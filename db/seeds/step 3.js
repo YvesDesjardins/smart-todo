@@ -18,7 +18,27 @@ exports.seed = function (knex, Promise) {
           category_id: 3,
         }),
         knex('tasks').insert({
+          name: 'Watch Harry Potter',
+          completed: false,
+          category_id: 3,
+        }),
+        knex('tasks').insert({
+          name: 'Watch The Expanse',
+          completed: false,
+          category_id: 3,
+        }),
+        knex('tasks').insert({
           name: 'Eat ramen',
+          completed: false,
+          category_id: 4,
+        }),
+        knex('tasks').insert({
+          name: 'Eat noodles',
+          completed: false,
+          category_id: 4,
+        }),
+        knex('tasks').insert({
+          name: 'Eat rice',
           completed: false,
           category_id: 4,
         }),
