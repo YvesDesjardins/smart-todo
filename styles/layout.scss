@@ -1,7 +1,41 @@
-body {
-  background-color: #EEE;
+@import './node_modules/bootstrap/scss/bootstrap.scss';
 
-  h1 {
-    color: #244751;
+.scrolling-wrapper-flexbox {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  margin-top: 1em;
+
+  .card.bg-light {
+    width: 30%;
+    margin-right: 5vw;
+  }
+
+  .card-body {
+    display: flex;
+    padding: 1vw;
+    justify-content: space-between;
+    background: rgba(0, 0, 0, 0);
+  }
+
+  div.card-body:hover {
+    background: rgba(0, 0, 0, 0.1);
+    -webkit-transition: background-color 500ms linear;
+    -ms-transition: background-color 500ms linear;
+    transition: background-color 500ms linear;
+  }
+
+  .side-scroll {
+    flex: 0 0 auto;
+  }
+}
+
+.form-check {
+  float: right;
+}
+
+nav {
+  .header-button-group {
+    width: 10%;
   }
 }
