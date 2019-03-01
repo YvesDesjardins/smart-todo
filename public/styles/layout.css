@@ -9496,22 +9496,11 @@ a.text-dark:hover, a.text-dark:focus {
   background: transparent;
 }
 
-.scrolling-wrapper-flexbox .hidden {
-  display: none;
-}
-
 .scrolling-wrapper-flexbox div.card-body:hover {
   background: rgba(0, 0, 0, 0.1);
   -webkit-transition: background-color 500ms linear;
   -ms-transition: background-color 500ms linear;
   transition: background-color 500ms linear;
-}
-
-.scrolling-wrapper-flexbox div.card-body:hover p.hidden {
-  display: block;
-  -webkit-transition: display 500ms linear;
-  -ms-transition: display 500ms linear;
-  transition: display 500ms linear;
 }
 
 .scrolling-wrapper-flexbox .side-scroll {
