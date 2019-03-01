@@ -26,9 +26,27 @@
       margin: 0;
     }
 
-    .form-check {
-      height: 100%;
-      transform: scale(1.2,1.2);
+    .complete-task {
+      height: 30px;
+      width: 30px;
+      background-color: white;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+
+      .checkmark {
+        font-size: 2em;
+        opacity: 0;
+      }
+    }
+
+    .complete-task:hover {
+      .checkmark {
+        opacity: 1;
+        position: relative;
+        top: -7px;
+        -webkit-transition: opacity 500ms ease-in;
+        -ms-transition: opacity 500ms ease-in;
+        transition: opacity 500ms ease-in;
+      }
     }
   }
 

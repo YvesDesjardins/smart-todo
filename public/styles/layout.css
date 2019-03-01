@@ -9505,9 +9505,25 @@ a.text-dark:hover, a.text-dark:focus {
   margin: 0;
 }
 
-.scrolling-wrapper-flexbox .card-body .form-check {
-  height: 100%;
-  transform: scale(1.2, 1.2);
+.scrolling-wrapper-flexbox .card-body .complete-task {
+  height: 30px;
+  width: 30px;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.scrolling-wrapper-flexbox .card-body .complete-task .checkmark {
+  font-size: 2em;
+  opacity: 0;
+}
+
+.scrolling-wrapper-flexbox .card-body .complete-task:hover .checkmark {
+  opacity: 1;
+  position: relative;
+  top: -7px;
+  -webkit-transition: opacity 500ms ease-in;
+  -ms-transition: opacity 500ms ease-in;
+  transition: opacity 500ms ease-in;
 }
 
 .scrolling-wrapper-flexbox div.card-body:hover {

@@ -10,11 +10,8 @@ $(() => {
                   `${taskID}-${taskName}-${listID}-task`)
                   .click(editTaskModal)
                   .append($('<p>').text(taskName))
-    let $checkBox = $('<div>').addClass('form-check')
-                  .append($('<input>').addClass('form-check-input').attr({
-                    type: "checkbox",
-                    value: "",
-                  }));
+    let $checkBox = $('<div>').addClass('complete-task')
+                  .attr('id',`complete-task-${taskID}`).append($('<p>').addClass('checkmark').text('✔️'));
     let $task = $($cardBody).append($($checkBox));
     $(`#list-${listID}`).append($($task));
   }
