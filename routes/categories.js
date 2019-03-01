@@ -2,7 +2,6 @@
 
 const express = require('express');
 const getUserID = require('../helpers/getUserID.js');
-const getCategoryID = require('../helpers/getCategoryID.js');
 const router = express.Router();
 
 module.exports = (knex) => {
@@ -26,25 +25,6 @@ module.exports = (knex) => {
       });
   });
 
-  // returns all current tasks for user
-  router.get('/:category/tasks', (req, res) => {
-    getCategoryID(knex, req.params.category)
-      .then(temp_category_id => {
-        knex('tasks')
-          .select('*')
-          .where('category_id', temp_category_id[0].id)
-          .then((results) => {
-            res.json(results);
-          })
-          .catch((err) => {
-            console.log(err);
-            res.status(401).send('category has no tasks');
-          });
-      })
-      .catch((err) => {
-        res.status(401).send('category does not exist');
-      });
-  });
   // create new category
   router.post('/:category', (req, res) => {
     getUserID(knex, req.session.userID).then((temp_user_id) => {
