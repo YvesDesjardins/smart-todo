@@ -1,11 +1,12 @@
 'use strict';
 
 const express = require('express');
+const getUserID = require('../helpers/getUserID.js');
 const router = express.Router();
 
 module.exports = (knex) => {
 
-  // returns all current tasks for user
+  // returns all tasks for user in current category
   router.get('/:category_id/tasks', (req, res) => {
     knex('tasks')
       .select('*')
@@ -31,7 +32,7 @@ module.exports = (knex) => {
 
     res.status(200).redirect('/');
   });
-  // edit existing task name
+  // edit current task
   router.post('/:category_id/tasks/:task_id/edit', (req, res) => {
     knex('tasks')
       .where('category_id', req.params.category_id)
