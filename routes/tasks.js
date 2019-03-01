@@ -7,8 +7,8 @@ const router = express.Router();
 module.exports = (knex) => {
 
   // returns all current tasks for user
-  router.get('/', (req, res) => {
-    getCategoryID(knex, req.body.category_id)
+  router.get('/:category/tasks/tasks', (req, res) => {
+    getCategoryID(knex, req.params.category)
       .then(temp_category_id => {
         knex('tasks')
           .select('*')
@@ -17,7 +17,8 @@ module.exports = (knex) => {
             res.json(results);
           })
           .catch((err) => {
-            res.status(401).send('category does not exist');
+            console.log(err);
+            res.status(401).send('category has no tasks');
           });
       })
       .catch((err) => {
@@ -26,12 +27,13 @@ module.exports = (knex) => {
   });
 
   // create new task
-  router.post('/:task', (req, res) => {
-    getCategoryID(knex, req.body.category_id).then(temp_category_id => {
+  router.post('/:category/tasks/:task', (req, res) => {
+    getCategoryID(knex, req.params.category)
+      .then(temp_category_id => {
         knex('tasks')
           .insert({
             name: req.params.task,
-            completed: req.body.completed,
+            completed: false,
             category_id: temp_category_id[0].id
           })
           .then();
@@ -43,8 +45,9 @@ module.exports = (knex) => {
       });
   });
   // edit existing task name
-  router.post('/:task/edit', (req, res) => {
-    getCategoryID(knex, req.body.category_id).then(temp_category_id => {
+  router.post('/:category/tasks/:task/edit', (req, res) => {
+    getCategoryID(knex, req.params.category)
+      .then(temp_category_id => {
         knex('tasks')
           .where('category_id', temp_category_id[0].id)
           .andWhere('name', req.params.task)
@@ -60,8 +63,9 @@ module.exports = (knex) => {
       });
   });
   // delete current task
-  router.post('/:task/delete', (req, res) => {
-    getCategoryID(knex, req.body.category_id).then(temp_category_id => {
+  router.post('/:category/tasks/:task/delete', (req, res) => {
+    getCategoryID(knex, req.params.category)
+      .then(temp_category_id => {
         knex('tasks')
           .where('category_id', temp_category_id[0].id)
           .andWhere('name', req.params.task)
