@@ -1,6 +1,9 @@
 $(() => {
 
   // Build todo tasks for a category
+  const buildListTask = (taskObject) => {
+    
+  }
 
   // AJAX call to get the todo tasks for a category
   const getListItems = (categoryID) => {
