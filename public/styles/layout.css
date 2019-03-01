@@ -9482,18 +9482,48 @@ a.text-dark:hover, a.text-dark:focus {
   flex-wrap: nowrap;
   overflow-x: auto;
   margin-top: 1em;
+  height: 75vh;
 }
 
 .scrolling-wrapper-flexbox .card.bg-light {
   width: 30%;
-  margin-right: 5vw;
+  margin: 0 1vw;
 }
 
 .scrolling-wrapper-flexbox .card-body {
   display: flex;
-  padding: 1vw;
   justify-content: space-between;
+  align-content: center;
+  align-items: center;
+  flex: 0;
+  flex-shrink: 1;
   background: transparent;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.scrolling-wrapper-flexbox .card-body p {
+  margin: 0;
+}
+
+.scrolling-wrapper-flexbox .card-body .complete-task {
+  height: 30px;
+  width: 30px;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.scrolling-wrapper-flexbox .card-body .complete-task .checkmark {
+  font-size: 2em;
+  opacity: 0;
+}
+
+.scrolling-wrapper-flexbox .card-body .complete-task:hover .checkmark {
+  opacity: 1;
+  position: relative;
+  top: -7px;
+  -webkit-transition: opacity 500ms ease-in;
+  -ms-transition: opacity 500ms ease-in;
+  transition: opacity 500ms ease-in;
 }
 
 .scrolling-wrapper-flexbox div.card-body:hover {
@@ -9503,12 +9533,12 @@ a.text-dark:hover, a.text-dark:focus {
   transition: background-color 500ms linear;
 }
 
-.scrolling-wrapper-flexbox .side-scroll {
-  flex: 0 0 auto;
+.scrolling-wrapper-flexbox div.card-body:hover p.task-name {
+  text-decoration: underline;
 }
 
-.form-check {
-  float: right;
+.scrolling-wrapper-flexbox .side-scroll {
+  flex: 0 0 auto;
 }
 
 nav .header-button-group {
