@@ -4,7 +4,6 @@ const express = require('express');
 const router = express.Router();
 
 module.exports = (knex) => {
-
   // returns all current tasks for user
   router.get('/:category_id/tasks', (req, res) => {
     knex('tasks')

@@ -20,7 +20,7 @@
   </head>
   <body>
     <% include ./partials/_header %>
-  <div class="scrolling-wrapper-flexbox">
+  <div class="scrolling-wrapper-flexbox" id="lists-container">
     <!-- Beginning of lists -->
     <div class="card bg-light mb-3 side-scroll" style="max-width: 18rem;">
       <div class="card-header category-id">Category Name</div>
@@ -109,26 +109,18 @@
     <!-- End of scrolling wrapper -->
   </div>
 
-  <!-- Buttons to demo editing tasks & categories -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="example-edit-task-modal">
-        Demo for editing task
-    </button>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="example-edit-category-modal">
-        Demo for editing category
-    </button>
-
     <!-- Modal for Editing Items -->
     <div class="modal fade" id="edit-item-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">EditItem from Category</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Edit Task</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <form action="" method="">
+              <form action="" method="POST" class="edit">
                   <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="item name (placeholder)">
                   <select class="form-control">
                       <option>Category 1 (placeholder)</option>
@@ -137,7 +129,9 @@
                     </select>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-danger left" data-dismiss="modal">Delete Task</button>
+                <form action="" method="POST" class="delete">
+                  <button type="button" class="btn btn-danger left" data-dismiss="modal">Delete Task</button>
+                </form>
                 <button type="button" class="btn btn-primary">Save changes</button>
               </form>
             </div>
@@ -151,20 +145,22 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Edit Category</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Edit List Name</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
-              <form action="" method="">
+            <form action="" method="" class="edit">
+              <div class="modal-body">
                   <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="category name (placeholder)">
               </div>
               <div class="modal-footer">
-                  <button type="button" class="btn btn-danger left" data-dismiss="modal">Delete Category</button>
+                <form action="" method="POST" class="delete">
+                  <button type="submit" class="btn btn-danger left" data-dismiss="modal">Delete Category</button>
+                </form>
                 <button type="button" class="btn btn-primary">Save changes</button>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -217,22 +213,5 @@
         </div>
       </div>
     <!-- End of add task modal -->
-
-<<<<<<< HEAD
-  <main class="main-board">
-    <article class="category">
-      <header>
-        <h3 class="category-name">
-        CategoryName
-        </h3>
-      </header>
-      <ul class="item-list">
-      <li>items <input type="checkbox"></li>
-      <li>items2 <input type="checkbox"></li>
-      </ul>
-    </article>
-  </main>
-=======
->>>>>>> 9acb51b3c88fcd5bf7913ff045815e8029d6bbf6
   </body>
 </html>
