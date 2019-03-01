@@ -27,7 +27,8 @@ module.exports = (knex) => {
 
   // create new category
   router.post('/:category', (req, res) => {
-    getUserID(knex, req.session.userID).then((temp_user_id) => {
+    getUserID(knex, req.session.userID)
+      .then((temp_user_id) => {
         knex('categories')
           .insert({
             name: req.params.category,
@@ -44,7 +45,8 @@ module.exports = (knex) => {
   });
   // edit existing category name
   router.post('/:category/edit', (req, res) => {
-    getUserID(knex, req.session.userID).then((temp_user_id) => {
+    getUserID(knex, req.session.userID)
+      .then((temp_user_id) => {
         knex('categories')
           .where('user_id', temp_user_id[0].id)
           .andWhere('name', req.params.category)
@@ -62,7 +64,8 @@ module.exports = (knex) => {
   });
   // delete current category
   router.post('/:category/delete', (req, res) => {
-    getUserID(knex, req.session.userID).then((temp_user_id) => {
+    getUserID(knex, req.session.userID)
+      .then((temp_user_id) => {
         knex('categories')
           .where('user_id', temp_user_id[0].id)
           .andWhere('name', req.params.category)

@@ -28,7 +28,8 @@ module.exports = (knex) => {
 
   // create new task
   router.post('/:category/tasks/:task', (req, res) => {
-    getCategoryID(knex, req.params.category).then(temp_category_id => {
+    getCategoryID(knex, req.params.category)
+      .then(temp_category_id => {
         knex('tasks')
           .insert({
             name: req.params.task,
@@ -45,7 +46,8 @@ module.exports = (knex) => {
   });
   // edit existing task name
   router.post('/:category/tasks/:task/edit', (req, res) => {
-    getCategoryID(knex, req.params.category).then(temp_category_id => {
+    getCategoryID(knex, req.params.category)
+      .then(temp_category_id => {
         knex('tasks')
           .where('category_id', temp_category_id[0].id)
           .andWhere('name', req.params.task)
@@ -62,7 +64,8 @@ module.exports = (knex) => {
   });
   // delete current task
   router.post('/:category/tasks/:task/delete', (req, res) => {
-    getCategoryID(knex, req.params.category).then(temp_category_id => {
+    getCategoryID(knex, req.params.category)
+      .then(temp_category_id => {
         knex('tasks')
           .where('category_id', temp_category_id[0].id)
           .andWhere('name', req.params.task)
