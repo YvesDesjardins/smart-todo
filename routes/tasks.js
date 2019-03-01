@@ -6,10 +6,10 @@ const router = express.Router();
 module.exports = (knex) => {
 
   // returns all current tasks for user
-  router.get('/:category/tasks', (req, res) => {
+  router.get('/:category_id/tasks', (req, res) => {
     knex('tasks')
       .select('*')
-      .where('category_id', temp_category_id[0].id)
+      .where('category_id', req.params.category_id)
       .then((results) => {
         res.json(results);
       })
@@ -20,36 +20,39 @@ module.exports = (knex) => {
   });
 
   // create new task
-  router.post('/:category/tasks/:task', (req, res) => {
+  router.post('/:category_id/tasks/:task_id', (req, res) => {
     knex('tasks')
       .insert({
-        name: req.params.task,
+        name: req.params.task_id,
         completed: false,
-        category_id: temp_category_id[0].id
+        category_id: req.params.category_id
       })
       .then();
 
     res.status(200).redirect('/');
   });
   // edit existing task name
-  router.post('/:category/tasks/:task/edit', (req, res) => {
+  router.post('/:category_id/tasks/:task_id/edit', (req, res) => {
     knex('tasks')
-      .where('category_id', temp_category_id[0].id)
-      .andWhere('name', req.params.task)
+      .where('category_id', req.params.category_id)
+      .andWhere('name', req.params.task_id)
       .update({
         name: req.body.name,
         completed: req.body.completed,
         category_id: req.body.category_id,
-      });
+      })
+      .then();
+
     res.status(200).redirect('/');
   });
   // delete current task
-  router.post('/:category/tasks/:task/delete', (req, res) => {
+  router.post('/:category_id/tasks/:task_id/delete', (req, res) => {
     knex('tasks')
-      .where('category_id', temp_category_id[0].id)
-      .andWhere('name', req.params.task)
+      .where('category_id', req.params.category_id)
+      .andWhere('name', req.params.task_id)
       .del()
       .then()
+
     res.status(200).redirect('/');
   });
 
