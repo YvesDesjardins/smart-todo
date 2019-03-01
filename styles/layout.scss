@@ -12,6 +12,10 @@
     margin: 0 1vw;
   }
 
+  .card-header:hover {
+    text-decoration: underline;
+  }
+
   .card-body {
     display: flex;
     justify-content: space-between;
@@ -55,11 +59,12 @@
     -ms-transition: background-color 500ms linear;
     transition: background-color 500ms linear;
 
-    p.task-name {
-      text-decoration: underline;
-    }
   }
-
+  
+  p.task-name:hover {
+    text-decoration: underline;
+  }
+  
   .side-scroll {
     flex: 0 0 auto;
   }
