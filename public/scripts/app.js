@@ -1,47 +1,40 @@
 $(() => {
-
+  // HELPERS--------------------------
   // Build todo task elements
   const buildListTask = (taskObject, listID) => {
     const taskName = taskObject.name;
-    console.log("task object", taskObject)
-    console.log("task name", taskName);
     const taskID = taskObject.id;
-    let $cardBody = $('<div>').addClass('card-body')
+    let $cardBody = $('<div>').addClass('card-body').attr                 ('id', `task-${taskID}`)
                     .append($('<p>').text(taskName))
     let $checkBox = $('<div>').addClass('form-check')
                     .append($('<input>').addClass('form-check-input').attr({
                       type: "checkbox",
                       value: "",
-                      id: taskID
                     }));
     let $task = $($cardBody).append($($checkBox));
-    $(`#${listID}`).append($($task));
+    $(`#list-${listID}`).append($($task));
   }
-
   // AJAX call to get the todo tasks for a category
   const writeListItems = (categoryID) => {
     $.ajax({
       method: "GET",
       url: `/categories/${categoryID}/tasks`
     }).done((data) => {
-      pretty = JSON.stringify(data);
-      console.log(pretty);
       for (let task of data) {
-        console.log("task", task);
         buildListTask(task, categoryID);
       }
     })
   }
-
   // Build list for a category (doesn't include items)
   const buildList = (listObject) => {
     const listName = listObject.name;
     const listID = listObject.id;
-    let $cardContainer = $('<div>').addClass('card bg-light mb-3 side-scroll').attr('id', listID);
-    let $cardHeader = $('<div>').addClass('card-header category-id').text(listName);
+    let $cardContainer = $('<div>').addClass('card bg-light mb-3 side-scroll').attr('id', `list-${listID}`);
+    let $cardHeader = $('<div>').addClass('card-header category-id').text(listName).attr('id', `header-list-${listID}`).click(editCatModal);
     let $listElement = $($cardContainer).prepend($($cardHeader));
     $('#lists-container').append($listElement);
   }
+  // END HELPERS----------------------
 
   // AJAX call to populate the dashboard with the user's lists and items:
   $.ajax({
@@ -75,9 +68,8 @@ $(() => {
     $('#edit-item-modal').modal('show');
   });
 
-  $('#example-edit-category-modal').click(function () {
-    $('#edit-category-modal').modal('show');
-  });
+  // Listen for clicks on header of todo list categories
+  $('div.card-header').click(editCatModal);
 
   $('#add-task').click(function () {
     $('#add-task-modal').modal('show');
@@ -86,6 +78,12 @@ $(() => {
   $('#add-category').click(function () {
     $('#add-category-modal').modal('show');
   });
+
+  // To trigger list category name edit modal:
+  function editCatModal() {
+    console.log("this is", this)
+    $('#edit-category-modal').modal('show');
+  }
   // END MODALS-----------------------
 });
 
