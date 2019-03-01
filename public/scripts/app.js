@@ -43,9 +43,25 @@ $(() => {
   // Create a new category
   $('#new-category-form').on('submit', function (event) {
     event.preventDefault();
-    let formName = $(this).serialize();
-    $.post('/categories/new', formName)
+    let catName = $(this).serialize();
+    $.post('/categories/new', catName)
     .then($('#add-category-modal').modal('hide'));
+  });
+
+  // Edit category name
+  $('#edit-category-form').on('submit', function (event) {
+    event.preventDefault();
+    let catName = $(this).serialize();
+    let catID = $(this).attr('data-id');
+    $.post(`/categories/${catID}/edit`, catName)
+    .then($('#edit-category-modal').modal('hide'));
+  });
+
+  // Delete category
+  $('#delete-category-form').on('click', function (event) {
+    let catID = $(this).attr('data-id');
+    $.post(`/categories/${catID}/delete`)
+    .then($('#edit-category-modal').modal('hide'));
   });
   
   //api call to yelp
@@ -101,11 +117,11 @@ $(() => {
   function editCatModal() {
     let categoryID = (this.id).split('-')[0];
     let categoryName = (this.id).split('-')[1];
-    $('#edit-category-modal form.edit').attr({
-      action: `categories/${categoryID}/edit`,
+    $('#edit-category-modal form').attr({
+      "data-id": categoryID,
     });
-    $('#edit-category-modal form.delete').attr({
-      action: `categories/${categoryID}/delete`,
+    $('#delete-category-form').attr({
+      "data-id": categoryID,
     });
     $('#edit-category-modal input').attr('placeholder', `Enter new name for ${categoryName}`);
     $('#edit-category-modal').modal('show');
