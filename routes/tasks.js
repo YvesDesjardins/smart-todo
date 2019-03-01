@@ -20,7 +20,7 @@ module.exports = (knex) => {
   });
 
   // create new task
-  router.post('/:category_id/tasks/:task_id', (req, res) => {
+  router.post('/:category_id/tasks/new', (req, res) => {
     knex('tasks')
       .insert({
         name: req.params.task_id,

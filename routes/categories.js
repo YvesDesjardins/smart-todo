@@ -26,12 +26,12 @@ module.exports = (knex) => {
   });
 
   // create new category
-  router.post('/:category_id', (req, res) => {
+  router.post('/new', (req, res) => {
     getUserID(knex, req.session.userID)
       .then((temp_user_id) => {
         knex('categories')
           .insert({
-            name: req.params.category_id,
+            name: req.body.name,
             api: req.body.api,
             user_id: temp_user_id[0].id
           })
@@ -49,7 +49,7 @@ module.exports = (knex) => {
       .then((temp_user_id) => {
         knex('categories')
           .where('user_id', temp_user_id[0].id)
-          .andWhere('name', req.params.category_id)
+          .andWhere('id', req.params.category_id)
           .update({
             name: req.body.name,
             api: req.body.api,
@@ -69,7 +69,7 @@ module.exports = (knex) => {
       .then((temp_user_id) => {
         knex('categories')
           .where('user_id', temp_user_id[0].id)
-          .andWhere('name', req.params.category_id)
+          .andWhere('id', req.params.category_id)
           .del()
           .then();
 
