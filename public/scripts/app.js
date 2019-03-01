@@ -6,7 +6,7 @@ $(() => {
   const buildListTask = (taskObject, listID) => {
     const taskName = taskObject.name;
     const taskID = taskObject.id;
-    let $cardBody = $('<div>').addClass('card-body').attr                 ('id', 
+    let $cardBody = $('<div>').addClass('card-body').attr                 ('id',
                   `${taskID}-${taskName}-${listID}-task`)
                   .click(editTaskModal)
                   .append($('<p>').text(taskName))
@@ -39,6 +39,33 @@ $(() => {
     $('#lists-container').append($listElement);
   }
   // END HELPERS----------------------
+
+  //event handler for create new task
+  $("#save-task").on('click', function (event) {
+    event.preventDefault();
+    const toDoInput = $('#create-task-input').val();
+    yelpApi(toDoInput);
+    $('#add-task-modal').modal('hide');
+  })
+
+  //api call to yelp
+function yelpApi(toDoInput) {
+
+  var inputData = {
+    text : toDoInput
+  }
+  $.ajax({
+      method: 'GET',
+      url: '/api/yelp',
+      data: inputData
+    }).then((res) => {
+      console.log('res', res);
+    })
+    .catch((err) => {
+      console.log('error', err);
+    })
+  };
+
 
   // AJAX call to populate the dashboard with the user's lists and items:
   $.ajax({
@@ -112,5 +139,3 @@ $(() => {
   }
   // END MODALS-----------------------
 });
-
-

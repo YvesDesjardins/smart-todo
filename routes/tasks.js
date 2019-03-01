@@ -52,7 +52,7 @@ module.exports = (knex) => {
           .whereIn('id', getTasksForUser(knex, req.params.category_id, temp_user_id[0].id, req.params.task_id))
           .from('tasks')
           .update({
-            name: 'req.body.name',
+            name: req.body.name,
             completed: req.body.completed,
             category_id: req.body.category_id,
           })
