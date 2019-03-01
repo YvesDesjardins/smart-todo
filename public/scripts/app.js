@@ -40,6 +40,14 @@ $(() => {
     $('#add-task-modal').modal('hide');
   })
 
+  // Create a new category
+  $('#new-category-form').on('submit', function (event) {
+    event.preventDefault();
+    let formName = $(this).serialize();
+    $.post('/categories/new', formName)
+    .then($('#add-category-modal').modal('hide'));
+  });
+  
   //api call to yelp
   function yelpApi(toDoInput) {
   var inputData = {
