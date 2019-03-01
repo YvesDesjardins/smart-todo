@@ -6,7 +6,7 @@ const router = express.Router();
 
 module.exports = (knex) => {
 
-  // returns all current categories for user
+  // returns all categories for user
   router.get('/', (req, res) => {
     getUserID(knex, req.session.userID)
       .then((temp_user_id) => {
@@ -43,7 +43,7 @@ module.exports = (knex) => {
         res.status(401).send('user not logged in');
       });
   });
-  // edit existing category name
+  // edit current category
   router.post('/:category_id/edit', (req, res) => {
     getUserID(knex, req.session.userID)
       .then((temp_user_id) => {
