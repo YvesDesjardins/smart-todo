@@ -1,4 +1,16 @@
 $(() => {
+
+  refreshContent = () => {
+    $('#lists-container').empty();
+    renderContent();
+  }
+  
+  renderContent();
+
+  hideModalAndClear = (modalID, formID) => {
+    $(modalID).modal('hide');
+    $(formID).trigger('reset');
+  }
   // HELPERS--------------------------
   // Build todo task elements
   const buildListTask = (taskObject, listID) => {
@@ -30,6 +42,10 @@ $(() => {
     let $listElement = $($cardContainer).prepend($($cardHeader));
     $('#lists-container').append($listElement);
   }
+
+  const addCategoryToTaskEditModal = (catName, catID) => {
+    $('#edit-task-form select').append($('<option>').text(catName).val(Number(catID)));
+  }
   // END HELPERS----------------------
 
   //event handler for create new task
@@ -37,9 +53,62 @@ $(() => {
     event.preventDefault();
     const toDoInput = $('#create-task-input').val();
     yelpApi(toDoInput);
-    $('#add-task-modal').modal('hide');
+    hideModalAndClear('#add-task-modal', '#add-task-form');
   })
 
+  // Create a new category
+  $('#new-category-form').on('submit', function (event) {
+    event.preventDefault();
+    let catName = $(this).serialize();
+    $.post('/categories/new', catName)
+    .then(hideModalAndClear('#add-category-modal', '#new-category-form'))
+    .then(refreshContent());
+  });
+
+  // Edit category name
+  $('#edit-category-form').on('submit', function (event) {
+    event.preventDefault();
+    let catName = $(this).serialize();
+    let catID = $(this).attr('data-id');
+    $.post(`/categories/${catID}/edit`, catName)
+    .then(hideModalAndClear('#edit-category-modal', '#edit-category-form'))
+    .then(refreshContent());
+  });
+
+  // Delete category
+  $('#delete-category-form').on('click', function (event) {
+    let catID = $(this).attr('data-id');
+    $.post(`/categories/${catID}/delete`)
+    .then(hideModalAndClear('#edit-category-modal', '#edit-category-form'))
+    .then(refreshContent());
+  });
+
+  // Edit task name
+  $('#edit-task-form').on('submit', function (event) {
+    event.preventDefault();
+    let data = $(this).serialize();
+    let taskID = $(this).attr('data-task-id');
+    let taskName = $(this).attr('data-task-name');
+    let catID = $(this).attr('data-cat-id');
+    if ($('#edit-task-name').val() === "") {
+      // fix this if there's time
+      $('#edit-task-name').val(taskName);
+    }
+    $('#default-category-option').val(catID);
+    $.post(`/categories/${catID}/tasks/${taskID}/edit`, data)
+    .then(hideModalAndClear('#edit-item-modal', '#edit-task-form'))
+    .then(refreshContent());;
+  });
+
+  // Delete task
+  $('#delete-task-form').on('click', function (event) {
+    let taskID = $(this).attr('data-task-id');
+    let catID = $(this).attr('data-cat-id');
+    $.post(`/categories/${catID}/tasks/${taskID}/delete`)
+    .then(hideModalAndClear('#edit-item-modal', '#edit-task-form'))
+    .then(refreshContent());;
+  });
+  
   //api call to yelp
   function yelpApi(toDoInput) {
   var inputData = {
@@ -59,12 +128,15 @@ $(() => {
 
 
   // AJAX call to populate the dashboard with the user's lists and items:
-  $.get('/categories').done((data) => {
+  function renderContent() {
+    $.get('/categories').done((data) => {
     for (let list of data) {
+      addCategoryToTaskEditModal(list.name, list.id);
       buildList(list);
       writeListItems(list.id);
     }
   });
+  }
 
   // YELP API:
   function yelpApi() {
@@ -86,20 +158,20 @@ $(() => {
     $.post(`/categories/${categoryID}/tasks/${taskID}/edit`, {
       completed: true,
       category_id: 2,
-    }, 'json');
+    }, 'json').then(refreshContent());
   }
 
   // To trigger list category name edit modal:
   function editCatModal() {
     let categoryID = (this.id).split('-')[0];
     let categoryName = (this.id).split('-')[1];
-    $('#edit-category-modal form.edit').attr({
-      action: `categories/${categoryID}/edit`,
+    $('#edit-category-modal form').attr({
+      "data-id": categoryID,
     });
-    $('#edit-category-modal form.delete').attr({
-      action: `categories/${categoryID}/delete`,
+    $('#delete-category-form').attr({
+      "data-id": categoryID,
     });
-    $('#edit-category-modal input').attr('placeholder', `Enter new name for ${categoryName}`);
+    $('#edit-category-modal input').attr('placeholder', `Enter new name for ${categoryName}`).val(categoryName);
     $('#edit-category-modal').modal('show');
   }
 
@@ -108,11 +180,14 @@ $(() => {
     let taskID = (this.id).split('-')[0];
     let taskName = (this.id).split('-')[1];
     let categoryID = (this.id).split('-')[2];
-    $('#edit-item-modal form.edit').attr({
-      action: `categories/${categoryID}/tasks/${taskID}/edit`,
+    $('#edit-task-form').attr({
+      "data-task-id": taskID,
+      "data-cat-id": categoryID,
+      "data-task-name": taskName,
     });
-    $('#edit-item-modal form.delete').attr({
-      action: `categories/${categoryID}/tasks/${taskID}/delete`,
+    $('#delete-task-form').attr({
+      "data-task-id": taskID,
+      "data-cat-id": categoryID,
     });
     $('#edit-item-modal input').attr('placeholder', `Enter new name for ${taskName}`);
     $('#edit-item-modal').modal('show');

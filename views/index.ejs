@@ -34,22 +34,18 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
-              <form action="" method="POST" class="edit">
-                  <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="item name (placeholder)">
-                  <select class="form-control">
-                      <option>Category 1 (placeholder)</option>
-                      <option>Category 2 (placeholder)</option>
-                      <option>Category 3 (placeholder)</option>
-                    </select>
+            <form action="" method="POST" class="edit" id="edit-task-form">
+              <div class="modal-body">
+                  <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="item name (placeholder)" name="name" id="edit-task-name">
+                  <select class="form-control" name="category_id">
+                    <option id="default-category-option">Choose a new category</option>
+                  </select>
               </div>
               <div class="modal-footer">
-                <form action="" method="POST" class="delete">
-                  <button type="button" class="btn btn-danger left" data-dismiss="modal">Delete Task</button>
-                </form>
-                <button type="button" class="btn btn-primary">Save changes</button>
-              </form>
-            </div>
+                  <button type="button" class="btn btn-danger left" data-dismiss="modal" id="delete-task-form">Delete Task</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -65,21 +61,19 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form action="" method="" class="edit">
+            <form action="" method="" class="edit" id="edit-category-form">
               <div class="modal-body">
-                  <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="category name (placeholder)">
+                  <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="category name (placeholder)" name="name">
               </div>
               <div class="modal-footer">
-                <form action="" method="POST" class="delete">
-                  <button type="submit" class="btn btn-danger left" data-dismiss="modal">Delete Category</button>
-                </form>
-                <button type="button" class="btn btn-primary">Save changes</button>
-              </div>
+                <button type="button" class="btn btn-danger left" id="delete-category-form" data-dismiss="modal">Delete Category</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
             </form>
+            </div>
           </div>
         </div>
       </div>
-    <!-- End of editing items modal -->
+    <!-- End of editing categories modal -->
 
     <!-- Modal for add task -->
     <div class="modal fade" id="add-task-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -92,7 +86,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <form action="" method="">
+              <form action="" method="" id="add-task-form">
                   <input type="text" id="create-task-input" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Task name">
               </div>
               <div class="modal-footer">
@@ -115,13 +109,13 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
-              <form action="" method="">
-                  <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Category name">
+            <form action="/categories/new" method="POST" id="new-category-form">
+              <div class="modal-body">
+                <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Category name" id="new-category-name" name="name">
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
               </form>
             </div>
           </div>
