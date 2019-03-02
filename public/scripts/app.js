@@ -48,13 +48,28 @@ $(() => {
   }
   // END HELPERS----------------------
 
+  // Search Wikipedia API
+  const searchWikipedia = (term) => {
+    $.getJSON(`https://en.wikipedia.org/w/api.php?action=query&format=json&gsrlimit=15&generator=search&origin=*&gsrsearch=${term}`)
+    .done((data) => {
+      let pages = data.query.pages
+      console.log('pages', pages)
+      for (let page in pages) {
+        console.log('page', page);
+        // topPageID = page; 
+        break;
+      }
+    })
+  }
+
+
   //event handler for create new task
   $("#save-task").on('click', function (event) {
     event.preventDefault();
     const toDoInput = $('#create-task-input').val();
-    yelpApi(toDoInput);
     hideModalAndClear('#add-task-modal', '#add-task-form');
-  })
+    searchWikipedia(toDoInput);
+  });
 
   // Create a new category
   $('#new-category-form').on('submit', function (event) {
@@ -150,6 +165,8 @@ $(() => {
       console.log('error', err);
     })
   };
+
+
 
   // To complete a task:
   function completeTask() {
