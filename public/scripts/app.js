@@ -1,4 +1,11 @@
 $(() => {
+
+  refreshContent = () => {
+    $('#lists-container').empty();
+    renderContent();
+  }
+  
+  renderContent();
   // HELPERS--------------------------
   // Build todo task elements
   const buildListTask = (taskObject, listID) => {
@@ -49,7 +56,8 @@ $(() => {
     event.preventDefault();
     let catName = $(this).serialize();
     $.post('/categories/new', catName)
-    .then($('#add-category-modal').modal('hide'));
+    .then($('#add-category-modal').modal('hide'))
+    .then(refreshContent());
   });
 
   // Edit category name
@@ -58,14 +66,16 @@ $(() => {
     let catName = $(this).serialize();
     let catID = $(this).attr('data-id');
     $.post(`/categories/${catID}/edit`, catName)
-    .then($('#edit-category-modal').modal('hide'));
+    .then($('#edit-category-modal').modal('hide'))
+    .then(refreshContent());
   });
 
   // Delete category
   $('#delete-category-form').on('click', function (event) {
     let catID = $(this).attr('data-id');
     $.post(`/categories/${catID}/delete`)
-    .then($('#edit-category-modal').modal('hide'));
+    .then($('#edit-category-modal').modal('hide'))
+    .then(refreshContent());
   });
 
   // Edit task name
@@ -76,7 +86,8 @@ $(() => {
     let catID = $(this).attr('data-cat-id');
     console.log( `IDs are ${taskID} and ${catID}`)
     $.post(`/categories/${catID}/tasks/${taskID}/edit`, data)
-    .then($('#edit-item-modal').modal('hide'));
+    .then($('#edit-item-modal').modal('hide'))
+    .then(refreshContent());;
   });
 
   // Delete task
@@ -84,7 +95,8 @@ $(() => {
     let taskID = $(this).attr('data-task-id');
     let catID = $(this).attr('data-cat-id');
     $.post(`/categories/${catID}/tasks/${taskID}/delete`)
-    .then($('#edit-item-modal').modal('hide'));
+    .then($('#edit-item-modal').modal('hide'))
+    .then(refreshContent());;
   });
   
   //api call to yelp
@@ -106,13 +118,15 @@ $(() => {
 
 
   // AJAX call to populate the dashboard with the user's lists and items:
-  $.get('/categories').done((data) => {
+  function renderContent() {
+    $.get('/categories').done((data) => {
     for (let list of data) {
       addCategoryToTaskEditModal(list.name, list.id);
       buildList(list);
       writeListItems(list.id);
     }
   });
+  }
 
   // YELP API:
   function yelpApi() {
@@ -134,7 +148,7 @@ $(() => {
     $.post(`/categories/${categoryID}/tasks/${taskID}/edit`, {
       completed: true,
       category_id: 2,
-    }, 'json');
+    }, 'json').then(refreshContent());
   }
 
   // To trigger list category name edit modal:
