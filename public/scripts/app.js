@@ -48,17 +48,81 @@ $(() => {
   }
   // END HELPERS----------------------
 
+  const checkForKeywords = (title) => {
+    const keywords = {
+      read: ['read', 'book', 'study', 'learn', 'translate', 'view', 'album', 'booklet', 'magazine', 'novel', 'write', 'copy'],
+    
+      watch: ['movie', 'cinema', 'film', 'show', 'video', 'watch',
+      'see', 'series', 'netflix', 'TV', 'television', 'season', 'episode', 'episodes'],
+    
+      eat: ['restaurants', 'bar', 'pub', 'cafe', 'coffee shop', 'bistro', 'hungry', 'eat', 'dinner', 'lunch', 'breakfast', 'brunch', 'snack', 'groceries', 'food'],
+    
+      buy: ['buy', 'shopping', 'products', 'purchase', 'value', 'browse',
+      'spend', 'brand', 'merchandise', 'clothing']
+    };
+
+    let matchedCat = '';
+    for (let category in keywords) {
+      for (let word of keywords[category]) {
+        if(title.toLowerCase().includes(word)) {
+          matchedCat = category;
+          return matchedCat;
+        }
+      }
+    }
+    // Returns nothing (undefined) if it doesn't match one
+  };
+
+  const genCategoriesList = (term, pages, cb) => {
+    let matchingCategories = [];
+    for (let page in pages) {
+      let title = pages[page].title;
+      console.log(title);
+      // Check if there's a wikipedia page with the query in the title
+      if ((title.toLowerCase()).includes(term.toLowerCase())) {
+        let newCat = checkForKeywords(title);
+        if (newCat) {
+          if (!matchingCategories.includes(newCat)) {
+            matchingCategories.push(checkForKeywords(title));
+          }
+        }
+      } else {
+        // Couldn't match an article title from wikipedia
+      }
+    }
+    // If there's only 1 matching category, return that
+    if (matchingCategories.length === 1) {
+      return matchingCategories[0]
+    } else {
+      return cb(matchingCategories);
+    }
+  }
+
+  // If there's more than one matching category, find the one that's most common
+  const getBestCatMatch = (arr) => {
+    let mostCommon;
+    let mostOccurrences = 0;
+    arr.forEach(function(x) {
+      let occurrences = 1;
+      arr.forEach(function (y) {
+        if (x === y) {
+          occurrences ++;
+          return occurrences;
+        }
+      });
+      if (occurrences > mostOccurrences) {
+        mostCommon = x;
+        mostOccurrences = occurrences;
+      }
+    });
+    return mostCommon;
+  }
+
   // Search Wikipedia API
   const searchWikipedia = (term) => {
     $.getJSON(`https://en.wikipedia.org/w/api.php?action=query&format=json&gsrlimit=15&generator=search&origin=*&gsrsearch=${term}`)
     .done((data) => {
-      let pages = data.query.pages
-      console.log('pages', pages)
-      for (let page in pages) {
-        console.log('page', page);
-        // topPageID = page; 
-        break;
-      }
+      console.log(genCategoriesList(term, data.query.pages, getBestCatMatch));
     })
   }
 
@@ -68,7 +132,13 @@ $(() => {
     event.preventDefault();
     const toDoInput = $('#create-task-input').val();
     hideModalAndClear('#add-task-modal', '#add-task-form');
-    searchWikipedia(toDoInput);
+    // Check if there are any trigger words in the original query
+    if (checkForKeywords(toDoInput)) {
+      console.log(`Didn't run API, got category: ${checkForKeywords(toDoInput)}`)
+    } else {
+      // If there aren't trigger words, use the Wiki API
+      searchWikipedia(toDoInput);
+    }
   });
 
   // Create a new category
