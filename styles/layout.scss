@@ -80,5 +80,10 @@
 nav {
   .header-button-group {
     width: 10%;
+    min-width: 90px;
+  }
+
+  .btn {
+    min-width: 80px;
   }
 }

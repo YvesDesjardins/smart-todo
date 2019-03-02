@@ -9554,4 +9554,9 @@ a.text-dark:hover, a.text-dark:focus {
 
 nav .header-button-group {
   width: 10%;
+  min-width: 90px;
+}
+
+nav .btn {
+  min-width: 80px;
 }
