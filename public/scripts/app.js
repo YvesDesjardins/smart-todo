@@ -86,7 +86,6 @@ $(() => {
   // Edit task name
   $('#edit-task-form').on('submit', function (event) {
     event.preventDefault();
-    // let data = $(this).serialize();
     let taskID = $(this).attr('data-task-id');
     let taskName = $(this).attr('edit-task-name');
     let catID = $(this).attr('data-cat-id')
@@ -94,16 +93,7 @@ $(() => {
       category_id: catID,
       name: taskName === '' ? $(this).attr('data-task-name') : taskName
     }
-    console.log('data', data); // if (catID !== 'Choose a new category') {
-    //   data[category_id] = catID;
-    // }
-    // console.log('*******', $('#edit-task-name').val())
-    // if ($('#edit-task-name').val() === "") {
-    //   $('#edit-task-name').val(taskName);
-    // } else {
-    //   taskName;
-    // }
-    // $('#default-category-option').val(catID);
+
     $.post(`/categories/${catID}/tasks/${taskID}/edit`, data)
       .then(hideModalAndClear('#edit-item-modal', '#edit-task-form'))
       .then(refreshContent());;
