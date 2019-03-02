@@ -2,10 +2,10 @@
 
 ### Main Contributors: [Rachel Gould](https://github.com/RachelGould), [Sarah Madro](https://github.com/sjay3000), [Yves Desjardins](https://github.com/YvesDesjardins)
 
-##Overview
+## Overview
 For this midterm project we decided to tackle building out a 'smart' todo list which auto categorizes user's inputs. ***continue with details here***
 
-##Final Product
+## Final Product
 
 Photos to be added here!
 
