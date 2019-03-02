@@ -86,24 +86,17 @@ $(() => {
   // Edit task name
   $('#edit-task-form').on('submit', function (event) {
     event.preventDefault();
-    // let data = $(this).serialize();
     let taskID = $(this).attr('data-task-id');
-    let taskName = $(this).attr('edit-task-name');
-    let catID = $(this).attr('data-cat-id')
+    let newTaskName = $('#edit-task-name').val();
+    let newCatID = $('.form-control').find(':selected').val();
+    let catID = $(this).attr('data-cat-id');
+
     let data = {
-      category_id: catID,
-      name: taskName === '' ? $(this).attr('data-task-name') : taskName
+      category_id: newCatID === 'Choose a new category' ? catID : newCatID,
+      name: newTaskName === '' ? $(this).attr('data-task-name') : newTaskName,
     }
-    console.log('data', data); // if (catID !== 'Choose a new category') {
-    //   data[category_id] = catID;
-    // }
-    // console.log('*******', $('#edit-task-name').val())
-    // if ($('#edit-task-name').val() === "") {
-    //   $('#edit-task-name').val(taskName);
-    // } else {
-    //   taskName;
-    // }
-    // $('#default-category-option').val(catID);
+    console.log('data', data);
+
     $.post(`/categories/${catID}/tasks/${taskID}/edit`, data)
       .then(hideModalAndClear('#edit-item-modal', '#edit-task-form'))
       .then(refreshContent());;
