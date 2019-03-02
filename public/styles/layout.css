@@ -9490,6 +9490,10 @@ a.text-dark:hover, a.text-dark:focus {
   margin: 0 1vw;
 }
 
+.scrolling-wrapper-flexbox .card-header:hover {
+  text-decoration: underline;
+}
+
 .scrolling-wrapper-flexbox .card-body {
   display: flex;
   justify-content: space-between;
@@ -9533,7 +9537,7 @@ a.text-dark:hover, a.text-dark:focus {
   transition: background-color 500ms linear;
 }
 
-.scrolling-wrapper-flexbox div.card-body:hover p.task-name {
+.scrolling-wrapper-flexbox p.task-name:hover {
   text-decoration: underline;
 }
 

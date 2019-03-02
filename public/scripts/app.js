@@ -1,5 +1,3 @@
-// import { post } from "request";
-
 $(() => {
   // HELPERS--------------------------
   // Build todo task elements
@@ -16,10 +14,8 @@ $(() => {
   }
   // AJAX call to get the todo tasks for a category
   const writeListItems = (categoryID) => {
-    $.ajax({
-      method: "GET",
-      url: `/categories/${categoryID}/tasks`
-    }).done((data) => {
+    $.get(`/categories/${categoryID}/tasks`)
+    .done((data) => {
       for (let task of data) {
         buildListTask(task, categoryID);
       }
@@ -45,8 +41,7 @@ $(() => {
   })
 
   //api call to yelp
-function yelpApi(toDoInput) {
-
+  function yelpApi(toDoInput) {
   var inputData = {
     text : toDoInput
   }
@@ -64,10 +59,7 @@ function yelpApi(toDoInput) {
 
 
   // AJAX call to populate the dashboard with the user's lists and items:
-  $.ajax({
-    method: "GET",
-    url: "/categories"
-  }).done((data) => {
+  $.get('/categories').done((data) => {
     for (let list of data) {
       buildList(list);
       writeListItems(list.id);
@@ -86,23 +78,15 @@ function yelpApi(toDoInput) {
       console.log('error', err);
     })
   };
-  // console.log('work');
-  // yelpApi();
 
   // To complete a task:
   function completeTask() {
     let taskID = (this.id).split('-')[1];
     let categoryID = (this.id).split('-')[2];
-    $.ajax({
-      method: "POST",
-      url: `/categories/${categoryID}/tasks/${taskID}/edit`,
-      contentType: 'application/json',
-        data: JSON.stringify({
-            completed: true
-        }),
-      dataType: 'json'
-    }).done((data) => {
-    });
+    $.post(`/categories/${categoryID}/tasks/${taskID}/edit`, {
+      completed: true,
+      category_id: 2,
+    }, 'json');
   }
 
   // To trigger list category name edit modal:
