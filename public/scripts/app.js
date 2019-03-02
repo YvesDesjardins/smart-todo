@@ -53,9 +53,9 @@ $(() => {
       read: ['read', 'book', 'study', 'learn', 'translate', 'view', 'album', 'booklet', 'magazine', 'novel', 'write', 'copy'],
     
       watch: ['movie', 'cinema', 'film', 'show', 'video', 'watch',
-      'see', 'series', 'netflix', 'TV', 'television', 'season', 'episode', 'episodes'],
+      'see', 'series', 'netflix', 'TV', 'television', 'season', 'episode', 'episodes', 'series'],
     
-      eat: ['restaurants', 'bar', 'pub', 'cafe', 'coffee shop', 'bistro', 'hungry', 'eat', 'dinner', 'lunch', 'breakfast', 'brunch', 'snack', 'groceries', 'food'],
+      eat: ['restaurants', 'bar', 'pub', 'cafe', 'coffee shop', 'bistro', 'hungry', 'eat', 'dinner', 'lunch', 'breakfast', 'brunch', 'snack', 'groceries', 'food', 'vending', 'salad'],
     
       buy: ['buy', 'shopping', 'products', 'purchase', 'value', 'browse',
       'spend', 'brand', 'merchandise', 'clothing']
@@ -122,12 +122,18 @@ $(() => {
   const searchWikipedia = (term) => {
     $.getJSON(`https://en.wikipedia.org/w/api.php?action=query&format=json&gsrlimit=15&generator=search&origin=*&gsrsearch=${term}`)
     .done((data) => {
-      console.log(genCategoriesList(term, data.query.pages, getBestCatMatch));
+      (genCategoriesList(term, data.query.pages, getBestCatMatch));
     })
   }
 
+  // Post new task
+  const postNewTask = (name, category) => {
+    $.post('/categories/new', catName)
+    .then(refreshContent());
+    // *****left off here***
+  }
 
-  //event handler for create new task
+  // Event handler for create new task
   $("#save-task").on('click', function (event) {
     event.preventDefault();
     const toDoInput = $('#create-task-input').val();
