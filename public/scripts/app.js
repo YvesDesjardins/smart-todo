@@ -4,7 +4,7 @@ $(() => {
     $('#lists-container').empty();
     renderContent();
   }
-  
+
   renderContent();
 
   hideModalAndClear = (modalID, formID) => {
@@ -17,21 +17,21 @@ $(() => {
     const taskName = taskObject.name;
     const taskID = taskObject.id;
     let $cardBody = $('<div>').addClass('card-body')
-                  .append($('<p>').text(taskName).addClass('task-name').attr('id',`${taskID}-${taskName}-${listID}-task`)
-                  .click(editTaskModal));
+      .append($('<p>').text(taskName).addClass('task-name').attr('id', `${taskID}-${taskName}-${listID}-task`)
+        .click(editTaskModal));
     let $checkBox = $('<div>').addClass('complete-task')
-                  .attr('id',`complete-${taskID}-${listID}`).click(completeTask).append($('<p>').addClass('checkmark').text('✔️'));
+      .attr('id', `complete-${taskID}-${listID}`).click(completeTask).append($('<p>').addClass('checkmark').text('✔️'));
     let $task = $($cardBody).append($($checkBox));
     $(`#list-${listID}`).append($($task));
   }
   // AJAX call to get the todo tasks for a category
   const writeListItems = (categoryID) => {
     $.get(`/categories/${categoryID}/tasks`)
-    .done((data) => {
-      for (let task of data) {
-        buildListTask(task, categoryID);
-      }
-    })
+      .done((data) => {
+        for (let task of data) {
+          buildListTask(task, categoryID);
+        }
+      })
   }
   // Build list for a category (doesn't include items)
   const buildList = (listObject) => {
@@ -61,8 +61,8 @@ $(() => {
     event.preventDefault();
     let catName = $(this).serialize();
     $.post('/categories/new', catName)
-    .then(hideModalAndClear('#add-category-modal', '#new-category-form'))
-    .then(refreshContent());
+      .then(hideModalAndClear('#add-category-modal', '#new-category-form'))
+      .then(refreshContent());
   });
 
   // Edit category name
@@ -71,33 +71,42 @@ $(() => {
     let catName = $(this).serialize();
     let catID = $(this).attr('data-id');
     $.post(`/categories/${catID}/edit`, catName)
-    .then(hideModalAndClear('#edit-category-modal', '#edit-category-form'))
-    .then(refreshContent());
+      .then(hideModalAndClear('#edit-category-modal', '#edit-category-form'))
+      .then(refreshContent());
   });
 
   // Delete category
   $('#delete-category-form').on('click', function (event) {
     let catID = $(this).attr('data-id');
     $.post(`/categories/${catID}/delete`)
-    .then(hideModalAndClear('#edit-category-modal', '#edit-category-form'))
-    .then(refreshContent());
+      .then(hideModalAndClear('#edit-category-modal', '#edit-category-form'))
+      .then(refreshContent());
   });
 
   // Edit task name
   $('#edit-task-form').on('submit', function (event) {
     event.preventDefault();
-    let data = $(this).serialize();
+    // let data = $(this).serialize();
     let taskID = $(this).attr('data-task-id');
-    let taskName = $(this).attr('data-task-name');
-    let catID = $(this).attr('data-cat-id');
-    if ($('#edit-task-name').val() === "") {
-      // fix this if there's time
-      $('#edit-task-name').val(taskName);
+    let taskName = $(this).attr('edit-task-name');
+    let catID = $(this).attr('data-cat-id')
+    let data = {
+      category_id: catID,
+      name: taskName === '' ? $(this).attr('data-task-name') : taskName
     }
-    $('#default-category-option').val(catID);
+    console.log('data', data); // if (catID !== 'Choose a new category') {
+    //   data[category_id] = catID;
+    // }
+    // console.log('*******', $('#edit-task-name').val())
+    // if ($('#edit-task-name').val() === "") {
+    //   $('#edit-task-name').val(taskName);
+    // } else {
+    //   taskName;
+    // }
+    // $('#default-category-option').val(catID);
     $.post(`/categories/${catID}/tasks/${taskID}/edit`, data)
-    .then(hideModalAndClear('#edit-item-modal', '#edit-task-form'))
-    .then(refreshContent());;
+      .then(hideModalAndClear('#edit-item-modal', '#edit-task-form'))
+      .then(refreshContent());;
   });
 
   // Delete task
@@ -105,50 +114,50 @@ $(() => {
     let taskID = $(this).attr('data-task-id');
     let catID = $(this).attr('data-cat-id');
     $.post(`/categories/${catID}/tasks/${taskID}/delete`)
-    .then(hideModalAndClear('#edit-item-modal', '#edit-task-form'))
-    .then(refreshContent());;
+      .then(hideModalAndClear('#edit-item-modal', '#edit-task-form'))
+      .then(refreshContent());;
   });
-  
+
   //api call to yelp
   function yelpApi(toDoInput) {
-  var inputData = {
-    text : toDoInput
-  }
-  $.ajax({
-      method: 'GET',
-      url: '/api/yelp',
-      data: inputData
-    }).then((res) => {
-      console.log('res', res);
-    })
-    .catch((err) => {
-      console.log('error', err);
-    })
+    var inputData = {
+      text: toDoInput
+    }
+    $.ajax({
+        method: 'GET',
+        url: '/api/yelp',
+        data: inputData
+      }).then((res) => {
+        console.log('res', res);
+      })
+      .catch((err) => {
+        console.log('error', err);
+      })
   };
 
 
   // AJAX call to populate the dashboard with the user's lists and items:
   function renderContent() {
     $.get('/categories').done((data) => {
-    for (let list of data) {
-      addCategoryToTaskEditModal(list.name, list.id);
-      buildList(list);
-      writeListItems(list.id);
-    }
-  });
+      for (let list of data) {
+        addCategoryToTaskEditModal(list.name, list.id);
+        buildList(list);
+        writeListItems(list.id);
+      }
+    });
   }
 
   // YELP API:
   function yelpApi() {
     $.ajax({
-      method: 'GET',
-      url: '/api/yelp'
-    }).then((res) => {
-      console.log('res', res);
-    })
-    .catch((err) =>{
-      console.log('error', err);
-    })
+        method: 'GET',
+        url: '/api/yelp'
+      }).then((res) => {
+        console.log('res', res);
+      })
+      .catch((err) => {
+        console.log('error', err);
+      })
   };
 
   // To complete a task:
