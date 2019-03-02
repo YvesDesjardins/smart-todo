@@ -1,6 +1,6 @@
 # TODO List (Lighthouse Labs Web Dev Bootcamp)
 
-## Main Conributors: [Rachel Gould](https://github.com/RachelGould), [Sarah Madro](https://github.com/sjay3000), [Yves Desjardins](https://github.com/YvesDesjardins)
+### Main Contributors: [Rachel Gould](https://github.com/RachelGould), [Sarah Madro](https://github.com/sjay3000), [Yves Desjardins](https://github.com/YvesDesjardins)
 
 ##Overview
 For this midterm project we decided to tackle building out a 'smart' todo list which auto categorizes user's inputs. ***continue with details here***
