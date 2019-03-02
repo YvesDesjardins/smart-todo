@@ -36,8 +36,9 @@
             </div>
             <form action="" method="POST" class="edit" id="edit-task-form">
               <div class="modal-body">
-                  <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="item name (placeholder)" name="name">
+                  <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="item name (placeholder)" name="name" id="edit-task-name">
                   <select class="form-control" name="category_id">
+                    <option id="default-category-option">Choose a new category</option>
                   </select>
               </div>
               <div class="modal-footer">
@@ -85,7 +86,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <form action="" method="">
+              <form action="" method="" id="add-task-form">
                   <input type="text" id="create-task-input" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Task name">
               </div>
               <div class="modal-footer">

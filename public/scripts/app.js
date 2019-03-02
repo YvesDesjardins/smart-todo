@@ -6,6 +6,11 @@ $(() => {
   }
   
   renderContent();
+
+  hideModalAndClear = (modalID, formID) => {
+    $(modalID).modal('hide');
+    $(formID).trigger('reset');
+  }
   // HELPERS--------------------------
   // Build todo task elements
   const buildListTask = (taskObject, listID) => {
@@ -48,7 +53,7 @@ $(() => {
     event.preventDefault();
     const toDoInput = $('#create-task-input').val();
     yelpApi(toDoInput);
-    $('#add-task-modal').modal('hide');
+    hideModalAndClear('#add-task-modal', '#add-task-form');
   })
 
   // Create a new category
@@ -56,7 +61,7 @@ $(() => {
     event.preventDefault();
     let catName = $(this).serialize();
     $.post('/categories/new', catName)
-    .then($('#add-category-modal').modal('hide'))
+    .then(hideModalAndClear('#add-category-modal', '#new-category-form'))
     .then(refreshContent());
   });
 
@@ -66,7 +71,7 @@ $(() => {
     let catName = $(this).serialize();
     let catID = $(this).attr('data-id');
     $.post(`/categories/${catID}/edit`, catName)
-    .then($('#edit-category-modal').modal('hide'))
+    .then(hideModalAndClear('#edit-category-modal', '#edit-category-form'))
     .then(refreshContent());
   });
 
@@ -74,7 +79,7 @@ $(() => {
   $('#delete-category-form').on('click', function (event) {
     let catID = $(this).attr('data-id');
     $.post(`/categories/${catID}/delete`)
-    .then($('#edit-category-modal').modal('hide'))
+    .then(hideModalAndClear('#edit-category-modal', '#edit-category-form'))
     .then(refreshContent());
   });
 
@@ -83,10 +88,15 @@ $(() => {
     event.preventDefault();
     let data = $(this).serialize();
     let taskID = $(this).attr('data-task-id');
+    let taskName = $(this).attr('data-task-name');
     let catID = $(this).attr('data-cat-id');
-    console.log( `IDs are ${taskID} and ${catID}`)
+    if ($('#edit-task-name').val() === "") {
+      // fix this if there's time
+      $('#edit-task-name').val(taskName);
+    }
+    $('#default-category-option').val(catID);
     $.post(`/categories/${catID}/tasks/${taskID}/edit`, data)
-    .then($('#edit-item-modal').modal('hide'))
+    .then(hideModalAndClear('#edit-item-modal', '#edit-task-form'))
     .then(refreshContent());;
   });
 
@@ -95,7 +105,7 @@ $(() => {
     let taskID = $(this).attr('data-task-id');
     let catID = $(this).attr('data-cat-id');
     $.post(`/categories/${catID}/tasks/${taskID}/delete`)
-    .then($('#edit-item-modal').modal('hide'))
+    .then(hideModalAndClear('#edit-item-modal', '#edit-task-form'))
     .then(refreshContent());;
   });
   
@@ -161,7 +171,7 @@ $(() => {
     $('#delete-category-form').attr({
       "data-id": categoryID,
     });
-    $('#edit-category-modal input').attr('placeholder', `Enter new name for ${categoryName}`);
+    $('#edit-category-modal input').attr('placeholder', `Enter new name for ${categoryName}`).val(categoryName);
     $('#edit-category-modal').modal('show');
   }
 
@@ -173,6 +183,7 @@ $(() => {
     $('#edit-task-form').attr({
       "data-task-id": taskID,
       "data-cat-id": categoryID,
+      "data-task-name": taskName,
     });
     $('#delete-task-form').attr({
       "data-task-id": taskID,
