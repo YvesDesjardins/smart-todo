@@ -8,7 +8,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const sass = require('node-sass-middleware');
 const app = express();
-const request = require('request');
+const request = require('request-promise');
 
 // cookie-session
 const cookieSession = require('cookie-session');
@@ -85,17 +85,14 @@ app.get('/api/yelp', (req, res) => {
     }
   };
   //****USE REQUEST NOT HTTPS ****/
-  request(getOptions, (err, response, body) => {
-    const parsedRes = JSON.parse(body);
-    const apiCategory = parsedRes.businesses[0].categories[0].alias;
-    const getCat = getCategory(apiCategory) || 'Uncatagorized';
-    const getCatagoryId = getCatId(getCat);
-    console.log(getCat, getCatagoryId);
-    console.log(parsedRes);
-    res.json({
-      category: getCatagoryId
-    });
-  })
+  request(getOptions)
+    .then((body) => {
+      const parsedRes = JSON.parse(body);
+      const apiCategory = parsedRes.businesses[0].categories[0].alias;
+      getCategory(apiCategory, res);
+    }).catch((err) => {
+      console.log('ERRRRROORRRRR', err);
+    })
 });
 
 const keywords = {
@@ -118,26 +115,26 @@ const keywords = {
 };
 
 //chooses category with word from taskEntry
-function getCategory(word) {
+function getCategory(word, res) {
   for (let category in keywords) {
     if (keywords[category].includes(word)) {
-      return category
+      getCatId(category, res);
     }
     console.log('word', word, category);
   }
 };
 
 //gets category id
-function getCatId(catName) {
+function getCatId(catName, res) {
   return knex('categories').where({
       name: catName
     })
     .then((results) => {
+      console.log('ressssssss', results);
+      console.log('ressssssss0', results[0]);
+      console.log('ressssssss', results[0]);
       if (results[0]) {
-        console.log('res', results);
-        return results[0].id;
-      } else {
-        return 1
+        res.status(200).send(`${results[0].id}`);
       }
     })
 };

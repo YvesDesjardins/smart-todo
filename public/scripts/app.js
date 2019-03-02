@@ -38,12 +38,14 @@ $(() => {
 
     const toDoInput = $('#create-task-input').val();
     $('#add-task-modal').modal('hide');
-    yelpApi(toDoInput, (categoryID) => {
 
-      $.post(`categories/${categoryID}/tasks/new`, {
+    yelpApi(toDoInput, (categoryID) => {
+      let data = {
         name: toDoInput,
-        api: 'yelp'
-      })
+        api: 'yelp',
+        category_id: categoryID
+      }
+      $.post(`categories/${categoryID}/tasks/new`, JSON.stringify(data));
     })
   });
 
@@ -52,7 +54,8 @@ $(() => {
   function yelpApi(toDoInput, callback) {
 
     let inputData = {
-      text: toDoInput
+      text: toDoInput,
+      $
     }
 
     $.ajax({
@@ -60,8 +63,7 @@ $(() => {
         url: '/api/yelp',
         data: inputData
       }).then((res) => {
-        // const parsedRes = JSON.parse(res);
-        callback(res.category);
+        callback(res);
       })
       .catch((err) => {
         console.log('error', err);
