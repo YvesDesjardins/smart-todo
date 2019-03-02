@@ -35,47 +35,33 @@ $(() => {
   //event handler for create new task, then posts to category
   $("#save-task").on('click', function (event) {
     event.preventDefault();
+
     const toDoInput = $('#create-task-input').val();
     $('#add-task-modal').modal('hide');
-    yelpApi(toDoInput, (result) => {
-      $.ajax({
-        method: 'POST',
-        url: '/api/yelp',
-        data: serialized
-      }).done((task) => {
-        console.log('&&&', task);
-        knex('categories')
-          .insert({
-            name: req.body.name,
-            api: req.body.api,
-            category_id: temp_category_id[0].id
-          })
-        console.log("****todoinput", toDoInput);
-        return task;
+    yelpApi(toDoInput, (categoryID) => {
+
+      $.post(`categories/${categoryID}/tasks/new`, {
+        name: toDoInput,
+        api: 'yelp'
       })
-
-    });
-
-    // post to-do's from yelp api
-    const serialized = $(this).serialize();
-
+    })
   });
+
 
   //api call to yelp
   function yelpApi(toDoInput, callback) {
-    console.log("+++++++ yelpAPI insie");
-    var inputData = {
+
+    let inputData = {
       text: toDoInput
     }
+
     $.ajax({
         method: 'GET',
         url: '/api/yelp',
         data: inputData
       }).then((res) => {
-        //categorize to dos
-        const parsedRes = JSON.parse(res);
-        console.log('res', parsedRes.businesses);
-        callback(parsedRes.businesses);
+        // const parsedRes = JSON.parse(res);
+        callback(res.category);
       })
       .catch((err) => {
         console.log('error', err);
@@ -90,18 +76,6 @@ $(() => {
     }
   });
 
-  // YELP API:
-  function yelpApi() {
-    $.ajax({
-        method: 'GET',
-        url: '/api/yelp'
-      }).then((res) => {
-        console.log('res', res);
-      })
-      .catch((err) => {
-        console.log('error', err);
-      })
-  };
 
   // To complete a task:
   function completeTask() {

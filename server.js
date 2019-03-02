@@ -57,6 +57,11 @@ app.use('/logout', logoutRoutes());
 app.use('/categories', categoriesRoutes(knex));
 app.use('/categories', tasksRoutes(knex));
 
+app.listen(PORT, () => {
+  console.log('Example app listening on port ' + PORT);
+});
+
+
 // Home page
 app.get('/', (req, res) => {
   res.render('index', {
@@ -68,6 +73,7 @@ app.get('/', (req, res) => {
 app.get('/api/yelp', (req, res) => {
 
   const todoSearchTerm = req.query.text;
+
   const apiKey = 'Bearer ' + 'Nq6iLL8agQjx_UJ0s0IF5FwIKSs1FZ8r_XcOz6ChLvXOQUTSH7ZYpLnAGFl03tpPrAFJh0Naguga1lg3xAttXxbbsg7PPT_JI12LK-_NkaWpe1npsWBHel6qQIJ4XHYx';
 
   //added item limit but not working atm
@@ -83,25 +89,29 @@ app.get('/api/yelp', (req, res) => {
     const parsedRes = JSON.parse(body);
     const apiCategory = parsedRes.businesses[0].categories[0].alias;
     const getCat = getCategory(apiCategory) || 'Uncatagorized';
-    console.log(getCat);
-    res.json(body);
+    const getCatagoryId = getCatId(getCat);
+    console.log(getCat, getCatagoryId);
+    console.log(parsedRes);
+    res.json({
+      category: getCatagoryId
+    });
   })
 });
 
 const keywords = {
-  read: ['read', 'book', 'study', 'learn', 'translate', 'view', 'album', 'booklet',
+  Read: ['read', 'book', 'study', 'learn', 'translate', 'view', 'album', 'booklet',
     'magazine', 'novel', 'write', 'copy'
   ],
 
-  watch: ['movie', 'cinema', 'film', 'show', 'video', 'watch',
+  Watch: ['movie', 'cinema', 'film', 'show', 'video', 'watch',
     'see', 'series', 'netflix'
   ],
 
-  eat: ['restaurants', 'bar', 'pub', 'cafe', 'coffee shop', 'bistro', 'hungry',
+  Eat: ['restaurants', 'bar', 'pub', 'cafe', 'coffee shop', 'bistro', 'hungry',
     'eat', 'dinner', 'lunch', 'breakfast', 'brunch', 'snack', 'groceries'
   ],
 
-  buy: ['buy', 'shopping', 'products', 'grocery', 'purchase', 'value', 'browse',
+  Buy: ['buy', 'shopping', 'products', 'grocery', 'purchase', 'value', 'browse',
     'spend', 'brand', 'merchandise'
   ]
 
@@ -113,9 +123,21 @@ function getCategory(word) {
     if (keywords[category].includes(word)) {
       return category
     }
+    console.log('word', word, category);
   }
-}
+};
 
-app.listen(PORT, () => {
-  console.log('Example app listening on port ' + PORT);
-});
+//gets category id
+function getCatId(catName) {
+  return knex('categories').where({
+      name: catName
+    })
+    .then((results) => {
+      if (results[0]) {
+        console.log('res', results);
+        return results[0].id;
+      } else {
+        return 1
+      }
+    })
+};
