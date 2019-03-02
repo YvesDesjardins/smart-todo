@@ -37,9 +37,9 @@ module.exports = (knex) => {
           completed: false,
           category_id: req.params.category_id
         })
-        .then();
-
-      res.status(200).redirect('/');
+        .then(() => {
+          res.status(200).redirect('/');
+        });
     } else {
       res.status(401).send('user not logged in');
     }
@@ -57,7 +57,7 @@ module.exports = (knex) => {
             category_id: req.body.category_id,
           })
           .then(() => {
-            res.status(200).send();
+            res.status(200).redirect('/');
           })
           .catch((err) => {
             res.status(401).send('user unauthorized');
@@ -75,7 +75,7 @@ module.exports = (knex) => {
           .whereIn('id', checkUserTask(knex, req.params.category_id, temp_user_id[0].id, req.params.task_id))
           .del()
           .then((results) => {
-            res.status(200).send();
+            res.status(200).redirect('/');
           })
           .catch((err) => {
             res.status(401).send('user unauthorized');
