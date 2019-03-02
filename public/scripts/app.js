@@ -30,6 +30,10 @@ $(() => {
     let $listElement = $($cardContainer).prepend($($cardHeader));
     $('#lists-container').append($listElement);
   }
+
+  const addCategoryToTaskEditModal = (catName, catID) => {
+    $('#edit-task-form select').append($('<option>').text(catName).val(Number(catID)));
+  }
   // END HELPERS----------------------
 
   //event handler for create new task
@@ -63,6 +67,25 @@ $(() => {
     $.post(`/categories/${catID}/delete`)
     .then($('#edit-category-modal').modal('hide'));
   });
+
+  // Edit task name
+  $('#edit-task-form').on('submit', function (event) {
+    event.preventDefault();
+    let data = $(this).serialize();
+    let taskID = $(this).attr('data-task-id');
+    let catID = $(this).attr('data-cat-id');
+    console.log( `IDs are ${taskID} and ${catID}`)
+    $.post(`/categories/${catID}/tasks/${taskID}/edit`, data)
+    .then($('#edit-item-modal').modal('hide'));
+  });
+
+  // Delete task
+  $('#delete-task-form').on('click', function (event) {
+    let taskID = $(this).attr('data-task-id');
+    let catID = $(this).attr('data-cat-id');
+    $.post(`/categories/${catID}/tasks/${taskID}/delete`)
+    .then($('#edit-item-modal').modal('hide'));
+  });
   
   //api call to yelp
   function yelpApi(toDoInput) {
@@ -85,6 +108,7 @@ $(() => {
   // AJAX call to populate the dashboard with the user's lists and items:
   $.get('/categories').done((data) => {
     for (let list of data) {
+      addCategoryToTaskEditModal(list.name, list.id);
       buildList(list);
       writeListItems(list.id);
     }
@@ -132,11 +156,13 @@ $(() => {
     let taskID = (this.id).split('-')[0];
     let taskName = (this.id).split('-')[1];
     let categoryID = (this.id).split('-')[2];
-    $('#edit-item-modal form.edit').attr({
-      action: `categories/${categoryID}/tasks/${taskID}/edit`,
+    $('#edit-task-form').attr({
+      "data-task-id": taskID,
+      "data-cat-id": categoryID,
     });
-    $('#edit-item-modal form.delete').attr({
-      action: `categories/${categoryID}/tasks/${taskID}/delete`,
+    $('#delete-task-form').attr({
+      "data-task-id": taskID,
+      "data-cat-id": categoryID,
     });
     $('#edit-item-modal input').attr('placeholder', `Enter new name for ${taskName}`);
     $('#edit-item-modal').modal('show');
