@@ -29,6 +29,7 @@ const loginRoutes = require('./routes/login');
 const logoutRoutes = require('./routes/logout');
 const categoriesRoutes = require('./routes/categories');
 const tasksRoutes = require('./routes/tasks');
+const twilioRoutes = require('./routes/twilio');
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
@@ -56,6 +57,7 @@ app.use('/login', loginRoutes(knex));
 app.use('/logout', logoutRoutes());
 app.use('/categories', categoriesRoutes(knex));
 app.use('/categories', tasksRoutes(knex));
+app.use('/twilio', twilioRoutes());
 
 // Home page, renders index and passes back userID
 app.get('/', (req, res) => {
