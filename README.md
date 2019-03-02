@@ -1,14 +1,8 @@
-# Node Skeleton
+## Dependencies
 
-## Project Setup
-
-1. Create your own empty repo on GitHub
-2. Clone this repository (do not fork)
-  - Suggestion: When cloning, specify a different folder name that is relevant to your project
-3. Remove the git remote: `git remote rm origin`
-4. Add a remote for your origin: `git remote add origin <your github repo URL>`
-5. Push to the new origin: `git push -u origin master`
-6. Verify that the skeleton code now shows up in your repo on GitHub
+- Node 5.10.x or above
+- NPM 3.8.x or above
+- Some SQL database with support for postgresql
 
 ## Getting Started
 
@@ -22,8 +16,35 @@
   - Check the seeds file to see what gets seeded in the DB
 7. Run the server: `npm run local`
 8. Visit `http://localhost:8080/`
+9. Login via the login button in the top right
 
-## Dependencies
+## Create New Category
 
-- Node 5.10.x or above
-- NPM 3.8.x or above
+1. Click 'New category' button in the top left of the window
+2. Enter your preferred name for the category
+3. Click submit to create your new empty category!
+
+## Create New Task
+
+1. Click 'New task' button in the top left of the window
+2. Enter your preferred name for the task
+3. The state of the art deep learning AI will automatically select a category for you
+4. Click submit to create your new task!
+
+## Edit Category
+
+1. Click the category you want to change
+2. Edit the new name you want
+3. Click the 'save' button
+
+## Edit Task
+
+1. Click the task you want to change
+2. Edit the fields you want
+3. Click the 'save' button
+
+## Delete Task
+
+1. Click the task you want to change
+2. Click the 'delete' button
+
