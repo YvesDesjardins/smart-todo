@@ -5,12 +5,12 @@
   flex-wrap: nowrap;
   overflow-x: auto;
   margin-top: 1em;
-  height: 75vh;
+  height: 15%;
 
   .card.bg-light {
     width: 30%;
     margin: 0 1vw;
-    height: 100%;
+    height: 50%;
     overflow-y: auto;
   }
 
@@ -24,13 +24,14 @@
     justify-content: space-between;
     align-content: center;
     align-items: center;
-    flex: 0;
-    flex-shrink: 3;
+    flex: 0 3 auto;
     background: rgba(0, 0, 0, 0);
     border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 
-    p {
+    p.task-name {
       margin: 0;
+      width: 50%;
+      word-wrap: break-word;
     }
 
     .complete-task {
