@@ -4,34 +4,22 @@ $(() => {
   const buildListTask = (taskObject, listID) => {
     const taskName = taskObject.name;
     const taskID = taskObject.id;
-<<<<<<< HEAD
-    let $cardBody = $('<div>').addClass('card-body').attr('id',
-        `${taskID}-${taskName}-${listID}-task`)
-      .click(editTaskModal)
-      .append($('<p>').text(taskName))
-    let $checkBox = $('<div>').addClass('form-check')
-      .append($('<input>').addClass('form-check-input').attr({
-        type: "checkbox",
-        value: "",
-      }));
-=======
     let $cardBody = $('<div>').addClass('card-body')
-                  .append($('<p>').text(taskName).addClass('task-name').attr('id',`${taskID}-${taskName}-${listID}-task`)
-                  .click(editTaskModal));
+      .append($('<p>').text(taskName).addClass('task-name').attr('id', `${taskID}-${taskName}-${listID}-task`)
+        .click(editTaskModal));
     let $checkBox = $('<div>').addClass('complete-task')
-                  .attr('id',`complete-${taskID}-${listID}`).click(completeTask).append($('<p>').addClass('checkmark').text('✔️'));
->>>>>>> 811ac3f7b3388b158b757316d4d481995cf7192b
+      .attr('id', `complete-${taskID}-${listID}`).click(completeTask).append($('<p>').addClass('checkmark').text('✔️'));
     let $task = $($cardBody).append($($checkBox));
     $(`#list-${listID}`).append($($task));
   }
   // AJAX call to get the todo tasks for a category
   const writeListItems = (categoryID) => {
     $.get(`/categories/${categoryID}/tasks`)
-    .done((data) => {
-      for (let task of data) {
-        buildListTask(task, categoryID);
-      }
-    })
+      .done((data) => {
+        for (let task of data) {
+          buildListTask(task, categoryID);
+        }
+      })
   }
   // Build list for a category (doesn't include items)
   const buildList = (listObject) => {
@@ -44,10 +32,11 @@ $(() => {
   }
   // END HELPERS----------------------
 
-  //event handler for create new task
+  //event handler for create new task, then posts to category
   $("#save-task").on('click', function (event) {
     event.preventDefault();
     const toDoInput = $('#create-task-input').val();
+    $('#add-task-modal').modal('hide');
     yelpApi(toDoInput, (result) => {
       $.ajax({
         method: 'POST',
@@ -66,31 +55,11 @@ $(() => {
       })
 
     });
-    $('#add-task-modal').modal('hide');
 
-<<<<<<< HEAD
     // post to-do's from yelp api
     const serialized = $(this).serialize();
 
   });
-=======
-  //api call to yelp
-  function yelpApi(toDoInput) {
-  var inputData = {
-    text : toDoInput
-  }
-  $.ajax({
-      method: 'GET',
-      url: '/api/yelp',
-      data: inputData
-    }).then((res) => {
-      console.log('res', res);
-    })
-    .catch((err) => {
-      console.log('error', err);
-    })
-  };
->>>>>>> 811ac3f7b3388b158b757316d4d481995cf7192b
 
   //api call to yelp
   function yelpApi(toDoInput, callback) {
@@ -121,33 +90,17 @@ $(() => {
     }
   });
 
-<<<<<<< HEAD
-  // MODALS---------------------------
-  // Listen for clicks on task names
-  $('div.card-body').click(editTaskModal);
-
-  // Listen for clicks on header of todo list categories
-  $('div.card-header').click(editCatModal);
-
-  $('#add-task').click(function () {
-    $('#add-task-modal').modal('show');
-  });
-
-  $('#add-category').click(function () {
-    $('#add-category-modal').modal('show');
-  });
-=======
   // YELP API:
   function yelpApi() {
     $.ajax({
-      method: 'GET',
-      url: '/api/yelp'
-    }).then((res) => {
-      console.log('res', res);
-    })
-    .catch((err) =>{
-      console.log('error', err);
-    })
+        method: 'GET',
+        url: '/api/yelp'
+      }).then((res) => {
+        console.log('res', res);
+      })
+      .catch((err) => {
+        console.log('error', err);
+      })
   };
 
   // To complete a task:
@@ -159,7 +112,6 @@ $(() => {
       category_id: 2,
     }, 'json');
   }
->>>>>>> 811ac3f7b3388b158b757316d4d481995cf7192b
 
   // To trigger list category name edit modal:
   function editCatModal() {
