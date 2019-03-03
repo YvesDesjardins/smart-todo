@@ -9492,8 +9492,17 @@ a.text-dark:hover, a.text-dark:focus {
   overflow-y: auto;
 }
 
+.scrolling-wrapper-flexbox .card-header {
+  background-color: rgba(40, 146, 215, 0.3);
+}
+
 .scrolling-wrapper-flexbox .card-header:hover {
   text-decoration: underline;
+  background-color: rgba(40, 146, 215, 0.5);
+  cursor: pointer;
+  -webkit-transition: background-color 500ms ease-in;
+  -ms-transition: background-color 500ms ease-in;
+  transition: background-color 500ms ease-in;
   cursor: pointer;
 }
 
