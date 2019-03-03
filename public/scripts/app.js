@@ -19,6 +19,8 @@ $(() => {
     let completedColID = getCatID('Completed');
     console.log('compl col',completedColID);
     $(`#list-${completedColID} .checkmark`).addClass('completed');
+    // Remove event handler so it's not clickable
+    $(`#list-${completedColID} .complete-task`).off(); 
   }
 
   // Build todo task elements
