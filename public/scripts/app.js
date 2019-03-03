@@ -32,6 +32,7 @@ $(() => {
     .attr('id', `complete-${taskID}-${listID}`).click(completeTask).append($('<p>').addClass('checkmark').text('✔️'));
     let $task = $($cardBody).append($($checkBox));
     $(`#list-${listID}`).append($($task));
+    checkCompletedTasks();
   }
   // AJAX call to get the todo tasks for a category
   const writeListItems = (categoryID) => {
@@ -235,7 +236,6 @@ $(() => {
       addCategoryToTaskEditModal(list.name, list.id);
       buildList(list);
       writeListItems(list.id);
-      checkCompletedTasks();
     }
   });
   }

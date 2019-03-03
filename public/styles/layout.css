@@ -9527,8 +9527,9 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .scrolling-wrapper-flexbox .card-body .complete-task .checkmark.completed {
-  font-size: 2em;
-  opacity: 0;
+  opacity: 1;
+  position: relative;
+  top: -7px;
 }
 
 .scrolling-wrapper-flexbox .card-body .complete-task:hover .checkmark {
