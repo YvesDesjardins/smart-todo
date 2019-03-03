@@ -94,16 +94,16 @@ $(() => {
     // If there's only 1 matching category, return that
     if (matchingCategories.length === 1) {
       console.log(`one category in list: ${matchingCategories[0]}`)
-      return matchingCategories[0]
+      return cb(matchingCategories, term);
     } else {
       console.log("about to run CB in genCategoriesList")
       console.log(`matching categories: `, matchingCategories);
-      return cb(matchingCategories);
+      return cb(matchingCategories, term);
     }
   }
 
   // If there's more than one matching category, find the one that's most common
-  const getBestCatMatch = (arr, cb) => {
+  const getBestCatMatch = (arr, term) => {
     let mostCommon;
     let mostOccurrences = 0;
     arr.forEach(function(x) {
@@ -120,7 +120,7 @@ $(() => {
       }
     });
     console.log(`mostCommon in getBestCat Match: ${mostCommon}`)
-    cb(mostCommon);
+    postNewTask(term, mostCommon);
   }
 
   // Search Wikipedia API
@@ -161,7 +161,6 @@ $(() => {
       console.log("Couldn't find keywords in the task name...")
       // If there aren't trigger words in the task name, use the Wiki API
       searchWikipedia(toDoInput);
-      // postNewTask(toDoInput, searchWikipedia(toDoInput));
     }
   });
 
