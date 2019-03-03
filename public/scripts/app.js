@@ -81,7 +81,10 @@ $(() => {
   }
   
   const addCategoryToTaskEditModal = (catName, catID) => {
-    $('#edit-task-form select').append($('<option>').text(catName).val(Number(catID)));
+    let completedID = getCatID('Completed');
+    if (catID !== completedID) {
+      $('#edit-task-form select').append($('<option>').text(catName).val(Number(catID)))
+    };
   }
   
   // AJAX call to populate the dashboard with the user's lists and items:
