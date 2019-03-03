@@ -95,10 +95,6 @@ $(() => {
       category_id: newCatID === 'Choose a new category' ? catID : newCatID,
       name: newTaskName === '' ? $(this).attr('data-task-name') : newTaskName,
     }
-<<<<<<< HEAD
-=======
-    console.log('data', data);
->>>>>>> 0e969d5da45950a5af5d95f846756c0808ebf67d
 
     $.post(`/categories/${catID}/tasks/${taskID}/edit`, data)
       .then(hideModalAndClear('#edit-item-modal', '#edit-task-form'))
