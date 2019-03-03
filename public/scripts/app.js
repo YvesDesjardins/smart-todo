@@ -17,7 +17,7 @@ $(() => {
   // Automatically check all the completed items
   const checkCompletedTasks = () => {
     let completedColID = getCatID('Completed');
-    console.log('compl col',completedColID);
+    console.log('compl col', completedColID);
     $(`#list-${completedColID} .checkmark`).addClass('completed');
   }
 
@@ -29,7 +29,7 @@ $(() => {
       .append($('<p>').text(taskName).addClass('task-name').attr('id', `${taskID}-${taskName}-${listID}-task`)
         .click(editTaskModal));
     let $checkBox = $('<div>').addClass('complete-task')
-    .attr('id', `complete-${taskID}-${listID}`).click(completeTask).append($('<p>').addClass('checkmark').text('✔️'));
+      .attr('id', `complete-${taskID}-${listID}`).click(completeTask).append($('<p>').addClass('checkmark').text('✔️'));
     let $task = $($cardBody).append($($checkBox));
     $(`#list-${listID}`).append($($task));
     checkCompletedTasks();
@@ -61,19 +61,21 @@ $(() => {
   const checkForKeywords = (title) => {
     const keywords = {
       Read: ['read', 'book', 'study', 'learn', 'translate', 'view', 'album', 'booklet', 'magazine', 'novel', 'write', 'copy'],
-    
+
       Watch: ['movie', 'cinema', 'film', 'show', 'video', 'watch',
-      'see', 'series', 'netflix', 'TV', 'television', 'season', 'episode', 'episodes', 'series'],
-    
+        'see', 'series', 'netflix', 'TV', 'television', 'season', 'episode', 'episodes', 'series'
+      ],
+
       Eat: ['restaurants', 'bar', 'pub', 'cafe', 'coffee shop', 'bistro', 'hungry', 'eat', 'dinner', 'lunch', 'breakfast', 'brunch', 'snack', 'groceries', 'food', 'vending', 'salad'],
-    
+
       Buy: ['buy', 'shopping', 'products', 'purchase', 'value', 'browse',
-      'spend', 'brand', 'merchandise', 'clothing']
+        'spend', 'brand', 'merchandise', 'clothing'
+      ]
     };
     let matchedCat = '';
     for (let category in keywords) {
       for (let word of keywords[category]) {
-        if(title.toLowerCase().includes(word)) {
+        if (title.toLowerCase().includes(word)) {
           matchedCat = category;
           return matchedCat;
         }
@@ -110,11 +112,11 @@ $(() => {
   const getBestCatMatch = (arr, term) => {
     let mostCommon;
     let mostOccurrences = 0;
-    arr.forEach(function(x) {
+    arr.forEach(function (x) {
       let occurrences = 1;
       arr.forEach(function (y) {
         if (x === y) {
-          occurrences ++;
+          occurrences++;
           return occurrences;
         }
       });
@@ -133,9 +135,9 @@ $(() => {
   // Search Wikipedia API
   const searchWikipedia = (term) => {
     $.getJSON(`https://en.wikipedia.org/w/api.php?action=query&format=json&gsrlimit=15&generator=search&origin=*&gsrsearch=${term}`)
-    .done((data) => {
-      genCategoriesList(term, data.query.pages, getBestCatMatch);
-    });
+      .done((data) => {
+        genCategoriesList(term, data.query.pages, getBestCatMatch);
+      });
   }
 
   // Get category ID from the name
@@ -151,7 +153,7 @@ $(() => {
       category_id: catID,
     }
     $.post(`/categories/${catID}/tasks/new`, data)
-    .then(refreshContent());
+      .then(refreshContent());
   }
 
   // Event handler for create new task
@@ -287,7 +289,7 @@ $(() => {
 
   $('.modal').on('shown.bs.modal', function () {
     $('input:visible:first').focus();
-  }); 
+  });
 
   // Listen for clicks on task names
   $('div.card-body').click(editTaskModal);
@@ -302,6 +304,11 @@ $(() => {
   $('#add-category').click(function () {
     $('#add-category-modal').modal('show');
   });
+
+  $('#add-user').click(function () {
+    $('#add-user-modal').modal('show');
+  });
+
 
   // END MODALS-----------------------
 });

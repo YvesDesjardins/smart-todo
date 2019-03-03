@@ -6,10 +6,20 @@
   <h1>Do It</h1>
 
   <div>
-    <p>ex@dev.com</p>
+    <%if(email){%>
+    <p>
+      <%= email%>
+    </p>
+    <form action='/logout' method='POST'>
+      <button type="submit" class="btn btn-primary">Logout</button>
+    </form>
+    <%}else{%>
+    <form action='/register' method='POST'>
+      <button type="button" class="btn btn-primary btn-block" id="add-user">Register</button>
+    </form>
     <form action='/login' method='POST'>
       <button type="submit" class="btn btn-primary">Login</button>
     </form>
+    <%}%>
   </div>
 </nav>
-
