@@ -9482,16 +9482,19 @@ a.text-dark:hover, a.text-dark:focus {
   flex-wrap: nowrap;
   overflow-x: auto;
   margin-top: 1em;
-  height: 75vh;
+  height: 15%;
 }
 
 .scrolling-wrapper-flexbox .card.bg-light {
   width: 30%;
   margin: 0 1vw;
+  height: 50%;
+  overflow-y: auto;
 }
 
 .scrolling-wrapper-flexbox .card-header:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .scrolling-wrapper-flexbox .card-body {
@@ -9499,19 +9502,21 @@ a.text-dark:hover, a.text-dark:focus {
   justify-content: space-between;
   align-content: center;
   align-items: center;
-  flex: 0;
-  flex-shrink: 1;
+  flex: 0 3 auto;
   background: transparent;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 
-.scrolling-wrapper-flexbox .card-body p {
+.scrolling-wrapper-flexbox .card-body p.task-name {
   margin: 0;
+  width: 50%;
+  word-wrap: break-word;
 }
 
 .scrolling-wrapper-flexbox .card-body .complete-task {
   height: 30px;
   width: 30px;
+  margin: 1em;
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.125);
 }
@@ -9528,6 +9533,7 @@ a.text-dark:hover, a.text-dark:focus {
   -webkit-transition: opacity 500ms ease-in;
   -ms-transition: opacity 500ms ease-in;
   transition: opacity 500ms ease-in;
+  cursor: pointer;
 }
 
 .scrolling-wrapper-flexbox div.card-body:hover {
@@ -9539,12 +9545,30 @@ a.text-dark:hover, a.text-dark:focus {
 
 .scrolling-wrapper-flexbox p.task-name:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .scrolling-wrapper-flexbox .side-scroll {
   flex: 0 0 auto;
 }
 
-nav .header-button-group {
+.navbar {
+  background: #1d6fa2;
+  background: -moz-linear-gradient(left, #1d6fa2 0%, #1b4353 100%);
+  background: -webkit-gradient(left top, right top, color-stop(0%, #1d6fa2), color-stop(100%, #1b4353));
+  background: -webkit-linear-gradient(left, #1d6fa2 0%, #1b4353 100%);
+  background: -o-linear-gradient(left, #1d6fa2 0%, #1b4353 100%);
+  background: -ms-linear-gradient(left, #1d6fa2 0%, #1b4353 100%);
+  background: linear-gradient(to right, #1d6fa2 0%, #1b4353 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1d6fa2', endColorstr='#1b4353', GradientType=1 );
+  color: white;
+}
+
+.navbar .header-button-group {
   width: 10%;
+  min-width: 90px;
+}
+
+.navbar .btn {
+  min-width: 80px;
 }

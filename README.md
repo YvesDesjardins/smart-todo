@@ -1,8 +1,13 @@
-## Dependencies
+# TODO List (Lighthouse Labs Web Dev Bootcamp)
 
-- Node 5.10.x or above
-- NPM 3.8.x or above
-- Some SQL database with support for postgresql
+### Main Contributors: [Rachel Gould](https://github.com/RachelGould), [Sarah Madro](https://github.com/sjay3000), [Yves Desjardins](https://github.com/YvesDesjardins)
+
+## Overview
+For this midterm project we decided to tackle building out a 'smart' todo list which auto categorizes user's inputs. ***continue with details here***
+
+## Final Product
+
+Photos to be added here!
 
 ## Getting Started
 
@@ -18,33 +23,21 @@
 8. Visit `http://localhost:8080/`
 9. Login via the login button in the top right
 
-## Create New Category
+## Tech Stack
 
-1. Click 'New category' button in the top left of the window
-2. Enter your preferred name for the category
-3. Click submit to create your new empty category!
-
-## Create New Task
-
-1. Click 'New task' button in the top left of the window
-2. Enter your preferred name for the task
-3. The state of the art deep learning AI will automatically select a category for you
-4. Click submit to create your new task!
-
-## Edit Category
-
-1. Click the category you want to change
-2. Edit the new name you want
-3. Click the 'save' button
-
-## Edit Task
-
-1. Click the task you want to change
-2. Edit the fields you want
-3. Click the 'save' button
-
-## Delete Task
-
-1. Click the task you want to change
-2. Click the 'delete' button
-
+- Body-parser
+- Bootstrap
+- Cookie-session
+- Dotenv
+- ejs
+- Express
+- jQuery
+- Knex
+- Knex-logger
+- Morgan
+- Node
+- Node-sass-middleware
+- NPM
+- pg
+- request
+- request-promise
