@@ -222,13 +222,14 @@ $(() => {
   // AJAX call to populate the dashboard with the user's lists and items:
   function renderContent() {
     $.get('/categories').done((data) => {
-    for (let list of data) {
-      fillCatList(list);
-      addCategoryToTaskEditModal(list.name, list.id);
-      buildList(list);
-      writeListItems(list.id);
-    }
-  });
+      $('#edit-task-form select').empty();
+      for (let list of data) {
+        fillCatList(list);
+        addCategoryToTaskEditModal(list.name, list.id);
+        buildList(list);
+        writeListItems(list.id);
+      }
+    });
   }
 
   // To complete a task:
