@@ -44,8 +44,12 @@
         font-size: 2em;
         opacity: 0;
       }
+      .checkmark.completed {
+        font-size: 2em;
+        opacity: 0;
+      }
     }
-
+    
     .complete-task:hover {
       .checkmark {
         opacity: 1;
