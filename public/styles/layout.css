@@ -9526,6 +9526,12 @@ a.text-dark:hover, a.text-dark:focus {
   opacity: 0;
 }
 
+.scrolling-wrapper-flexbox .card-body .complete-task .checkmark.completed {
+  opacity: 1;
+  position: relative;
+  top: -7px;
+}
+
 .scrolling-wrapper-flexbox .card-body .complete-task:hover .checkmark {
   opacity: 1;
   position: relative;
