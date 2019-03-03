@@ -158,7 +158,6 @@ $(() => {
     let categoryID = (this.id).split('-')[2];
     $.post(`/categories/${categoryID}/tasks/${taskID}/edit`, {
       completed: true,
-      category_id: 2,
     }, 'json').then(refreshContent());
   }
 

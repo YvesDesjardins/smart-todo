@@ -46,25 +46,30 @@ module.exports = (knex) => {
   });
   // edit current task
   router.post('/:category_id/tasks/:task_id/edit', (req, res) => {
-    getUserID(knex, req.session.userID)
-      .then((temp_user_id) => {
-        knex
-          .whereIn('id', checkUserTask(knex, req.params.category_id, temp_user_id[0].id, req.params.task_id))
-          .from('tasks')
-          .update({
-            name: req.body.name,
-            completed: req.body.completed,
-            category_id: req.body.category_id,
-          })
-          .then(() => {
-            res.status(200).redirect('/');
+    knex('categories').select('id').where('name', 'Completed')
+      .then((completedID) => {
+        const category_id = req.body.completed ? completedID[0].id : req.body.category_id;
+
+        getUserID(knex, req.session.userID)
+          .then((temp_user_id) => {
+            knex
+              .whereIn('id', checkUserTask(knex, req.params.category_id, temp_user_id[0].id, req.params.task_id))
+              .from('tasks')
+              .update({
+                name: req.body.name,
+                completed: req.body.completed,
+                category_id: category_id,
+              })
+              .then(() => {
+                res.status(200).redirect('/');
+              })
+              .catch((err) => {
+                res.status(401).send('user unauthorized');
+              });
           })
           .catch((err) => {
-            res.status(401).send('user unauthorized');
+            res.status(401).send('user not logged in');
           });
-      })
-      .catch((err) => {
-        res.status(401).send('user not logged in');
       });
   });
   // delete current task
