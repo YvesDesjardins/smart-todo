@@ -1,24 +1,49 @@
 $(() => {
+  
+  // Initial drawing of all page content when user loads the page
+  renderContent(); 
+
+  ////////////////////////////////////////////////////////////
+  ////////////         FRONT-END HELPERS          ////////////
+  ////////////////////////////////////////////////////////////
+  
+  // Each user has different categories and IDs, these are stored here when the page draws itself
   let usersCategories = {};
+
+  // Get category ID from the name
+  const getCatID = (name) => {
+    return usersCategories[name];
+  }
+
+  // Populate the object that lists user categories (front-end helper variable)
+  const fillCatList = (list) => {
+    let id = list.id;
+    let name = list.name;
+    usersCategories[name] = id;
+    return usersCategories;
+  }
 
   refreshContent = () => {
     $('#lists-container').empty();
     renderContent();
   }
 
-  renderContent();
-
   hideModalAndClear = (modalID, formID) => {
     $(modalID).modal('hide');
     $(formID).trigger('reset');
   }
-  // HELPERS--------------------------
+  
+  /////////////////////////////////////
+  // Functions that build the page: //
+  ///////////////////////////////////
 
   // Automatically check all the completed items
   const checkCompletedTasks = () => {
     let completedColID = getCatID('Completed');
     console.log('compl col',completedColID);
     $(`#list-${completedColID} .checkmark`).addClass('completed');
+    // Remove event handler so it's not clickable
+    $(`#list-${completedColID} .complete-task`).off(); 
   }
 
   // Build todo task elements
@@ -34,6 +59,7 @@ $(() => {
     $(`#list-${listID}`).append($($task));
     checkCompletedTasks();
   }
+
   // AJAX call to get the todo tasks for a category
   const writeListItems = (categoryID) => {
     $.get(`/categories/${categoryID}/tasks`)
@@ -43,6 +69,7 @@ $(() => {
         }
       })
   }
+  
   // Build list for a category (doesn't include items)
   const buildList = (listObject) => {
     const listName = listObject.name;
@@ -52,11 +79,166 @@ $(() => {
     let $listElement = $($cardContainer).prepend($($cardHeader));
     $('#lists-container').append($listElement);
   }
-
+  
   const addCategoryToTaskEditModal = (catName, catID) => {
-    $('#edit-task-form select').append($('<option>').text(catName).val(Number(catID)));
+    let completedID = getCatID('Completed');
+    if (catID !== completedID) {
+      $('#edit-task-form select').append($('<option>').text(catName).val(Number(catID)))
+    };
   }
-  // END HELPERS----------------------
+  
+  // AJAX call to populate the dashboard with the user's lists and items:
+  function renderContent() {
+    $.get('/categories').done((data) => {
+      $('#edit-task-form select').empty();
+      for (let list of data) {
+        fillCatList(list);
+        addCategoryToTaskEditModal(list.name, list.id);
+        buildList(list);
+        writeListItems(list.id);
+      }
+    });
+  }
+
+  ////////////////////////////////////////////////////////////
+  ////////////         CORE FUNCTIONALITY         ////////////
+  ////////////////////////////////////////////////////////////
+
+  /////////////////////////////////////
+  // Functions used by event handlers: 
+  ///////////////////////////////////
+
+  // To complete a task:
+  function completeTask() {
+    let taskID = (this.id).split('-')[1];
+    let categoryID = (this.id).split('-')[2];
+    $.post(`/categories/${categoryID}/tasks/${taskID}/edit`, {
+      completed: true,
+      category_id: getCatID('Completed'),
+    }, 'json').then(refreshContent());
+  }
+
+  // To trigger list category name edit modal:
+  function editCatModal() {
+    let categoryID = (this.id).split('-')[0];
+    let categoryName = (this.id).split('-')[1];
+    $('#edit-category-modal form').attr({
+      "data-id": categoryID,
+    });
+    $('#delete-category-form').attr({
+      "data-id": categoryID,
+    });
+    $('#edit-category-modal input').attr('placeholder', `Enter new name for ${categoryName}`).val(categoryName);
+    $('#edit-category-modal').modal('show');
+  }
+
+  // To trigger task name edit modal:
+  function editTaskModal() {
+    let taskID = (this.id).split('-')[0];
+    let taskName = (this.id).split('-')[1];
+    let categoryID = (this.id).split('-')[2];
+    $('#edit-task-form').attr({
+      "data-task-id": taskID,
+      "data-cat-id": categoryID,
+      "data-task-name": taskName,
+    });
+    $('#delete-task-form').attr({
+      "data-task-id": taskID,
+      "data-cat-id": categoryID,
+    });
+    $('#edit-item-modal input').attr('placeholder', `Enter new name for ${taskName}`);
+    $('#edit-item-modal').modal('show');
+  }
+
+  /////////////////////////////////////
+  // Event listeners:               //
+  ///////////////////////////////////
+
+  // Auto-focus on input field when you open a modal
+  $('.modal').on('shown.bs.modal', function () {
+    $('input:visible:first').focus();
+  }); 
+
+  $('#add-task').click(function () {
+    $('#add-task-modal').modal('show');
+  });
+
+  $('#add-category').click(function () {
+    $('#add-category-modal').modal('show');
+  });
+
+  // Create a new category
+  $('#new-category-form').on('submit', function (event) {
+    event.preventDefault();
+    let catName = $(this).serialize();
+    $.post('/categories/new', catName)
+      .then(hideModalAndClear('#add-category-modal', '#new-category-form'))
+      .then(refreshContent());
+  });
+
+  // Edit category name
+  $('#edit-category-form').on('submit', function (event) {
+    event.preventDefault();
+    let catName = $(this).serialize();
+    let catID = $(this).attr('data-id');
+    $.post(`/categories/${catID}/edit`, catName)
+      .then(hideModalAndClear('#edit-category-modal', '#edit-category-form'))
+      .then(refreshContent());
+  });
+
+  // Delete category
+  $('#delete-category-form').on('click', function (event) {
+    let catID = $(this).attr('data-id');
+    $.post(`/categories/${catID}/delete`)
+      .then(hideModalAndClear('#edit-category-modal', '#edit-category-form'))
+      .then(refreshContent());
+  });
+
+  // Edit task name
+  $('#edit-task-form').on('submit', function (event) {
+    event.preventDefault();
+    let taskID = $(this).attr('data-task-id');
+    let newTaskName = $('#edit-task-name').val();
+    let newCatID = $('.form-control').find(':selected').val();
+    let catID = $(this).attr('data-cat-id');
+    let data = {
+      category_id: newCatID === 'Choose a new category' ? catID : newCatID,
+      name: newTaskName === '' ? $(this).attr('data-task-name') : newTaskName,
+    }
+    $.post(`/categories/${catID}/tasks/${taskID}/edit`, data)
+      .then(hideModalAndClear('#edit-item-modal', '#edit-task-form'))
+      .then(refreshContent());;
+  });
+
+  // Delete task
+  $('#delete-task-form').on('click', function (event) {
+    let taskID = $(this).attr('data-task-id');
+    let catID = $(this).attr('data-cat-id');
+    $.post(`/categories/${catID}/tasks/${taskID}/delete`)
+      .then(hideModalAndClear('#edit-item-modal', '#edit-task-form'))
+      .then(refreshContent());;
+  });
+
+  /////////////////////////////////////
+  // Creating a new task:           //
+  ///////////////////////////////////
+
+  // 1. Event handler is triggered when user submits form
+
+  $("#save-task").on('click', function (event) {
+    event.preventDefault();
+    const toDoInput = $('#create-task-input').val();
+    hideModalAndClear('#add-task-modal', '#add-task-form');
+    // Check if there are any trigger words in the task name
+    if (checkForKeywords(toDoInput)) {
+      postNewTask(toDoInput, checkForKeywords(toDoInput));
+    } else {
+      // If there aren't trigger words in the task name, use the Wiki API
+      searchWikipedia(toDoInput);
+    }
+  });
+
+  // 2. Function that checks for context clues (from original task name or Wikipedia API pages)
 
   const checkForKeywords = (title) => {
     const keywords = {
@@ -82,6 +264,17 @@ $(() => {
     // Returns nothing (undefined) if it doesn't match one
   };
 
+  // 3. Use Wikipedia API to search for pages with titles containing the task name
+
+  const searchWikipedia = (term) => {
+    $.getJSON(`https://en.wikipedia.org/w/api.php?action=query&format=json&gsrlimit=15&generator=search&origin=*&gsrsearch=${term}`)
+    .done((data) => {
+      genCategoriesList(term, data.query.pages, getBestCatMatch);
+    });
+  }
+
+  // 4. Make a list of matching categories
+
   const genCategoriesList = (term, pages, cb) => {
     let matchingCategories = [];
     for (let page in pages) {
@@ -106,7 +299,8 @@ $(() => {
     }
   }
 
-  // If there's more than one matching category, find the one that's most common
+  // 5. Find the category with highest prevalence, and use that
+
   const getBestCatMatch = (arr, term) => {
     let mostCommon;
     let mostOccurrences = 0;
@@ -130,20 +324,8 @@ $(() => {
     }
   }
 
-  // Search Wikipedia API
-  const searchWikipedia = (term) => {
-    $.getJSON(`https://en.wikipedia.org/w/api.php?action=query&format=json&gsrlimit=15&generator=search&origin=*&gsrsearch=${term}`)
-    .done((data) => {
-      genCategoriesList(term, data.query.pages, getBestCatMatch);
-    });
-  }
+  // 6. Make final POST request for new task
 
-  // Get category ID from the name
-  const getCatID = (name) => {
-    return usersCategories[name];
-  }
-
-  // Post new task
   const postNewTask = (name, categoryName) => {
     let catID = getCatID(categoryName);
     let data = {
@@ -154,6 +336,7 @@ $(() => {
     .then(refreshContent());
   }
 
+<<<<<<< HEAD
   // Event handler for create new task
   $("#save-task").on('click', function (event) {
     event.preventDefault();
@@ -305,4 +488,6 @@ $(() => {
   });
 
   // END MODALS-----------------------
+=======
+>>>>>>> b39516c9d4cf87caaf09e30cef027185485b1b41
 });
