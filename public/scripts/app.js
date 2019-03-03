@@ -1,4 +1,5 @@
 $(() => {
+  let usersCategories = {};
 
   refreshContent = () => {
     $('#lists-container').empty();
@@ -48,13 +49,115 @@ $(() => {
   }
   // END HELPERS----------------------
 
-  //event handler for create new task
+  const checkForKeywords = (title) => {
+    const keywords = {
+      Read: ['read', 'book', 'study', 'learn', 'translate', 'view', 'album', 'booklet', 'magazine', 'novel', 'write', 'copy'],
+    
+      Watch: ['movie', 'cinema', 'film', 'show', 'video', 'watch',
+      'see', 'series', 'netflix', 'TV', 'television', 'season', 'episode', 'episodes', 'series'],
+    
+      Eat: ['restaurants', 'bar', 'pub', 'cafe', 'coffee shop', 'bistro', 'hungry', 'eat', 'dinner', 'lunch', 'breakfast', 'brunch', 'snack', 'groceries', 'food', 'vending', 'salad'],
+    
+      Buy: ['buy', 'shopping', 'products', 'purchase', 'value', 'browse',
+      'spend', 'brand', 'merchandise', 'clothing']
+    };
+    let matchedCat = '';
+    for (let category in keywords) {
+      for (let word of keywords[category]) {
+        if(title.toLowerCase().includes(word)) {
+          matchedCat = category;
+          return matchedCat;
+        }
+      }
+    }
+    // Returns nothing (undefined) if it doesn't match one
+  };
+
+  const genCategoriesList = (term, pages, cb) => {
+    let matchingCategories = [];
+    for (let page in pages) {
+      let title = pages[page].title;
+      // Check if there's a wikipedia page with the query in the title
+      if ((title.toLowerCase()).includes(term.toLowerCase())) {
+        let newCat = checkForKeywords(title);
+        if (newCat) {
+          if (!matchingCategories.includes(newCat)) {
+            matchingCategories.push(checkForKeywords(title));
+          }
+        }
+      } else {
+        // Couldn't match an article title from wikipedia
+      }
+    }
+    // If there's only 1 matching category, return that
+    if (matchingCategories.length === 1) {
+      return cb(matchingCategories, term);
+    } else {
+      return cb(matchingCategories, term);
+    }
+  }
+
+  // If there's more than one matching category, find the one that's most common
+  const getBestCatMatch = (arr, term) => {
+    let mostCommon;
+    let mostOccurrences = 0;
+    arr.forEach(function(x) {
+      let occurrences = 1;
+      arr.forEach(function (y) {
+        if (x === y) {
+          occurrences ++;
+          return occurrences;
+        }
+      });
+      if (occurrences > mostOccurrences) {
+        mostCommon = x;
+        mostOccurrences = occurrences;
+      }
+    });
+    if (mostCommon) {
+      postNewTask(term, mostCommon);
+    } else {
+      postNewTask(term, 'Uncategorized');
+    }
+  }
+
+  // Search Wikipedia API
+  const searchWikipedia = (term) => {
+    $.getJSON(`https://en.wikipedia.org/w/api.php?action=query&format=json&gsrlimit=15&generator=search&origin=*&gsrsearch=${term}`)
+    .done((data) => {
+      genCategoriesList(term, data.query.pages, getBestCatMatch);
+    });
+  }
+
+  // Get category ID from the name
+  const getCatID = (name) => {
+    return usersCategories[name];
+  }
+
+  // Post new task
+  const postNewTask = (name, categoryName) => {
+    let catID = getCatID(categoryName);
+    let data = {
+      name: name,
+      category_id: catID,
+    }
+    $.post(`/categories/${catID}/tasks/new`, data)
+    .then(refreshContent());
+  }
+
+  // Event handler for create new task
   $("#save-task").on('click', function (event) {
     event.preventDefault();
     const toDoInput = $('#create-task-input').val();
-    yelpApi(toDoInput);
     hideModalAndClear('#add-task-modal', '#add-task-form');
-  })
+    // Check if there are any trigger words in the task name
+    if (checkForKeywords(toDoInput)) {
+      postNewTask(toDoInput, checkForKeywords(toDoInput));
+    } else {
+      // If there aren't trigger words in the task name, use the Wiki API
+      searchWikipedia(toDoInput);
+    }
+  });
 
   // Create a new category
   $('#new-category-form').on('submit', function (event) {
@@ -109,47 +212,24 @@ $(() => {
       .then(refreshContent());;
   });
 
-  //api call to yelp
-  function yelpApi(toDoInput) {
-    var inputData = {
-      text: toDoInput
-    }
-    $.ajax({
-        method: 'GET',
-        url: '/api/yelp',
-        data: inputData
-      }).then((res) => {
-        console.log('res', res);
-      })
-      .catch((err) => {
-        console.log('error', err);
-      })
-  };
-
+  const fillCatList = (list) => {
+    let id = list.id;
+    let name = list.name;
+    usersCategories[name] = id;
+    return usersCategories;
+  }
 
   // AJAX call to populate the dashboard with the user's lists and items:
   function renderContent() {
     $.get('/categories').done((data) => {
-      for (let list of data) {
-        addCategoryToTaskEditModal(list.name, list.id);
-        buildList(list);
-        writeListItems(list.id);
-      }
-    });
+    for (let list of data) {
+      fillCatList(list);
+      addCategoryToTaskEditModal(list.name, list.id);
+      buildList(list);
+      writeListItems(list.id);
+    }
+  });
   }
-
-  // YELP API:
-  function yelpApi() {
-    $.ajax({
-        method: 'GET',
-        url: '/api/yelp'
-      }).then((res) => {
-        console.log('res', res);
-      })
-      .catch((err) => {
-        console.log('error', err);
-      })
-  };
 
   // To complete a task:
   function completeTask() {
@@ -193,6 +273,11 @@ $(() => {
   }
 
   // MODALS---------------------------
+
+  $('.modal').on('shown.bs.modal', function () {
+    $('input:visible:first').focus();
+  }); 
+
   // Listen for clicks on task names
   $('div.card-body').click(editTaskModal);
 
