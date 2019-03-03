@@ -16,24 +16,66 @@ module.exports = (knex) => {
         if (results === []) {
           res.status(400).send('email already exists');
         }
-        // otherwise create user and redirect
+        // user doesn't exist, create new one
         else {
-          knex('users').insert({
-              email: req.body.email,
-              password: req.body.password // bcrypt to be introduced later
-            })
-            .then(() => {
-              res.status(200).redirect('/');
-            })
-            .catch((err) => {
-              throw err;
-            });
+          createUser(req, res);
         }
+      })
+      .catch((err) => {
+        res.status(400).send()
+      })
+  });
+
+  function createUser(req, res) {
+    knex('users')
+      .returning(['id'])
+      .insert({
+        email: req.body.email,
+        password: req.body.password // bcrypt to be introduced later
+      })
+      .then((results) => {
+        populateUserCategories(results[0].id);
+        res.status(200).redirect('/');
       })
       .catch((err) => {
         throw err;
       });
-  });
+  }
+
+  function populateUserCategories(userID) {
+    Promise.all([
+      knex('categories').insert({
+        name: 'Uncategorized',
+        api: 'uncat',
+        user_id: userID,
+      }),
+      knex('categories').insert({
+        name: 'Completed',
+        api: 'uncat',
+        user_id: userID,
+      }),
+      knex('categories').insert({
+        name: 'Watch',
+        api: 'imdb',
+        user_id: userID,
+      }),
+      knex('categories').insert({
+        name: 'Eat',
+        api: 'yelp',
+        user_id: userID,
+      }),
+      knex('categories').insert({
+        name: 'Buy',
+        api: 'amazon',
+        user_id: userID,
+      }),
+      knex('categories').insert({
+        name: 'Read',
+        api: 'amazon',
+        user_id: userID,
+      }),
+    ]);
+  }
 
   return router;
 }
