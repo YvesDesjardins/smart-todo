@@ -13,6 +13,14 @@ $(() => {
     $(formID).trigger('reset');
   }
   // HELPERS--------------------------
+
+  // Automatically check all the completed items
+  const checkCompletedTasks = () => {
+    let completedColID = getCatID('Completed');
+    console.log('compl col',completedColID);
+    $(`#list-${completedColID} .checkmark`).addClass('completed');
+  }
+
   // Build todo task elements
   const buildListTask = (taskObject, listID) => {
     const taskName = taskObject.name;
@@ -21,9 +29,10 @@ $(() => {
       .append($('<p>').text(taskName).addClass('task-name').attr('id', `${taskID}-${taskName}-${listID}-task`)
         .click(editTaskModal));
     let $checkBox = $('<div>').addClass('complete-task')
-      .attr('id', `complete-${taskID}-${listID}`).click(completeTask).append($('<p>').addClass('checkmark').text('✔️'));
+    .attr('id', `complete-${taskID}-${listID}`).click(completeTask).append($('<p>').addClass('checkmark').text('✔️'));
     let $task = $($cardBody).append($($checkBox));
     $(`#list-${listID}`).append($($task));
+    checkCompletedTasks();
   }
   // AJAX call to get the todo tasks for a category
   const writeListItems = (categoryID) => {
@@ -238,6 +247,7 @@ $(() => {
     let categoryID = (this.id).split('-')[2];
     $.post(`/categories/${categoryID}/tasks/${taskID}/edit`, {
       completed: true,
+      category_id: getCatID('Completed'),
     }, 'json').then(refreshContent());
   }
 

@@ -44,6 +44,11 @@
         font-size: 2em;
         opacity: 0;
       }
+      .checkmark.completed {
+        opacity: 1;
+        position: relative;
+        top: -7px;
+      }
     }
 
     .complete-task:hover {
