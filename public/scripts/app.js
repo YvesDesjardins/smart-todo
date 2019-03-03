@@ -274,6 +274,11 @@ $(() => {
   }
 
   // MODALS---------------------------
+
+  $('.modal').on('shown.bs.modal', function () {
+    $('input:visible:first').focus();
+  }); 
+
   // Listen for clicks on task names
   $('div.card-body').click(editTaskModal);
 
