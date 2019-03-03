@@ -1,12 +1,12 @@
 $(() => {
-  
+
   // Initial drawing of all page content when user loads the page
-  renderContent(); 
+  renderContent();
 
   ////////////////////////////////////////////////////////////
   ////////////         FRONT-END HELPERS          ////////////
   ////////////////////////////////////////////////////////////
-  
+
   // Each user has different categories and IDs, these are stored here when the page draws itself
   let usersCategories = {};
 
@@ -32,7 +32,7 @@ $(() => {
     $(modalID).modal('hide');
     $(formID).trigger('reset');
   }
-  
+
   /////////////////////////////////////
   // Functions that build the page: //
   ///////////////////////////////////
@@ -43,7 +43,7 @@ $(() => {
     console.log('compl col',completedColID);
     $(`#list-${completedColID} .checkmark`).addClass('completed');
     // Remove event handler so it's not clickable
-    $(`#list-${completedColID} .complete-task`).off(); 
+    $(`#list-${completedColID} .complete-task`).off();
   }
 
   // Build todo task elements
@@ -69,7 +69,7 @@ $(() => {
         }
       })
   }
-  
+
   // Build list for a category (doesn't include items)
   const buildList = (listObject) => {
     const listName = listObject.name;
@@ -79,14 +79,14 @@ $(() => {
     let $listElement = $($cardContainer).prepend($($cardHeader));
     $('#lists-container').append($listElement);
   }
-  
+
   const addCategoryToTaskEditModal = (catName, catID) => {
     let completedID = getCatID('Completed');
     if (catID !== completedID) {
       $('#edit-task-form select').append($('<option>').text(catName).val(Number(catID)))
     };
   }
-  
+
   // AJAX call to populate the dashboard with the user's lists and items:
   function renderContent() {
     $.get('/categories').done((data) => {
@@ -105,7 +105,7 @@ $(() => {
   ////////////////////////////////////////////////////////////
 
   /////////////////////////////////////
-  // Functions used by event handlers: 
+  // Functions used by event handlers:
   ///////////////////////////////////
 
   // To complete a task:
@@ -157,7 +157,7 @@ $(() => {
   // Auto-focus on input field when you open a modal
   $('.modal').on('shown.bs.modal', function () {
     $('input:visible:first').focus();
-  }); 
+  });
 
   $('#add-task').click(function () {
     $('#add-task-modal').modal('show');
@@ -243,12 +243,12 @@ $(() => {
   const checkForKeywords = (title) => {
     const keywords = {
       Read: ['read', 'book', 'study', 'learn', 'translate', 'view', 'album', 'booklet', 'magazine', 'novel', 'write', 'copy'],
-    
+
       Watch: ['movie', 'cinema', 'film', 'show', 'video', 'watch',
       'see', 'series', 'netflix', 'TV', 'television', 'season', 'episode', 'episodes', 'series'],
-    
+
       Eat: ['restaurants', 'bar', 'pub', 'cafe', 'coffee shop', 'bistro', 'hungry', 'eat', 'dinner', 'lunch', 'breakfast', 'brunch', 'snack', 'groceries', 'food', 'vending', 'salad'],
-    
+
       Buy: ['buy', 'shopping', 'products', 'purchase', 'value', 'browse',
       'spend', 'brand', 'merchandise', 'clothing']
     };
@@ -336,7 +336,6 @@ $(() => {
     .then(refreshContent());
   }
 
-<<<<<<< HEAD
   // Event handler for create new task
   $("#save-task").on('click', function (event) {
     event.preventDefault();
@@ -471,7 +470,7 @@ $(() => {
 
   $('.modal').on('shown.bs.modal', function () {
     $('input:visible:first').focus();
-  }); 
+  });
 
   // Listen for clicks on task names
   $('div.card-body').click(editTaskModal);
@@ -488,6 +487,4 @@ $(() => {
   });
 
   // END MODALS-----------------------
-=======
->>>>>>> b39516c9d4cf87caaf09e30cef027185485b1b41
 });
