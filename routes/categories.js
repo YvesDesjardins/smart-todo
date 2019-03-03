@@ -71,7 +71,7 @@ module.exports = (knex) => {
   });
   // delete current category
   router.post('/:category_id/delete', (req, res) => {
-    if (protectedCategories.indexOf(req.body.name) === -1) {
+    if (protectedCategories.indexOf(req.body.name) !== -1) {
       getUserID(knex, req.session.userID)
         .then((temp_user_id) => {
           knex('categories')
