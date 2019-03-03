@@ -14,8 +14,17 @@
     overflow-y: auto;
   }
 
+  .card-header {
+    background-color: rgba(40,146,215, 0.3);
+  }
+
   .card-header:hover {
     text-decoration: underline;
+    background-color: rgba(40,146,215, 0.5);
+    cursor: pointer;
+    -webkit-transition: background-color 500ms ease-in;
+    -ms-transition: background-color 500ms ease-in;
+    transition: background-color 500ms ease-in;
     cursor: pointer;
   }
 
@@ -50,7 +59,7 @@
         top: -7px;
       }
     }
-
+    
     .complete-task:hover {
       .checkmark {
         opacity: 1;
@@ -60,6 +69,9 @@
         -ms-transition: opacity 500ms ease-in;
         transition: opacity 500ms ease-in;
         cursor: pointer;
+      }
+      .checkmark.completed {
+        cursor: text;
       }
     }
   }
