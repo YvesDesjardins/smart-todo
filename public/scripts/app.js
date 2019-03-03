@@ -171,6 +171,17 @@ $(() => {
     $('#add-user-modal').modal('show');
   });
 
+  // Create a new user
+  $('#add-user-form').on('submit', function (event) {
+    event.preventDefault();
+    $.post('/register', {
+        email: $('.register-email').val(),
+        password: $('.register-password').val()
+      })
+      .then(hideModalAndClear('#add-user-modal', '.register-email', '.register-password'))
+      .then(refreshContent());
+  });
+
   // Create a new category
   $('#new-category-form').on('submit', function (event) {
     event.preventDefault();
