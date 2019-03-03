@@ -97,12 +97,13 @@ $(() => {
       return matchingCategories[0]
     } else {
       console.log("about to run CB in genCategoriesList")
+      console.log(`matching categories: `, matchingCategories);
       return cb(matchingCategories);
     }
   }
 
   // If there's more than one matching category, find the one that's most common
-  const getBestCatMatch = (arr) => {
+  const getBestCatMatch = (arr, cb) => {
     let mostCommon;
     let mostOccurrences = 0;
     arr.forEach(function(x) {
@@ -119,15 +120,15 @@ $(() => {
       }
     });
     console.log(`mostCommon in getBestCat Match: ${mostCommon}`)
-    return mostCommon;
+    cb(mostCommon);
   }
 
   // Search Wikipedia API
   const searchWikipedia = (term) => {
     $.getJSON(`https://en.wikipedia.org/w/api.php?action=query&format=json&gsrlimit=15&generator=search&origin=*&gsrsearch=${term}`)
     .done((data) => {
-      (genCategoriesList(term, data.query.pages, getBestCatMatch));
-    })
+      genCategoriesList(term, data.query.pages, getBestCatMatch);
+    });
   }
 
   // Get category ID from the name
@@ -159,7 +160,8 @@ $(() => {
     } else {
       console.log("Couldn't find keywords in the task name...")
       // If there aren't trigger words in the task name, use the Wiki API
-      postNewTask(toDoInput, searchWikipedia(toDoInput));
+      searchWikipedia(toDoInput);
+      // postNewTask(toDoInput, searchWikipedia(toDoInput));
     }
   });
 
