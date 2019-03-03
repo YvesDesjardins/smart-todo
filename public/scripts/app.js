@@ -61,7 +61,6 @@ $(() => {
       Buy: ['buy', 'shopping', 'products', 'purchase', 'value', 'browse',
       'spend', 'brand', 'merchandise', 'clothing']
     };
-    console.log("checking for keywords now...")
     let matchedCat = '';
     for (let category in keywords) {
       for (let word of keywords[category]) {
@@ -75,7 +74,6 @@ $(() => {
   };
 
   const genCategoriesList = (term, pages, cb) => {
-    console.log(`generating categories list`);
     let matchingCategories = [];
     for (let page in pages) {
       let title = pages[page].title;
@@ -93,11 +91,8 @@ $(() => {
     }
     // If there's only 1 matching category, return that
     if (matchingCategories.length === 1) {
-      console.log(`one category in list: ${matchingCategories[0]}`)
       return cb(matchingCategories, term);
     } else {
-      console.log("about to run CB in genCategoriesList")
-      console.log(`matching categories: `, matchingCategories);
       return cb(matchingCategories, term);
     }
   }
@@ -119,8 +114,11 @@ $(() => {
         mostOccurrences = occurrences;
       }
     });
-    console.log(`mostCommon in getBestCat Match: ${mostCommon}`)
-    postNewTask(term, mostCommon);
+    if (mostCommon) {
+      postNewTask(term, mostCommon);
+    } else {
+      postNewTask(term, 'Uncategorized');
+    }
   }
 
   // Search Wikipedia API
@@ -139,12 +137,10 @@ $(() => {
   // Post new task
   const postNewTask = (name, categoryName) => {
     let catID = getCatID(categoryName);
-    console.log(`Posting to this category: ${categoryName} with ID: ${catID}`);
     let data = {
       name: name,
       category_id: catID,
     }
-    console.log(`about to post with this data: ${data}`)
     $.post(`/categories/${catID}/tasks/new`, data)
     .then(refreshContent());
   }
@@ -158,7 +154,6 @@ $(() => {
     if (checkForKeywords(toDoInput)) {
       postNewTask(toDoInput, checkForKeywords(toDoInput));
     } else {
-      console.log("Couldn't find keywords in the task name...")
       // If there aren't trigger words in the task name, use the Wiki API
       searchWikipedia(toDoInput);
     }
