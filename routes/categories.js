@@ -71,19 +71,23 @@ module.exports = (knex) => {
   });
   // delete current category
   router.post('/:category_id/delete', (req, res) => {
-    getUserID(knex, req.session.userID)
-      .then((temp_user_id) => {
-        knex('categories')
-          .where('user_id', temp_user_id[0].id)
-          .andWhere('id', req.params.category_id)
-          .del()
-          .then((results) => {
-            res.status(200).redirect('/');
-          });
-      })
-      .catch((err) => {
-        res.status(401).send('user not logged in');
-      });
+    if (protectedCategories.indexOf(req.body.name) === -1) {
+      getUserID(knex, req.session.userID)
+        .then((temp_user_id) => {
+          knex('categories')
+            .where('user_id', temp_user_id[0].id)
+            .andWhere('id', req.params.category_id)
+            .del()
+            .then((results) => {
+              res.status(200).redirect('/');
+            });
+        })
+        .catch((err) => {
+          res.status(401).send('user not logged in');
+        });
+    } else {
+      res.status(401).send('Can not delete protected categories');
+    }
   });
 
   return router;
