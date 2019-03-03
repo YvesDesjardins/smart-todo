@@ -3,7 +3,7 @@ exports.seed = function (knex, Promise) {
     .then(function () {
       return Promise.all([
         knex('tasks').insert({
-          name: 'Work on bloopityboop',
+          name: 'Work on random stuff',
           completed: false,
           category_id: 1,
         }),
