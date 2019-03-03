@@ -197,22 +197,21 @@ $(() => {
       .then(refreshContent());
   });
 
-  // Edit task name
-  $('#edit-task-form').on('submit', function (event) {
-    event.preventDefault();
-    let data = $(this).serialize();
-    let taskID = $(this).attr('data-task-id');
-    let taskName = $(this).attr('data-task-name');
-    let catID = $(this).attr('data-cat-id');
-    if ($('#edit-task-name').val() === "") {
-      // fix this if there's time
-      $('#edit-task-name').val(taskName);
-    }
-    $('#default-category-option').val(catID);
-    $.post(`/categories/${catID}/tasks/${taskID}/edit`, data)
-      .then(hideModalAndClear('#edit-item-modal', '#edit-task-form'))
-      .then(refreshContent());;
-  });
+// Edit task name
+$('#edit-task-form').on('submit', function (event) {
+  event.preventDefault();
+  let taskID = $(this).attr('data-task-id');
+  let newTaskName = $('#edit-task-name').val();
+  let newCatID = $('.form-control').find(':selected').val();
+  let catID = $(this).attr('data-cat-id');
+  let data = {
+    category_id: newCatID === 'Choose a new category' ? catID : newCatID,
+    name: newTaskName === '' ? $(this).attr('data-task-name') : newTaskName,
+  }
+  $.post(`/categories/${catID}/tasks/${taskID}/edit`, data)
+    .then(hideModalAndClear('#edit-item-modal', '#edit-task-form'))
+    .then(refreshContent());;
+});
 
   // Delete task
   $('#delete-task-form').on('click', function (event) {
