@@ -9595,3 +9595,7 @@ a.text-dark:hover, a.text-dark:focus {
 .navbar .login-button {
   margin-top: 1em;
 }
+
+.not-logged-in-content {
+  text-align: center;
+}
