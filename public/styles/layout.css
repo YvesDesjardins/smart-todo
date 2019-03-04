@@ -9591,3 +9591,7 @@ a.text-dark:hover, a.text-dark:focus {
 .navbar .btn {
   min-width: 80px;
 }
+
+.navbar .login-button {
+  margin-top: 1em;
+}

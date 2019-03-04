@@ -14,12 +14,14 @@
       <button type="submit" class="btn btn-primary">Logout</button>
     </form>
     <%}else{%>
-    <form action='/register' method='POST'>
-      <button type="button" class="btn btn-primary btn-block" id="add-user">Register</button>
-    </form>
-    <form action='/login' method='POST'>
-      <button type="submit" class="btn btn-primary">Login</button>
-    </form>
+    <div class="header-button-group">
+      <form action='/register' method='POST'>
+        <button type="button" class="btn btn-primary btn-block" id="add-user">Register</button>
+      </form>
+      <form action='/login' method='POST'>
+        <button type="submit" class="btn btn-secondary btn-block login-button">Login</button>
+      </form>
+    </div>
     <%}%>
   </div>
 </nav>
