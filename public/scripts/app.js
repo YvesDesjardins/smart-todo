@@ -1,6 +1,5 @@
 $(() => {
 
-  const express = require('./');
 
   // Initial drawing of all page content when user loads the page
   renderContent();
@@ -16,14 +15,14 @@ $(() => {
     $('input[type="text"]').attr({
       maxLength: 30
     })
-    let $textAreaLeng = $(this).val().length;
-    let $counter = $(this).parent().find('.counter');
-    $counter.text(30 - $textAreaLeng);
-    if ($textAreaLeng > 30) {
-      $counter.css(`color`, `red`);
-    } else {
-      $counter.css(`color`, `black`);
-    }
+    // let $textAreaLeng = $(this).val().length;
+    // let $counter = $(this).parent().find('.counter');
+    // $counter.text(30 - $textAreaLeng);
+    // if ($textAreaLeng > 30) {
+    //   $counter.css(`color`, `red`);
+    // } else {
+    //   $counter.css(`color`, `black`);
+    // }
   })
 
 
