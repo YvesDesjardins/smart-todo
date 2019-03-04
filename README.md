@@ -45,4 +45,3 @@ Photos to be added here!
 ## Known Issues
 
 - Page sometimes fails to refresh on updating (edit, create, delete, etc)
-- Anything else you find
