@@ -290,7 +290,11 @@ $(() => {
   const searchWikipedia = (term) => {
     $.getJSON(`https://en.wikipedia.org/w/api.php?action=query&format=json&gsrlimit=15&generator=search&origin=*&gsrsearch=${term}`)
       .done((data) => {
-        genCategoriesList(term, data.query.pages, getBestCatMatch);
+        if (Object.keys(data).length > 1) {
+          genCategoriesList(term, data.query.pages, getBestCatMatch);
+        } else {
+          genCategoriesList(term, [], getBestCatMatch);
+        }
       });
   }
 

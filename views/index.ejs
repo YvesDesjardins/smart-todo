@@ -25,6 +25,13 @@
   <div class="scrolling-wrapper-flexbox" id="lists-container">
     <!-- Lists will get generated in here -->
   </div>
+  <%if(email){%>
+  <%} else {%>
+    <div class="not-logged-in-content">
+    <h1>Please log in!</h1>
+    <img src="https://media1.giphy.com/media/26ufnwz3wDUli7GU0/source.gif" alt="gif of an empty to do list">
+    </div>
+  <%}%>
 
   <!-- Modal for registering new user -->
   <div class="modal fade" id="add-user-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"

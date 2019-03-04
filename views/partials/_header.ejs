@@ -1,7 +1,10 @@
 <nav class="navbar" id="top-nav">
   <div class="header-button-group">
+    <%if(email){%>
     <button type="button" class="btn btn-primary btn-block" id="add-category">New Category</button>
     <button type="button" class="btn btn-secondary btn-block" id="add-task">New Task</button>
+    <%} else {%>
+    <%}%>
   </div>
   <h1>Do It</h1>
 
@@ -14,12 +17,14 @@
       <button type="submit" class="btn btn-primary">Logout</button>
     </form>
     <%}else{%>
-    <form action='/register' method='POST'>
-      <button type="button" class="btn btn-primary btn-block" id="add-user">Register</button>
-    </form>
-    <form action='/login' method='POST'>
-      <button type="submit" class="btn btn-primary">Login</button>
-    </form>
+    <div class="header-button-group">
+      <form action='/register' method='POST'>
+        <button type="button" class="btn btn-primary btn-block" id="add-user">Register</button>
+      </form>
+      <form action='/login' method='POST'>
+        <button type="submit" class="btn btn-secondary btn-block login-button">Login</button>
+      </form>
+    </div>
     <%}%>
   </div>
 </nav>
