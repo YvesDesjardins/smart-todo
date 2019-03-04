@@ -1,12 +1,12 @@
 $(() => {
-  
+
   // Initial drawing of all page content when user loads the page
-  renderContent(); 
+  renderContent();
 
   ////////////////////////////////////////////////////////////
   ////////////         FRONT-END HELPERS          ////////////
   ////////////////////////////////////////////////////////////
-  
+
   // Each user has different categories and IDs, these are stored here when the page draws itself
   let usersCategories = {};
 
@@ -32,7 +32,7 @@ $(() => {
     $(modalID).modal('hide');
     $(formID).trigger('reset');
   }
-  
+
   /////////////////////////////////////
   // Functions that build the page: //
   ///////////////////////////////////
@@ -40,10 +40,10 @@ $(() => {
   // Automatically check all the completed items
   const checkCompletedTasks = () => {
     let completedColID = getCatID('Completed');
-    console.log('compl col',completedColID);
+    console.log('compl col', completedColID);
     $(`#list-${completedColID} .checkmark`).addClass('completed');
     // Remove event handler so it's not clickable
-    $(`#list-${completedColID} .complete-task`).off(); 
+    $(`#list-${completedColID} .complete-task`).off();
   }
 
   // Build todo task elements
@@ -54,7 +54,7 @@ $(() => {
       .append($('<p>').text(taskName).addClass('task-name').attr('id', `${taskID}-${taskName}-${listID}-task`)
         .click(editTaskModal));
     let $checkBox = $('<div>').addClass('complete-task')
-    .attr('id', `complete-${taskID}-${listID}`).click(completeTask).append($('<p>').addClass('checkmark').text('✔️'));
+      .attr('id', `complete-${taskID}-${listID}`).click(completeTask).append($('<p>').addClass('checkmark').text('✔️'));
     let $task = $($cardBody).append($($checkBox));
     $(`#list-${listID}`).append($($task));
     checkCompletedTasks();
@@ -69,7 +69,7 @@ $(() => {
         }
       })
   }
-  
+
   // Build list for a category (doesn't include items)
   const buildList = (listObject) => {
     const listName = listObject.name;
@@ -79,14 +79,14 @@ $(() => {
     let $listElement = $($cardContainer).prepend($($cardHeader));
     $('#lists-container').append($listElement);
   }
-  
+
   const addCategoryToTaskEditModal = (catName, catID) => {
     let completedID = getCatID('Completed');
     if (catID !== completedID) {
       $('#edit-task-form select').append($('<option>').text(catName).val(Number(catID)))
     };
   }
-  
+
   // AJAX call to populate the dashboard with the user's lists and items:
   function renderContent() {
     $.get('/categories').done((data) => {
@@ -126,6 +126,7 @@ $(() => {
     });
     $('#delete-category-form').attr({
       "data-id": categoryID,
+      "data-name": categoryName,
     });
     $('#edit-category-modal input').attr('placeholder', `Enter new name for ${categoryName}`).val(categoryName);
     $('#edit-category-modal').modal('show');
@@ -156,7 +157,7 @@ $(() => {
   // Auto-focus on input field when you open a modal
   $('.modal').on('shown.bs.modal', function () {
     $('input:visible:first').focus();
-  }); 
+  });
 
   $('#add-task').click(function () {
     $('#add-task-modal').modal('show');
@@ -164,6 +165,21 @@ $(() => {
 
   $('#add-category').click(function () {
     $('#add-category-modal').modal('show');
+  });
+
+  $('#add-user').click(function () {
+    $('#add-user-modal').modal('show');
+  });
+
+  // Create a new user
+  $('#add-user-form').on('submit', function (event) {
+    event.preventDefault();
+    $.post('/register', {
+        email: $('.register-email').val(),
+        password: $('.register-password').val()
+      })
+      .then(hideModalAndClear('#add-user-modal', '.register-email', '.register-password'))
+      .then(refreshContent());
   });
 
   // Create a new category
@@ -188,7 +204,9 @@ $(() => {
   // Delete category
   $('#delete-category-form').on('click', function (event) {
     let catID = $(this).attr('data-id');
-    $.post(`/categories/${catID}/delete`)
+    $.post(`/categories/${catID}/delete`, {
+        name: $(this).attr('data-name')
+      })
       .then(hideModalAndClear('#edit-category-modal', '#edit-category-form'))
       .then(refreshContent());
   });
@@ -242,19 +260,21 @@ $(() => {
   const checkForKeywords = (title) => {
     const keywords = {
       Read: ['read', 'book', 'study', 'learn', 'translate', 'view', 'album', 'booklet', 'magazine', 'novel', 'write', 'copy'],
-    
+
       Watch: ['movie', 'cinema', 'film', 'show', 'video', 'watch',
-      'see', 'series', 'netflix', 'TV', 'television', 'season', 'episode', 'episodes', 'series'],
-    
+        'see', 'series', 'netflix', 'TV', 'television', 'season', 'episode', 'episodes', 'series'
+      ],
+
       Eat: ['restaurants', 'bar', 'pub', 'cafe', 'coffee shop', 'bistro', 'hungry', 'eat', 'dinner', 'lunch', 'breakfast', 'brunch', 'snack', 'groceries', 'food', 'vending', 'salad'],
-    
+
       Buy: ['buy', 'shopping', 'products', 'purchase', 'value', 'browse',
-      'spend', 'brand', 'merchandise', 'clothing']
+        'spend', 'brand', 'merchandise', 'clothing'
+      ]
     };
     let matchedCat = '';
     for (let category in keywords) {
       for (let word of keywords[category]) {
-        if(title.toLowerCase().includes(word)) {
+        if (title.toLowerCase().includes(word)) {
           matchedCat = category;
           return matchedCat;
         }
@@ -267,9 +287,9 @@ $(() => {
 
   const searchWikipedia = (term) => {
     $.getJSON(`https://en.wikipedia.org/w/api.php?action=query&format=json&gsrlimit=15&generator=search&origin=*&gsrsearch=${term}`)
-    .done((data) => {
-      genCategoriesList(term, data.query.pages, getBestCatMatch);
-    });
+      .done((data) => {
+        genCategoriesList(term, data.query.pages, getBestCatMatch);
+      });
   }
 
   // 4. Make a list of matching categories
@@ -303,11 +323,11 @@ $(() => {
   const getBestCatMatch = (arr, term) => {
     let mostCommon;
     let mostOccurrences = 0;
-    arr.forEach(function(x) {
+    arr.forEach(function (x) {
       let occurrences = 1;
       arr.forEach(function (y) {
         if (x === y) {
-          occurrences ++;
+          occurrences++;
           return occurrences;
         }
       });
@@ -332,7 +352,7 @@ $(() => {
       category_id: catID,
     }
     $.post(`/categories/${catID}/tasks/new`, data)
-    .then(refreshContent());
+      .then(refreshContent());
   }
 
 });

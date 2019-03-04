@@ -35,6 +35,7 @@ module.exports = (knex) => {
       })
       .then((results) => {
         populateUserCategories(results[0].id);
+        req.session.userID = req.body.email;
         res.status(200).redirect('/');
       })
       .catch((err) => {
