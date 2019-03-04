@@ -10,7 +10,6 @@ $(() => {
   ////////////////////////////////////////////////////////////
 
 
-
   $('input[type="text"]').on(`input`, function (event) {
     event.preventDefault();
     event.stopPropagation();
