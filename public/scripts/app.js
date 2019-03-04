@@ -1,11 +1,32 @@
 $(() => {
 
+  const express = require('./');
+
   // Initial drawing of all page content when user loads the page
   renderContent();
 
   ////////////////////////////////////////////////////////////
   ////////////         FRONT-END HELPERS          ////////////
   ////////////////////////////////////////////////////////////
+
+
+
+  $('input[type="text"]').on(`input`, function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    $('input[type="text"]').attr({
+      maxLength: 30
+    })
+    let $textAreaLeng = $(this).val().length;
+    let $counter = $(this).parent().find('.counter');
+    $counter.text(30 - $textAreaLeng);
+    if ($textAreaLeng > 30) {
+      $counter.css(`color`, `red`);
+    } else {
+      $counter.css(`color`, `black`);
+    }
+  })
+
 
   // Each user has different categories and IDs, these are stored here when the page draws itself
   let usersCategories = {};
@@ -40,7 +61,7 @@ $(() => {
   // Automatically check all the completed items
   const checkCompletedTasks = () => {
     let completedColID = getCatID('Completed');
-    console.log('compl col',completedColID);
+    console.log('compl col', completedColID);
     $(`#list-${completedColID} .checkmark`).addClass('completed');
     // Remove event handler so it's not clickable
     $(`#list-${completedColID} .complete-task`).off();
@@ -54,7 +75,7 @@ $(() => {
       .append($('<p>').text(taskName).addClass('task-name').attr('id', `${taskID}-${taskName}-${listID}-task`)
         .click(editTaskModal));
     let $checkBox = $('<div>').addClass('complete-task')
-    .attr('id', `complete-${taskID}-${listID}`).click(completeTask).append($('<p>').addClass('checkmark').text('✔️'));
+      .attr('id', `complete-${taskID}-${listID}`).click(completeTask).append($('<p>').addClass('checkmark').text('✔️'));
     let $task = $($cardBody).append($($checkBox));
     $(`#list-${listID}`).append($($task));
     checkCompletedTasks();
@@ -245,17 +266,19 @@ $(() => {
       Read: ['read', 'book', 'study', 'learn', 'translate', 'view', 'album', 'booklet', 'magazine', 'novel', 'write', 'copy'],
 
       Watch: ['movie', 'cinema', 'film', 'show', 'video', 'watch',
-      'see', 'series', 'netflix', 'TV', 'television', 'season', 'episode', 'episodes', 'series'],
+        'see', 'series', 'netflix', 'TV', 'television', 'season', 'episode', 'episodes', 'series'
+      ],
 
       Eat: ['restaurants', 'bar', 'pub', 'cafe', 'coffee shop', 'bistro', 'hungry', 'eat', 'dinner', 'lunch', 'breakfast', 'brunch', 'snack', 'groceries', 'food', 'vending', 'salad'],
 
       Buy: ['buy', 'shopping', 'products', 'purchase', 'value', 'browse',
-      'spend', 'brand', 'merchandise', 'clothing']
+        'spend', 'brand', 'merchandise', 'clothing'
+      ]
     };
     let matchedCat = '';
     for (let category in keywords) {
       for (let word of keywords[category]) {
-        if(title.toLowerCase().includes(word)) {
+        if (title.toLowerCase().includes(word)) {
           matchedCat = category;
           return matchedCat;
         }
@@ -268,9 +291,9 @@ $(() => {
 
   const searchWikipedia = (term) => {
     $.getJSON(`https://en.wikipedia.org/w/api.php?action=query&format=json&gsrlimit=15&generator=search&origin=*&gsrsearch=${term}`)
-    .done((data) => {
-      genCategoriesList(term, data.query.pages, getBestCatMatch);
-    });
+      .done((data) => {
+        genCategoriesList(term, data.query.pages, getBestCatMatch);
+      });
   }
 
   // 4. Make a list of matching categories
@@ -304,11 +327,11 @@ $(() => {
   const getBestCatMatch = (arr, term) => {
     let mostCommon;
     let mostOccurrences = 0;
-    arr.forEach(function(x) {
+    arr.forEach(function (x) {
       let occurrences = 1;
       arr.forEach(function (y) {
         if (x === y) {
-          occurrences ++;
+          occurrences++;
           return occurrences;
         }
       });
@@ -333,7 +356,7 @@ $(() => {
       category_id: catID,
     }
     $.post(`/categories/${catID}/tasks/new`, data)
-    .then(refreshContent());
+      .then(refreshContent());
   }
 
   // Event handler for create new task
@@ -403,14 +426,14 @@ $(() => {
       .then(hideModalAndClear('#edit-item-modal', '#edit-task-form'))
       .then(refreshContent());;
   });
-
-  const fillCatList = (list) => {
-    let id = list.id;
-    let name = list.name;
-    usersCategories[name] = id;
-    return usersCategories;
-  }
-
+  /*
+    const fillCatList = (list) => {
+      let id = list.id;
+      let name = list.name;
+      usersCategories[name] = id;
+      return usersCategories;
+    }
+  */
   // AJAX call to populate the dashboard with the user's lists and items:
   function renderContent() {
     $.get('/categories').done((data) => {

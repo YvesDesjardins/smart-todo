@@ -1,10 +1,11 @@
 $(() => {
 
-  // $('input[type="text"]').attr({
-  //   maxLength: 30
-  // })
+  //add maxLength attribute to all input fields
+  $('input[type="text"]').attr({
+    maxLength: 30
+  })
 
-
+  // add maxLength and a counter to all input fields
   $('input[type="text"]').on(`input`, function (event) {
     event.preventDefault();
     event.stopPropagation();
@@ -21,8 +22,8 @@ $(() => {
     }
   })
 
-  //if we decide to add the counter, the code below would be added to
-  //index.ejs in all the modal forms below the input tags.
+  // if we decide to add the counter, the code below would be added to
+  // index.ejs in all the modal forms below the input tags.
 
   /* < span class = "counter" > 30 < /span> */
 
