@@ -87,10 +87,16 @@ $(() => {
     };
   }
 
+  // Adds default category option for editing tasks (it is always first and keeps the task in the same category), and remove other options so they're not duplicated
+  function resetEditTaskCatsList() {
+    $('#edit-task-form select').empty();
+    $('#edit-task-form select').append($('<option>').attr('id', 'default-category-option').text('Choose a new category'));
+  }
+
   // AJAX call to populate the dashboard with the user's lists and items:
   function renderContent() {
     $.get('/categories').done((data) => {
-      $('#edit-task-form select').empty();
+      resetEditTaskCatsList()
       for (let list of data) {
         fillCatList(list);
         addCategoryToTaskEditModal(list.name, list.id);
