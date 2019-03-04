@@ -41,3 +41,8 @@ Photos to be added here!
 - pg
 - request
 - request-promise
+
+## Known Issues
+
+- Page sometimes fails to refresh on updating (edit, create, delete, etc)
+- Anything else you find
