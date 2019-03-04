@@ -127,6 +127,7 @@ $(() => {
     });
     $('#delete-category-form').attr({
       "data-id": categoryID,
+      "data-name": categoryName,
     });
     $('#edit-category-modal input').attr('placeholder', `Enter new name for ${categoryName}`).val(categoryName);
     $('#edit-category-modal').modal('show');
@@ -204,7 +205,9 @@ $(() => {
   // Delete category
   $('#delete-category-form').on('click', function (event) {
     let catID = $(this).attr('data-id');
-    $.post(`/categories/${catID}/delete`)
+    $.post(`/categories/${catID}/delete`, {
+        name: $(this).attr('data-name')
+      })
       .then(hideModalAndClear('#edit-category-modal', '#edit-category-form'))
       .then(refreshContent());
   });
