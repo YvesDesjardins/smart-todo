@@ -288,7 +288,6 @@ $(() => {
   const searchWikipedia = (term) => {
     $.getJSON(`https://en.wikipedia.org/w/api.php?action=query&format=json&gsrlimit=15&generator=search&origin=*&gsrsearch=${term}`)
       .done((data) => {
-        console.log(Object.keys(data).length);
         if (Object.keys(data).length > 1) {
           genCategoriesList(term, data.query.pages, getBestCatMatch);
         } else {
